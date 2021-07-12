@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wannabe.be.member.dao.MemberDao">
+	
+	<insert id="insertNewMember" parameterType="com.wannabe.be.member.vo.MemberVO">
+	  <![CDATA[
+	  		INSERT INTO MEMBER(member_id, member_pw, member_name, member_phone, member_email)
+	  		VALUES(#{member_id},#{member_pw},#{member_name},#{member_phone},#{member_email})
+	   ]]>
+	</insert>
+	
+	<select id="login" resultType="com.wannabe.be.member.vo.MemberVO" parameterType="java.util.Map" >
+		<![CDATA[
+			SELECT * FROM MEMBER
+			WHERE member_id = #{member_id}
+		]]>
+	</select>
+	
+	<select id="selectOnemember" resultType="com.wannabe.be.member.vo.MemberVO" parameterType="String"  >
+	  <![CDATA[
+	  		SELECT * FROM member WHERE MEMBER_ID = #{member_id}
+	   ]]>
+	</select>
+	
+	
+	<update id="modifymember" parameterType="com.wannabe.be.member.vo.MemberVO">
+	  <![CDATA[
+	  		update member set member_pw = #{member_pw} , member_name = #{member_name},
+	  		member_phone = #{member_phone}, member_email = #{member_email}
+	  		where member_id = #{member_id}
+	   ]]>
+	</update>
+	
+	<delete id="deletemember" parameterType="com.wannabe.be.member.vo.MemberVO">
+	   <![CDATA[
+	  		DELETE FROM MEMBER WHERE MEMBER_ID = #{member_id}
+	   ]]>
+	</delete>
+	
+</mapper>

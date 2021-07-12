@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wannabe.be.product.dao.ProductMapper">
+	<insert id="insertNewProduct"
+		parameterType="com.wannabe.be.product.vo.ProductVO">
+		
+		<selectKey resultType="int" keyProperty="product_no" order="BEFORE">
+			SELECT count(product_no)+1 FROM product
+		</selectKey> 
+	  <![CDATA[
+	  		INSERT INTO product(product_category_code, product_title, product_content, product_writer, product_price,product_delivery_message,product_delivery_price,product_sale_percent,product_company, product_quantity,product_type,product_code )
+	  		VALUES(#{product_category_code},#{product_title},#{product_content},#{product_writer},#{product_price},#{product_delivery_message},#{product_delivery_price},#{product_sale_percent},#{product_company},#{product_quantity},#{product_quantity},#{product_code})
+	   ]]>
+	</insert>
+	
+	
+	<select id="getlist"   resultType="com.wannabe.be.product.vo.ProductVO">
+		select * from product
+	</select>
+	
+	<select id="getProduct"   resultType="com.wannabe.be.product.vo.ProductVO">
+		select * from product
+		where product_no = ${product_no}
+	</select>
+	
+
+</mapper>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<style>
+.pagination {
+	margin: 0 auto;
+}
+
+.qna_modify_close:hover {
+	cursor: pointer;
+}
+
+.qna_modify_submit:hover {
+	cursor: pointer;
+}
+
+.fetchedReplyTitle:hover {
+	cursor: pointer;
+}
+
+.qna_delete_btn:hover {
+	cursor: pointer;
+}
+
+.qna_modify_btn:hover {
+	cursor: pointer;
+}
+
+.qna_reply_submit:hover {
+	cursor: pointer;
+}
+
+.qna_reply_close:hover {
+	cursor: pointer;
+}
+
+.qna_btn_wrapper {
+	margin-top: 14vh;
+}
+
+.qna_reply_close {
+	cursor: pointer;
+}
+
+.banner-container {
+	margin: 0 auto;
+}
+
+.qna_reply_btn:hover {
+	cursor: pointer;
+}
+
+.qnaTitle:hover {
+	cursor: pointer;
+}
+
+.modal {
+	width: 40%;
+	font-size: 2vh;
+	margin: 0 auto;
+}
+
+.replyTitle:hover {
+	cursor: pointer;
+}
+
+.hidden {
+	display: none;
+}
+
+* {
+	text-align: center;
+}
+
+th {
+	font-size: 1.9vh;
+	text-align: center;
+}
+
+#container tr {
+	font-color: gray;
+	font-size: 1.9vh;
+}
+
+#container td {
+	border-width: 1px solid gray;
+}
+
+.collapsed {
+	display: none;
+}
+
+#container {
+	width: 60%;
+	margin: 0 auto;
+}
+</style>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<div layout:fragment="content">
+	<section id="container">
+		<!-- 	<form role="form" method="get"> -->
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th class="hidden">글번호</th>
+					<th class="hidden">제품번호</th>
+					<th>글번호</th>
+					<th colspan="19">제목</th>
+					<th colspan="1">이름</th>
+					<th>게시일</th>
+					<th>조회수</th>
+					<th>답변 상태</th>
+				</tr>
+			</thead>
+			<th:block th:each="qna, stats : ${qnaList}">
+				<tbody>
+					<tr class="qnaList"
+						th:attr="data-qna_no=${qna.qna_no}, data-product_no=${qna.product_no}">
+						<!-- 인덱싱 수정 필요  -->
+						<td th:text="${stats.index +1}"></td>
+						<td th:text="${qna.title}" colspan="19" class="qnaTitle"
+							style="text-align: left; padding-left: 1.7vh;">
+						<td th:text="${qna.displayName}"></td>
+						<td th:text="${qna.ReplyDate}"
+							th:attr="data-origin_date=${qna.ReplyDate}"></td>
+						<td th:text="${qna.view_count}" class="view_count"></td>
+						<td th:if="${qna.isAnswered <= 0}"><span
+							class="badge badge-pill badge-light" style="margin: 0 auto;">답변대기</span></td>
+						<td th:unless="${qna.isAnswered <= 0}"><span
+							class="badge badge-pill badge-success" style="margin: 0 auto;">답변완료</span></td>
+						<td th:text="${qna.product_no}" class="hidden"></td>
+						<td th:text="${qna.qna_no}" class="hidden"></td>
+					</tr>
+					<tr class="qnaContent collapsed">
+						<td
+							th:utext="'&lt;span&gt;'+ ${qna.qna_content + '&lt;/span&gt;&#x3C;div class=&#x22;qna_btn_wrapper&#x22; stype=&#x22;width: inherit;&#x22;&#x3E;
+&#x3C;span class=&#x22;badge badge-pill badge-light qna_modify_btn&#x22;&#x3E;&#xC218;&#xC815;&#x3C;/span&#x3E;&#x26;nbsp;&#x3C;span class=&#x22;badge badge-pill badge-light qna_delete_btn&#x22;&#x3E;&#xC0AD;&#xC81C;&#x3C;/span&#x3E;&#x26;nbsp;&#x3C;span class=&#x22;badge badge-pill badge-light qna_reply_btn&#x22;&#x3E;&#xB313;&#xAE00; &#xB2EC;&#xAE30;&#x3C;/span&#x3E;&#x26;nbsp;
+							'}"
+							colspan="25" style="padding: 8vh 8vh 3vh 9vh; text-align: left;">
+					</tr>
+					<!-- 버튼 동적 구현 필요  -->
+					<tr class="fetchedReply"></tr>
+					<tr class="fetchedReplyContent collapsed"></tr>
+					<th:block th:if="${reply.parent_no == qna.qna_no}"
+						th:each="reply : ${replyList}" class="replyList">
+						<tr>
+							<td th:text="${stats.index + 1}"></td>
+							<!-- 인덱싱 수정 필요  -->
+							<td th:utext="${'RE:' + reply.qna_reply_title}" colspan="19"
+								class="replyTitle"
+								style="text-align: left; padding-left: 5.5vh;"></td>
+							<td th:text="${reply.qna_reply_writer}"></td>
+							<td th:text="${reply.qna_reply_date}"></td>
+							<td th:text="${reply.view_count}"></td>
+							<td><span class="badge badge-pill badge-light">답변</span></td>
+						</tr>
+						<tr class="replyContent collapsed">
+							<td th:text="${reply.qna_reply_content}" colspan="25"
+								style="padding: 13vh; text-align: left; white-space: pre-line; word-wrap: break-word;"></td>
+						</tr>
+					</th:block>
+				</tbody>
+			</th:block>
+			<!-- 페이징 -->
+			<div class="box-footer clearfix">
+				<ul class="pagination pagination-sm no-margin pull-right">
+
+					<li th:if="${pageInfo.prev} == true"><a
+						th:href="@{/product/qnaBoard(product_no=${product_no}, page=${pageInfo.startPage}-1,perPageNum=${pageInfo.cri.perPageNum})}">&laquo;</a>
+					</li>
+					<li
+						th:each="idx,iterStat : ${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}"
+						th:classappend="${pageInfo.cri.page} == ${idx} ? active : null">
+						<a
+						th:href="@{/product/qnaBoard(product_no=${product_no}, page=${idx}, perPageNum=${pageInfo.cri.perPageNum})}"
+						th:text="${idx}"></a>
+					</li>
+
+					<li th:if="${pageInfo.next} == true and ${pageInfo.endPage > 0}">
+						<a
+						th:href="@{/product/qnaBoard(product_no=${product_no}, page=${pageInfo.endPage}+1,perPageNum=${pageInfo.cri.perPageNum})}">&raquo;</a>
+					</li>
+				</ul>
+			</div>
+			<!-- 페이징 끝 -->
+			</seciton>
+			<!-- 댓글 모달창 -->
+			<div class="modal qna_reply" tabindex="-1" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h8 class="modal-title">댓글 작성</h8>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body" style="text-align: left;">
+							<form>
+								<div class="form-group">
+									<textarea class="form-control" id="qna_reply-text" rows="10"
+										style="font-size: 1.7vh; text-align: left;"></textarea>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<span class="badge badge-pill badge-light qna_reply_submit">등록</span>
+							<span class="badge badge-pill badge-light qna_reply_close">취소</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 모달끝 -->
+
+			<!-- 글수정 모달창 -->
+			<div class="modal qna_modify" tabindex="-1" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h8 class="modal-title">글 수정</h8>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body" style="text-align: left;">
+							<form>
+								<div class="form-group">
+									<textarea class="form-control" id="qna_text" rows="10"
+										style="font-size: 1.7vh; text-align: left;"></textarea>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<span class="badge badge-pill badge-light qna_modify_submit">확인</span>
+							<span class="badge badge-pill badge-light qna_modify_close">취소</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 글 수정 모달끝 -->
+			<script>
+
+			$(document).ready(function(){
+				
+				$(".qna_reply_btn")
+				.on(
+						"click",
+						function() {
+							var parent_no = $(this).closest("tbody").children().data("qna_no");
+									console.log(parent_no);		
+							var product_no = $(this).closest("tbody").children().data("product_no");
+						
+							//수정 필요 ㅋㅋ
+							$(this).parent().parent().parent().prev().siblings().first().next().addClass("empty");
+							$(this).parent().parent().parent().prev().siblings().first().next().next().addClass("emptyReplyContent");
+							$(".qna_reply").attr("data-parent_no",
+									parent_no);
+							$(".qna_reply").attr("data-product_no",
+									product_no);
+							$(".qna_reply").show();
+						});
+				
+				
+				$(".qna_reply_submit").on("click", function() {
+					var parent_no = $('.qna_reply').data('parent_no');
+					var product_no = $('.qna_reply').data('product_no');
+					var qna_reply_content = $("#qna_reply-text").val();
+					console.log(product_no);
+					
+					//아이디 추가 필요
+					$.post("/product/postreply", { 
+						parent_no: parent_no,
+						product_no: product_no,
+						qna_reply_content: qna_reply_content
+						
+					}, (res) => {
+						  if(!res.ok) console.log(res.err)
+						  console.log(res)
+							$(".qna_reply").hide();
+							alert("댓글 등록 완료");
+							fetchReplies();
+							$('tr[data-qna_no=' + parent_no + ']').children('.view_count').next().find("span").removeClass("badge-light").addClass("badge-success").html("답변완료");
+							updateQnaStatus();
+						})
+					});
+				$(".qna_delete_btn").on("click", function(){
+					 var qna_no = $(this).closest("tbody").children().data("qna_no");
+						$.post("/product/deleteqna", { 
+							qna_no : qna_no		
+						}, (res) => {
+							  if(!res.ok) console.log(res.err)
+							  console.log(res)				
+								alert("글 삭제 완료");
+							  window.location.reload();					  	
+							})				
+						});
+				
+				$(".qna_reply_close").on("click", function() {
+					$(".empty").removeClass("empty");
+					$(".emptyReplyContent").removeClass("emptyReplyContent");
+					$(".qna_reply").hide();
+				});
+			
+				$(".replyTitle").on("click", function() {
+					$(".emptyReplyContent").removeClass("emptyReplyContent");
+					$(".empty").removeClass("empty");
+					$(this).parent().next().fadeIn(500).slideDown();
+				
+				});
+			
+				$(".qnaTitle").on("click", function() {
+					var qna_no = $(this).parent().data("qna_no");
+					var product_no = $(this).parent().data("product_no");
+					$(".collapsed").css("display", "none");			
+					$(this).parent().next().fadeIn(500).slideDown();					
+					$.get("/product/viewCount", { 
+				        qna_no : qna_no
+				    }, (res) => {
+				          if(!res.ok) console.log(res.err)
+				 		updateViewCount(qna_no);				          
+				        })		     				
+					});
+				
+				$(".qna_modify_submit").on("click", function(){
+				    var qna_no = $(".qna_modify").data("qna_no");
+				   	var modified_content = $("#qna_text").val();
+				    $.post("/product/modifyqna", { 
+				        qna_no : qna_no,
+				        qna_content : modified_content
+				    }, (res) => {
+				          if(!res.ok) console.log(res.err)
+				          console.log(res)
+				           alert("글 수정 완료");
+				          window.location.reload();	
+				        })		        
+					});
+				$(".qna_modify_close").on("click", function(){
+					$(".qna_modify").hide();				
+				});
+				
+				$(".qna_modify_btn").on("click", function(){
+					var qna_no = $(this).closest("tbody").children().data("qna_no");
+					$(".qna_modify").attr("data-qna_no",
+							qna_no);
+					var text = $(this).parent().parent().filter(':first-child').text();
+					$("#qna_text").wrapInner(text);
+					$(".qna_modify").show();		
+				});
+				
+				// 수정 필요 - 동작 x 
+				/* $(".fetchedReplyTitle").on("click", function(){
+					$(this).parent().next().next().fadeIn(500).slideDown();
+					
+				}); */		
+				
+			});
+				// 댓글 가져오기 
+				function fetchReplies(){
+					var parent_no = $('.qna_reply').data('parent_no');
+					$.getJSON("/product/getreplies/"+ parent_no, function(data){
+						var reply = "";
+						var replyContent = "";
+						$(data).each(function(){
+							
+							reply += "<tr><td>1</td><<td colspan='18'class='fetchedReplyTitle'>RE:" + this.qna_reply_title + "</td>"
+							reply += "<td></td><td>" + this.qna_reply_writer + "</td>"
+							reply += "<td>" + this.qna_reply_date + "</td>"
+							reply += "<td>" + this.view_count + "</td>"
+							reply += "<td><span class='badge badge-pill badge-light'>답변</span></td></tr>";				
+
+							replyContent += "<tr><td colspan='25' class='collapsed'>" + this.qna_reply_content + "</td></tr>";
+									
+						});
+						$(document).find(".empty").after(reply);	
+						$(document).find(".emptyReplyContent").after(replyContent);
+						$(".empty").removeClass("empty");				
+						$(".emptyReplyContent").removeClass("emptyReplyContent");
+    						});			
+					};
+				
+				//답변 완료 여부 
+				function updateQnaStatus(){
+						var qna_no =  $(".qna_reply").data("parent_no");
+						 $.post("/product/updateQnaStatus", { 
+						        qna_no : qna_no,
+						    }, (res) => {
+						          if(!res.ok) console.log(res.err)
+						          console.log(res)
+						        })		      			
+							};
+			
+				// view count 업데이트 			
+				function updateViewCount(qna_no){
+					$.get("/product/getViewCount", {
+				        qna_no : qna_no
+				    }, (res) => {
+				          if(!res.ok) console.log(res.err)
+				        	var updatedView_count = res.view_count;
+				          $('tr[data-qna_no=' + qna_no + ']').children('.view_count').html(updatedView_count);		          
+				        })		   			    
+					}; 
+
+					
+			</script>
+			</body>
+			</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<!-- Font Awesome Icon Library -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+	integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+	crossorigin="anonymous"></script>
+</head>
+<style type="text/css">
+.reviews {
+	width: 65%;
+	margin: 0 auto;
+	border-bottom: 1px solid #d4d6d9;
+}
+
+.displayName, .reg_date, .product_details {
+	font-size: 0.5rem;
+	font-color: #d4d6d9;
+}
+
+.review_content {
+	font-size: 0.7rem;
+	padding: 0.5rem 0 1.3rem 0;
+	white-space: pre-line;
+}
+
+.reviews:hover {
+	background-color: #f8f9fa;
+}
+
+.checked {
+	color: #ffcd75 !important;
+}
+
+.navbar {
+	width: 65%;
+	margin: 0 auto;
+	padding-botton: 2rem;
+	font-size: 1rem;
+}
+
+.row {
+	padding-top: 0.8rem;
+}
+
+.fa {
+	margin: 0;
+	color: #cfcfcf;
+}
+
+.review_content_details {
+	margin-top: 0.75rem;
+}
+
+.likes_btn {
+	border-radius: 40%;
+	padding: 0.55rem;
+	background-color: #e6e6e6;
+}
+
+.profile_image {
+	padding-right: 0.12rem;
+}
+
+.review_image {
+	margin: 0;
+	padding: 0;
+}
+
+.rating {
+	color: #ed8611;
+	font-size: 0.7rem;
+}
+
+.review_details p {
+	line-height: 0.7rem;
+	letter-spacing: -7;
+}
+
+.likes_btn {
+	cursor: pointer;
+	padding: 0.5rem 0.6rem 0.5rem 0.6rem;
+	font-size: 0.65rem;
+}
+
+.likes_btn:hover {
+	background-color: #cfcfcf;
+}
+
+.navbar {
+	font-size: 0.8rem;
+}
+
+
+.reivew_likes {
+	padding-bottom: 1.25rem;
+}
+</style>
+<body>
+
+
+	<div class="p-3 mb-5 bg-light rounded navbar">
+		<span class="ml-5 ustify-content-start" th:text="'상품평 수 ' + ${pageInfo.totalCount} + '개 '"></span> <p class="justify-content-end mr-5"><a
+			th:href="@{/product/reviewBoard(product_no=${product_no}, sortType='ByLikes')}"><span
+			class="likesByCount">추천순</span></a> <a
+			th:href="@{/product/reviewBoard(product_no=${product_no})}"><span>최신순</span></a><a
+			th:href="@{/product/reviewBoard(product_no=${product_no}, sortType='ByRatingDesc')}"><span>평점
+				높은 순</span></a> <a
+			th:href="@{/product/reviewBoard(product_no=${product_no}, sortType='ByRatingAsc')}"><span>평점
+				낮은 순</span></a></p>
+	</div>
+	<!-- <div class="image_gallery" th:each="${galleryImage: imageList}">
+	<div class="gallery" th:each="${galleryImage : #numbers.sequence(1, 9)}">
+	<img th:src="@{/thumbnails(filename=${${galleryImage.filename})}"
+							class="figure-img img-fluid rounded" alt="review_image">
+	</div>
+	</div> -->
+	<section th:block th:each="review, stats : ${reviewList}">
+
+		<div class="reviews container-fluid">
+			<div class="row h-20">
+				<div class="col-md-1 profile_image">
+					<img
+						src="https://img1a.coupangcdn.com/image/productreview/web/pdp/profile/img-profile-empty.png"
+						style="margin-right: 0.3vw">
+				</div>
+				<div class="review_details col-md-4 h-25 d-inline-block">
+					<p>
+						<span class="fa fa-star fa-pull-left checked"></span> <span
+							th:classappend="${review.rating}>= '2'? checked"
+							class="fa fa-star fa-pull-left"></span> <span
+							th:classappend="${review.rating}>= '3'? checked"
+							class="fa fa-star fa-pull-left"></span> <span
+							th:classappend="${review.rating}>= '4'? checked"
+							class="fa fa-star fa-pull-left"></span> <span
+							th:classappend="${review.rating} == '5'? checked"
+							class="fa fa-star fa-pull"></span><strong><span
+							th:text="${review.rating} +'.0'" class="rating"></span></strong><br>
+						<span th:text="${review.displayName}+ ' '" class="displayName "></span><span
+							th:text="${review.regdate}" class="reg_date"></span><br> <span
+							class="product_details">원목의자 : 3단 접이 의자 </span>
+					</p>
+
+				</div>
+			</div>
+			<div class=" offset-md-1 row">
+				<div class="col-md-8  align-top review_image">
+					<figure class="figure" th:each="image, stats: ${imageList}"
+						th:if="${review.review_no == image.review_no}">
+						<a
+							th:href="@{/reviewImage(filename= ${image.filename}, product_no= ${image.product_no})}"> 
+						<img th:src="@{/thumbnails(filename=${image.filename})}"
+							class="figure-img img-fluid" alt="review_image">
+											</a>
+						<!-- <figcaption class="figure-caption text-right">A
+							1.</figcaption> -->
+					</figure>
+				</div>
+			</div>
+			<div class="review_content row" style="height: 20%">
+				<div class="col-md-8 offset-md-1 review_content_details"
+					th:text="${review.review_content}"></div>
+				<!-- <div class="col-md-3 align-top review_image"
+					th:if="${review.review_no == image.review_no}"
+					th:each="image: ${imageList}">
+					<figure class="figure">
+						<a th:href="@{/reviewImage(filename= ${image.filename}, product_no= ${image.product_no})}">
+							<img th:src="@{/thumbnails(filename=${image.filename})}"
+							class="figure-img img-fluid rounded" alt="review_image">
+						</a>
+						<figcaption class="figure-caption text-right">A
+							1.</figcaption>
+					</figure>
+				</div> -->
+			</div>
+			<div class="reivew_likes row">
+				<div class="col-md-2 offset-md-1">
+					<span class="likes_btn" th:data-review_no="${review.review_no}"><svg
+							width="11" height="11" viewBox="0 0 16 16" fill="currentColor"
+							style="display: inline-block; vertical-align: text-bottom;">
+							<path fill-rule="evenodd"
+								d="M8.834.066C7.494-.087 6.5 1.048 6.5 2.25v.5c0 1.329-.647 2.124-1.318 2.614-.328.24-.66.403-.918.508A1.75 1.75 0 002.75 5h-1A1.75 1.75 0 000 6.75v7.5C0 15.216.784 16 1.75 16h1a1.75 1.75 0 001.662-1.201c.525.075 1.067.229 1.725.415.152.043.31.088.475.133 1.154.32 2.54.653 4.388.653 1.706 0 2.97-.153 3.722-1.14.353-.463.537-1.042.668-1.672.118-.56.208-1.243.313-2.033l.04-.306c.25-1.869.265-3.318-.188-4.316a2.418 2.418 0 00-1.137-1.2C13.924 5.085 13.353 5 12.75 5h-1.422l.015-.113c.07-.518.157-1.17.157-1.637 0-.922-.151-1.719-.656-2.3-.51-.589-1.247-.797-2.01-.884zM4.5 13.3c.705.088 1.39.284 2.072.478l.441.125c1.096.305 2.334.598 3.987.598 1.794 0 2.28-.223 2.528-.549.147-.193.276-.505.394-1.07.105-.502.188-1.124.295-1.93l.04-.3c.25-1.882.189-2.933-.068-3.497a.922.922 0 00-.442-.48c-.208-.104-.52-.174-.997-.174H11c-.686 0-1.295-.577-1.206-1.336.023-.192.05-.39.076-.586.065-.488.13-.97.13-1.328 0-.809-.144-1.15-.288-1.316-.137-.158-.402-.304-1.048-.378C8.357 1.521 8 1.793 8 2.25v.5c0 1.922-.978 3.128-1.933 3.825a5.861 5.861 0 01-1.567.81V13.3zM2.75 6.5a.25.25 0 01.25.25v7.5a.25.25 0 01-.25.25h-1a.25.25 0 01-.25-.25v-7.5a.25.25 0 01.25-.25h1z"></path></svg><span
+						font-size="1" contenteditable="true" class="Text-sc likes"
+						th:text="' '+ ${review.likes}"></span></span>
+				</div>
+			</div>
+		</div>
+
+			<!-- 페이징 -->
+			<div class="box-footer clearfix">
+				<ul class="pagination pagination-sm no-margin pull-center"
+					th:if="${pageInfo.cri.perPageNum == stats.count}">
+					<li th:if="${pageInfo.prev} == true"><a
+						th:href="@{/product/reviewBoard(product_no=${product_no}, page=${pageInfo.startPage}-1,perPageNum=${pageInfo.cri.perPageNum})}">&laquo;</a>
+					</li>
+					<li
+						th:each="idx,iterStat : ${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}"
+						th:classappend="${pageInfo.cri.page} == ${idx} ? active : null">
+						<a
+						th:href="@{/product/reviewBoard(product_no=${product_no}, page=${idx}, perPageNum=${pageInfo.cri.perPageNum})}"
+						th:text="${idx}"></a>
+					</li>
+
+					<li th:if="${pageInfo.next} == true and ${pageInfo.endPage > 0}">
+						<a
+						th:href="@{/product/reviewBoard(product_no=${product_no}, page=${pageInfo.endPage}+1,perPageNum=${pageInfo.cri.perPageNum})}">&raquo;</a>
+					</li>
+				</ul>
+			</div>
+			<!-- 페이징 끝 -->
+			</th:block>
+			</th:block>
+	</section>
+	<script th:inline="javascript">
+	
+	 $(document).ready(function(){
+			 var product_no= [[${product_no}]];
+		  }
+
+			
+	</script>
+</body>
+</html>

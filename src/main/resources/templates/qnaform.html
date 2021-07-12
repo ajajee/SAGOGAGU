@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+</head>
+<body>
+	<form action="/product/uploadQna" method="post">
+		<table style="padding-top: 50px" align=center width=700 border=0
+			cellpadding=2>
+			<tr>
+				<td height=20 align=center bgcolor=#ccc><font color=white>
+						문의 작성</font></td>
+			</tr>
+			<tr>
+				<td bgcolor=white>
+					<table class="table2">
+						<tr>
+							<td>작성자</td>
+							<input th:value="${session.memberInfo.member_id}" name="member_id" readonly>
+							<td>제품 번호</td>
+							<td><input type=number name=product_no size=20></td>
+						</tr>
+						<tr>
+							<td>제목</td>
+							<td><input type=text name=title size=60></td>
+						</tr>
+
+						<tr>
+							<td>내용</td>
+							<td><textarea name=qna_content cols=100 rows=15></textarea></td>
+						</tr>
+
+
+						<!-- <tr>
+							<td>비밀번호</td>
+							<td><input type=password name=pw size=10 maxlength=10></td>
+						</tr> -->
+					</table>
+
+					<center>
+						<input type="submit" value="작성">
+					</center>
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Getting Started: Serving Web Content</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script th:inline="javascript">
+
+		var cnt = 0;
+		function fn_addFile() {
+			if (!$('input[name="main_image"]').length) {
+
+				$("#d_file").append("<div class='imagebox image0'><div><span>메인이미지</span><button type='button' onclick='deleteimage(0)'>x</button><br></div><img id='preview' width=200 height=200/><br><input  type='file' name='main_image' id='f_main_image' onchange='readURL(this)'/></div>");
+			} else {
+				$("#d_file").append("<div class='imagebox newimage" + cnt + "'><div><span>상세이미지</span><input  type='button' value='추가'  onclick=addNewImageFile(" + cnt + ")  /><button type='button' onclick='deletenewimage(" + cnt + ")'>삭제</button><br></div><img id='preview' width=200 height=200/><br><input id='new_detail_image" + cnt + "' type='file' name='new_detail_image" + cnt + "' onchange='readURL(this)'/></div>");
+			}
+			cnt++;
+		}
+
+		function fn_add_new_goods(obj) {
+			fileName = $('#f_main_image').val();
+			if (fileName != null && fileName != undefined) {
+				obj.submit();
+			} else {
+				alert("메인 이미지는 반드시 첨부해야 합니다.");
+				return;
+			}
+		}
+
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					$(input).siblings('img').attr('src', e.target.result);
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+
+		// 기존에 있던 이미지 박스 삭제
+		function deleteimage(vnt, img_no) {
+			var fileName = $('#detail_image' + vnt)[0].files[0];
+				$.ajax({
+					type: "post",
+					async: true, //false인 경우 동기식으로 처리한다.
+					url: "/product/removeGoodsImage",
+					data: {
+						img_no: img_no
+					},
+					success: function (data, textStatus) {
+						alert("이미지를 삭제했습니다!!");
+					},
+					error: function (data, textStatus) {
+						alert("에러가 발생했습니다." + textStatus);
+					},
+					complete: function (data, textStatus) {
+						//alert("작업을완료 했습니다");
+
+					}
+				}); //end ajax
+				$(".image" + vnt).remove();
+		}
+		// 새로 추가한 이미지 박스 삭제
+		function deletenewimage(vnt) {
+			var img_no =  $('.newimage' + cnt+ 'input[type="hidden"]').val();
+			var fileName = $('#new_detail_image' + vnt)[0].files[0];
+			if (fileName != null && fileName != undefined) {
+				$.ajax({
+					type: "post",
+					async: true, //false인 경우 동기식으로 처리한다.
+					url: "/product/removeGoodsImage",
+					data: {
+						img_no: img_no
+					},
+					success: function (data, textStatus) {
+						alert("이미지를 삭제했습니다!!");
+					},
+					error: function (data, textStatus) {
+						alert("에러가 발생했습니다." + textStatus);
+					},
+					complete: function (data, textStatus) {
+						//alert("작업을완료 했습니다");
+
+					}
+				}); //end ajax
+			}
+			$(".newimage" + vnt).remove();
+		}
+
+		function modifyImageFile(fileId, goods_id, image_id) {
+			// alert(fileId);
+			var form = $('#FILE_FORM')[0];
+			var formData = new FormData(form);
+			formData.append(fileId, $('#' + fileId)[0].files[0]);
+			formData.append("goods_id", goods_id);
+			formData.append("image_id", image_id);
+
+			$.ajax({
+				url: '/product/modifyGoodsImageInfo',
+				processData: false,
+				contentType: false,
+				data: formData,
+				type: 'POST',
+				success: function (result) {
+					alert("이미지를 수정했습니다!");
+				}
+			});
+		}
+
+		function addNewImageFile(cnt) {
+			//  alert(fileId);
+
+			var newimage = $('.newimage' + cnt);
+			var product_no = $('input[name="product_no"]').val();
+			var form = $('#FILE_FORM')[0];
+			var formData = new FormData(form);
+			formData.append("uploadFile", $('#new_detail_image' + cnt)[0].files[0]);
+			formData.append("goods_id", product_no);
+
+			fileName = $('#new_detail_image' + cnt)[0].files[0];
+			if (fileName != null && fileName != undefined) {
+				$.ajax({
+					url: '/product/addNewGoodsImage',
+					processData: false,
+					contentType: false,
+					data: formData,
+					type: 'post',
+					success: function (result) {
+						alert("이미지를 추가했습니다.!");
+
+						newimage.append("<input type=hidden value=" + result + ">");
+
+					}
+				});
+			} else {
+				alert("이미지를 선택해주세요");
+				return;
+			}
+
+		}
+	</script>
+	<style>
+		.imagebox {
+			float: left;
+			border: 1px solid black;
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<form role="form" action="/product/insertproduct" method="POST" enctype="multipart/form-data">
+		<table>
+			<tr>
+				<input type="hidden" th:value="${product.product_no}" name="product_no">
+				<td>분류</td>
+				<td><input type="text" maxlength="40" name="product_category_code"
+						th:value="${product.product_category_code}"></td>
+			</tr>
+			<tr>
+				<td>상품명</td>
+				<td><input type="text" maxlength="40" name="product_title" th:value="${product.product_title}"></td>
+			</tr>
+			<tr>
+				<td>가격</td>
+				<td><input type="number" maxlength="40" name="product_price" th:value="${product.product_price}"></td>
+			</tr>
+			<tr>
+				<td>배송 설명</td>
+				<td><input type="text" maxlength="40" name="product_delivery_message"
+						th:value="${product.product_delivery_message}"></td>
+			</tr>
+			<tr>
+				<td>배송비</td>
+				<td><input type="number" maxlength="40" name="product_delivery_price"
+						th:value="${product.product_delivery_price}"></td>
+			</tr>
+			<tr>
+				<td>할인율</td>
+				<td><input type="number" aria-valuemin="0" aria-valuemax="100" maxlength="40"
+						name="product_sale_percent" th:value="${product.product_sale_percent}"></td>
+			</tr>
+			<tr>
+				<td>판매사</td>
+				<td><input type="text" maxlength="40" name="product_company" th:value="${product.product_company}"></td>
+			</tr>
+			<tr>
+				<td>수량</td>
+				<td><input type="number" maxlength="40" name="product_quantity" th:value="${product.product_quantity}">
+				</td>
+			</tr>
+			<tr>
+				<td>상품 타입</td>
+				<td><input type="text" maxlength="40" name="product_type" th:value="${product.product_type}"></td>
+			</tr>
+			<tr>
+				<td>상품 코드</td>
+				<td><input type="text" maxlength="40" name="product_code" th:value="${product.product_code}"></td>
+			</tr>
+			<tr>
+				<td>상세내용</td>
+				<td><textarea name="product_content" th:text="${product.product_content}"></textarea></td>
+			</tr>
+			<!--<tr>
+				<div class="panel-body">
+					<div class="form-group uploadDiv">
+						<input type="file" name='uploadFile' multiple>
+					</div>
+
+					<div class='uploadResult'>
+						<ul>
+
+						</ul>
+					</div>
+				</div>
+			</tr>-->
+
+			<tr>
+				<td colspan="2"><button type="submit" style="float: right;">등록</button></td>
+			</tr>
+		</table>
+	</form>
+	<table>
+		<tr>
+			<td align="right">이미지파일 첨부</td>
+			<td align="left"> <input type="button" value="파일 추가" onClick="fn_addFile()" /></td>
+			<td>
+				<div id="d_file">
+					<div th:each="attachList,num:${product.attachList}" th:class="|imagebox image${num.count-1}|">
+
+						<span th:if="${attachList.filetype.toString().equals('main_image')}" th:text="메인이미지"></span>
+						<span th:if="${!attachList.filetype.toString().equals('main_image')}" th:text="상세이미지"></span>
+						<button th:if="${attachList.filetype.toString().equals('main_image')}" type='button'
+							th:onclick="|modifyImageFile('main_image','${attachList.product_no}','${attachList.product_img_no}')|">수정</button>
+						<button th:if="${!attachList.filetype.toString().equals('main_image')}" type='button'
+							th:onclick="|modifyImageFile('detail_image${num.count-1}','${attachList.product_no}','${attachList.product_img_no}')|">수정</button>
+						<button th:if="${!attachList.filetype.toString().equals('main_image')}" type='button'
+							th:onclick="|deleteimage(${num.count-1}, ${attachList.product_img_no})|">삭제</button><br>
+						<img th:src="@{/download/}+${attachList.uploadpath}+'/'+${attachList.uuid}+'/'+${attachList.filename}"
+							width=200 height=200 />
+						<br>
+						<input id="main_image" th:if="${attachList.filetype.toString().equals('main_image')}"
+							type='file' th:name="main_image" onchange='readURL(this)' />
+						<input th:id="|detail_image${num.count-1}|"
+							th:if="${!attachList.filetype.toString().equals('main_image')}" type='file'
+							th:name="|detail_image${num.count-1}|" onchange='readURL(this)' />
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+
+</head>
+<body>
+		<li th:if="${session.isLogOn != null}"  class="nav-item"><a class="nav-link" href="/member/myinformation">마이페이지<a></li>
+	<h3>님의 주소 리스트 </h3>
+	  <a th:href="|/member/addressform?member_id=${session.memberInfo.member_id}|">주소지 등록</a>
+      <table border = 1>
+      <thead>
+         <tr>
+            <th>우편번호</th>
+            <th>주소명</th>
+            <th>지번주소</th>
+            <th>도로명주소</th>
+            <th>상세 주소</th>
+            <th>주소 메세지</th>
+            <th>수정</th>
+            <th>삭제</th>
+         </tr>
+         
+      </thead>
+  
+	<tbody>
+
+       <tr th:each="member:${myaddress}">
+       <td th:text="${member.zipcode}"> </td>
+       <td th:text="${member.address_name}"></td>
+       <td th:text="${member.address_first}">  </td>
+       <td th:text="${member.address_middle}">  </td>
+       <td th:text="${member.address_last}"></td>
+       <td th:text="${member.address_message}"></td>
+       <td><a th:href="|/member/modifyaddressform?member_id=${member.member_id}&address_id=${member.address_id}|">수정하기</a></td>
+       <td><a th:href="|/member/deleteaddress?member_id=${member.member_id}&address_id=${member.address_id}|">삭제하기</a></td>
+     
+       </tr>		
+		
+		</tbody>
+	
+		</table>
+
+
+</body>
+</html>

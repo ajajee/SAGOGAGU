@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wannabe.be.address.dao.AddressDao">
+
+	<insert id="insertaddress" parameterType="com.wannabe.be.address.vo.AddressVO">
+	  <![CDATA[
+	  		insert into address (member_id, zipcode, address_name, address_first, address_middle,address_last,address_message)
+	  		values(#{member_id},#{zipcode},#{address_name},#{address_first},#{address_middle},#{address_last},#{address_message})
+	   ]]>
+	</insert>
+	
+	<select id="list" resultType="com.wannabe.be.address.vo.AddressVO" parameterType="String">
+	  <![CDATA[
+	  		SELECT * FROM ADDRESS WHERE MEMBER_ID = #{member_id}
+	   ]]>
+	</select>
+	
+	<select id="selectOneAddress" resultType="com.wannabe.be.address.vo.AddressVO" parameterType="Map">
+	  <![CDATA[
+	  		SELECT * FROM ADDRESS WHERE MEMBER_ID = #{member_id} and address_id = #{address_id}
+	   ]]>
+	</select>
+	
+	<update id="modifyaddress" parameterType="com.wannabe.be.address.vo.AddressVO">
+	  <![CDATA[
+	  		UPDATE ADDRESS SET zipcode = #{zipcode}, ADDRESS_NAME = #{address_name}, ADDRESS_FIRST = #{address_first}, ADDRESS_MIDDLE = #{address_middle},
+	  		ADDRESS_LAST = #{address_last} ,ADDRESS_MESSAGE = #{address_message} WHERE address_id = #{address_id,javaType=int,jdbcType=NUMERIC}
+	   ]]>
+	</update>
+	
+	<delete id="deleteaddress" parameterType="com.wannabe.be.address.vo.AddressVO">
+	   <![CDATA[
+	  		DELETE FROM ADDRESS WHERE ADDRESS_ID = #{address_id}
+	   ]]>
+	</delete>
+	
+	
+</mapper>

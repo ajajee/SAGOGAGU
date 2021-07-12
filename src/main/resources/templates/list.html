@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Getting Started: Serving Web Content</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+
+	<table>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>이미지</th>
+				<th>제목</th>
+				<th>정가</th>
+				<th>할인율</th>
+				<th>판매가</th>
+
+			</tr>
+		</thead>
+
+		<tr th:each="product:${productList}">
+			<div th:each="attachList:${product.attachList}">
+				<td>
+					<span th:text="${product.product_no}"></span>
+					<!--<span th:text="${attachList.uploadpath}"></span>
+					<span th:text="${attachList.uuid}"></span>
+					<span th:text="${attachList.filename}"></span>-->
+				</td>
+				<td>
+					<!--경로 작성법 예제-->
+					<!--<img th:src=@{/download?}+'uploadpath='+${attachList.uploadpath}+'&uuid='+${attachList.uuid}+'&filename='+${attachList.filename} />-->
+					<!--이미지 불러오기 성공 인코딩 ㄴㄴ-->
+					<img th:src="@{/download/}+${attachList.uploadpath}+'/'+${attachList.uuid}+'/'+${attachList.filename}" />
+				<td>
+				<td>
+					<a th:href="@{/product/get?product_no=}+${product.product_no}"><span th:text="${product.product_title}"></span></a>
+				<td>
+					<span th:text="${product.product_price}"></span>
+				</td>
+				<td>
+					<span th:text="${product.product_sale_percent}"></span>
+				</td>
+				<td>
+					<span th:text="${product.product_price*(1-(product.product_sale_percent/100))}"></span>
+				</td>
+				<!--<td>
+				<span th:text="${#dates.format(product.regdate, 'yyyy-MM-dd')}"></span>
+				</td>
+			</tr>-->
+			</div>
+		</tr>
+
+</body>
+
+</html>

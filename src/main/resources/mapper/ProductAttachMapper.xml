@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.wannabe.be.product.dao.ProductAttachMapper">
+	
+	
+	<select id="selectKey" resultType="int">
+		SELECT count(product_img_no)+1 FROM product_img
+	</select>
+
+	<insert id="insert">
+		insert into product_img (uuid, uploadpath, filename,
+		filetype, product_no)
+		values (#{uuid}, #{uploadpath}, #{filename},
+		#{filetype}, #{product_no} )
+	</insert>
+
+	<insert id="addNewGoodsImage">
+		insert into product_img (uuid, uploadpath, filename,
+		filetype, product_no)
+		values (#{uuid}, #{uploadpath}, #{filename},
+		#{filetype}, #{product_no} )
+	</insert>
+	
+	<delete id="delete">
+		delete from product_img 
+		where uuid = #{uuid}
+	</delete>
+
+	<delete id="deleteGoodsImage">
+		delete from product_img
+		where product_img_no=#{product_img_no}
+	</delete>
+
+
+	<select id="findByBno"
+		resultType="com.wannabe.be.product.vo.ProductAttachVO">
+		select * from product_img where product_no = #{product_no}
+	</select>
+
+	<delete id="deleteAll">
+		delete product_img where product_no = #{product_no}
+	</delete>
+
+	<select id="getOldFiles"
+		resultType="com.wannabe.be.product.vo.ProductAttachVO">
+		select * from product_img where uploadpath = DATE_FORMAT( date_sub(NOW(),INTERVAL 1 DAY)  ,'%Y\%m\%d');
+	</select>
+
+	<select id="getlist"
+		resultType="com.wannabe.be.product.vo.ProductAttachVO">
+		select * from product_img where filetype = 'main_image'
+	</select>
+
+	<select id="getProductImages"
+		resultType="com.wannabe.be.product.vo.ProductAttachVO">
+		select * from product_img where product_no = #{product_no}
+	</select>
+
+	<update id="updateGoodsImage">
+		update
+		product_img
+		set
+		uuid=#{uuid},
+		uploadpath=#{uploadpath},
+		filetype=#{filetype},
+		filename=#{filename}
+		where
+		product_no=#{product_no} and product_img_no=#{product_img_no}
+	</update>
+</mapper>

@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Getting Started: Serving Web Content</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript">
+		var cnt = 0;
+		function fn_addFile() {
+			if (cnt == 0 || !$('input[name="main_image"]').length) {
+				
+				$("#d_file").append("<div class='imagebox image0'><div><h1>메인이미지</h1><button type='button' onclick='deleteimage(0)'>x</button><br></div><img id='preview' width=200 height=200/><br><input  type='file' name='main_image' id='f_main_image' onchange='readURL(this)'/></div>");
+			} else {
+				$("#d_file").append("<div class='imagebox image"+cnt+"'><div><h1>상세이미지</h1><button type='button' onclick='deleteimage("+cnt+")'>x</button><br></div><img id='preview' width=200 height=200/><br><input  type='file' name='detail_image"+cnt+"' onchange='readURL(this)'/></div>");
+			}
+			cnt++;
+		}
+
+		function fn_add_new_goods(obj) {
+			fileName = $('#f_main_image').val();
+			if (fileName != null && fileName != undefined) {
+				obj.submit();
+			} else {
+				alert("메인 이미지는 반드시 첨부해야 합니다.");
+				return;
+			}
+		}
+
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+				
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					$(input).siblings('img').attr('src', e.target.result);
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+		
+		function  deleteimage(vnt){
+			$(".image"+vnt).remove();
+			cnt--;
+		}
+	</script>
+</head>
+
+<body>
+	<form role="form" action="/product/insertproduct" method="POST" enctype="multipart/form-data">
+		<table>
+			<tr>
+				<td>분류</td>
+				<td><input type="text" maxlength="40" name="product_category_code"></td>
+			</tr>
+			<tr>
+				<td>상품명</td>
+				<td><input type="text" maxlength="40" name="product_title"></td>
+			</tr>
+			<tr>
+				<td>가격</td>
+				<td><input type="number" maxlength="40" name="product_price"></td>
+			</tr>
+			<tr>
+				<td>배송 설명</td>
+				<td><input type="text" maxlength="40" name="product_delivery_message"></td>
+			</tr>
+			<tr>
+				<td>배송비</td>
+				<td><input type="number" maxlength="40" name="product_delivery_price"></td>
+			</tr>
+			<tr>
+				<td>할인율</td>
+				<td><input type="number" aria-valuemin="0" aria-valuemax="100" maxlength="40"
+						name="product_sale_percent"></td>
+			</tr>
+			<tr>
+				<td>판매사</td>
+				<td><input type="text" maxlength="40" name="product_company"></td>
+			</tr>
+			<tr>
+				<td>수량</td>
+				<td><input type="number" maxlength="40" name="product_quantity"></td>
+			</tr>
+			<tr>
+				<td>상품 타입</td>
+				<td><input type="text" maxlength="40" name="product_type"></td>
+			</tr>
+			<tr>
+				<td>상품 코드</td>
+				<td><input type="text" maxlength="40" name="product_code"></td>
+			</tr>
+			<tr>
+				<td>상세내용</td>
+				<td><textarea name="product_content"></textarea></td>
+			</tr>
+			<!--<tr>
+				<div class="panel-body">
+					<div class="form-group uploadDiv">
+						<input type="file" name='uploadFile' multiple>
+					</div>
+
+					<div class='uploadResult'>
+						<ul>
+
+						</ul>
+					</div>
+				</div>
+			</tr>-->
+			<tr>
+				<td align="right">이미지파일 첨부</td>
+
+				<td align="left"> <input type="button" value="파일 추가" onClick="fn_addFile()" /></td>
+				<td>
+					<div id="d_file"></div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><button type="submit" style="float: right;">등록</button></td>
+			</tr>
+		</table>
+	</form>
+
+</body>
+
+</html>
