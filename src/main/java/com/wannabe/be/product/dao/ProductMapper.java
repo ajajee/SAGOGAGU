@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import com.wannabe.be.domain.Criteria;
 import com.wannabe.be.product.vo.ProductVO;
 
 @Repository

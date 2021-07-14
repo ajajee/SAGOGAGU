@@ -162,13 +162,14 @@
 
 				</div>
 			</div>
+			<!-- reviewImage -->
 			<div class=" offset-md-1 row">
 				<div class="col-md-8  align-top review_image">
 					<figure class="figure" th:each="image, stats: ${imageList}"
 						th:if="${review.review_no == image.review_no}">
 						<a
-							th:href="@{/reviewImage(filename= ${image.filename}, product_no= ${image.product_no})}"> 
-						<img th:src="@{/thumbnails(filename=${image.filename})}"
+							th:href="@{/reviewImage(filepath=${image.uploadpath}, filename= ${image.filename}, product_no= ${image.product_no})}"> 
+						<img th:src="@{/thumbnails(filepath=${image.uploadpath}, filename=${image.filename})}"
 							class="figure-img img-fluid" alt="review_image">
 											</a>
 						<!-- <figcaption class="figure-caption text-right">A

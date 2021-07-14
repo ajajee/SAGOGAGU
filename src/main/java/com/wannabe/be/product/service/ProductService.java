@@ -2,8 +2,6 @@ package com.wannabe.be.product.service;
 
 import java.util.List;
 
-import com.wannabe.be.domain.Criteria;
-import com.wannabe.be.product.dao.ProductMapper;
 import com.wannabe.be.product.vo.ProductAttachVO;
 import com.wannabe.be.product.vo.ProductVO;
 

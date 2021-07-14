@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-	//�뒪�봽留� �떆�걧由ы떚
+	
  	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
