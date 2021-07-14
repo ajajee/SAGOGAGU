@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wannabe.be.domain.Criteria;
 import com.wannabe.be.product.dao.ProductAttachMapper;
 import com.wannabe.be.product.dao.ProductMapper;
 import com.wannabe.be.product.vo.ProductAttachVO;
