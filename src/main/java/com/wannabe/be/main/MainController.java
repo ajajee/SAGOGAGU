@@ -1,4 +1,4 @@
-package com.wannabe.be.controller;
+package com.wannabe.be.main;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

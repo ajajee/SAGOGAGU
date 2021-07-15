@@ -10852,6 +10852,7 @@ textarea.form-control-lg {
  
 }
 
+/* footer begin */
 footer{
     background-color: rgb(70,70,70);
     color: honeydew;
@@ -10944,7 +10945,10 @@ footer .container {
   font-size: 12px;
 }
 
-/* main-slider */
+/* footer end */
+
+
+/* main-slider begin */
 
 /* Position the image container (needed to position the left and right arrows) */
 .container {
@@ -11030,3 +11034,5 @@ footer .container {
 .demo:hover {
   opacity: 1;
 }
+
+/* main-slider end */

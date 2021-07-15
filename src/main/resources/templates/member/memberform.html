@@ -198,10 +198,6 @@
 		<div id="container">
 			<form action="/member/insertmember" method="POST" id="memberForm">
 
-
-
-
-
 				<fieldset class="login_form">
 					<legend class="blind">회원가입</legend>
 
@@ -263,7 +259,7 @@
 						<span class="error_next_box" id="emailMsg" style="display:none" aria-live="assertive"></span>
 					</div>
 
-					<input type="submit" title="가입하기" alt="가입하기" value="가입하기" class="btn_global" id="log.login">
+					<!-- <input type="submit" title="가입하기" alt="가입하기" value="가입하기" class="btn_global" id="log.login"> -->
 					<input type="hidden" id="checkForm" value=0>
 					<input type="button" onclick="fn_checkForm();" title="가입하기" alt="가입하기" value="가입하기" class="btn_global"
 						id="log.login">
@@ -273,7 +269,7 @@
 	</div>
 	<script>
 
-	/* 	$(".int").focus(function () {
+		$(".int").focus(function () {
 			$(this).closest("span").toggleClass("focus");
 		});
 		$(".int").blur(function () {
