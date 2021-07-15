@@ -10,6 +10,7 @@ public class leafController {
     @RequestMapping("/leaf")
     public String greeting(@RequestParam(value = "name", required = false, defaultValue = "파라미터 입력") String name, Model model) {
         model.addAttribute("name", name);
-        return "test/leafTest";
+        //return "test/leafTest";
+        return "main/content";
     }
 }

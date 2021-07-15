@@ -184,7 +184,7 @@ public class QnaBoardControllerImpl implements QnaBoardController {
 			}
 				
 		}		
-		ModelAndView mv = new ModelAndView("qnaBoard");
+		ModelAndView mv = new ModelAndView("board/qnaBoard");
 		mv.addObject("product_no", product_no);
 		mv.addObject("pageInfo", paginationVO);
 		mv.addObject("qnaList", qnaList);

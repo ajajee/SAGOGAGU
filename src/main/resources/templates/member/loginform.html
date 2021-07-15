@@ -1,12 +1,13 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="/common/layout">
+	
+<th:block layout:fragment="html_head">
+	<title>로그인 폼</title>
+</th:block>
 
-<head>
-	<title>워너비 로그인</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-		crossorigin="anonymous"></script>
-
+<div id="wrap" layout:fragment="content_body">
 	<style>
 		body {
 			position: relative;
@@ -142,11 +143,7 @@
 		}
 	</style>
 
-</head>
-
-<body>
-
-	<div id="wrap">
+	
 		<div id="header">
 			<h1>
 				<a href="/" class="sp h_logo" id="log.wannabe">
@@ -181,6 +178,8 @@
 			</form>
 		</div>
 	</div>
+	
+	<th:block layout:fragment="pageCustomScript">
 	<script>
 		$(".int").focus(function () {
 			$(this).closest("div").toggleClass("focus");
@@ -190,6 +189,6 @@
 		});  
 		
 	</script>
-</body>
+	</th:block>
 
 </html>
