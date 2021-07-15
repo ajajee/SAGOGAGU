@@ -49,7 +49,7 @@ public class ProductControllerImpl implements ProductController {
 
 	@GetMapping("/product/productform")
 	public String productform(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return "productform";
+		return "product/productform";
 	}
 
 	@GetMapping("/product/list")
@@ -57,13 +57,13 @@ public class ProductControllerImpl implements ProductController {
 		System.out.println(productService.getlist());
 		model.addAttribute("productList", productService.getlist());
 
-		return "list";
+		return "product/list";
 	}
 
 	@GetMapping("/product/get")
 	public String get(Model model, @RequestParam("product_no") int product_no, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		model.addAttribute("product", productService.productDetail(product_no));
-		return "get";
+		return "product/get";
 	}
 	
 
@@ -71,7 +71,7 @@ public class ProductControllerImpl implements ProductController {
 	public String modifyProduct(Model model, @RequestParam("product_no") int product_no, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		model.addAttribute("product", productService.productDetail(product_no));
-		return "modifyProduct";
+		return "product/modifyProduct";
 	}
 
 	

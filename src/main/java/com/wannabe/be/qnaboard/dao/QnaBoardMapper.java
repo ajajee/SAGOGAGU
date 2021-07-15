@@ -1,4 +1,4 @@
-package com.wannabe.be.mapper;
+package com.wannabe.be.qnaboard.dao;
 
 import java.util.List;
 
