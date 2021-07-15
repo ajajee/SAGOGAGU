@@ -104,7 +104,7 @@ th {
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
-<div layout:fragment="content">
+
 	<section id="container">
 		<!-- 	<form role="form" method="get"> -->
 		<table class="table table-hover">
@@ -120,8 +120,7 @@ th {
 					<th>답변 상태</th>
 				</tr>
 			</thead>
-			<th:block th:each="qna, stats : ${qnaList}">
-				<tbody>
+				<tbody th:each="qna, stats : ${qnaList}">
 					<tr class="qnaList"
 						th:attr="data-qna_no=${qna.qna_no}, data-product_no=${qna.product_no}">
 						<!-- 인덱싱 수정 필요  -->
@@ -149,12 +148,9 @@ th {
 					<!-- 버튼 동적 구현 필요  -->
 					<tr class="fetchedReply"></tr>
 					<tr class="fetchedReplyContent collapsed"></tr>
-					<th:block th:if="${reply.parent_no == qna.qna_no}"
-						th:each="reply : ${replyList}" class="replyList">
 						<tr>
-							<td th:text="${stats.index + 1}"></td>
-							<!-- 인덱싱 수정 필요  -->
-							<td th:utext="${'RE:' + reply.qna_reply_title}" colspan="19"
+							<td th:if="${reply.parent_no == qna.qna_no}"
+						th:each="reply : ${replyList}" th:utext="${'RE:' + reply.qna_reply_title}" colspan="19"
 								class="replyTitle"
 								style="text-align: left; padding-left: 5.5vh;"></td>
 							<td th:text="${reply.qna_reply_writer}"></td>
@@ -166,9 +162,7 @@ th {
 							<td th:text="${reply.qna_reply_content}" colspan="25"
 								style="padding: 13vh; text-align: left; white-space: pre-line; word-wrap: break-word;"></td>
 						</tr>
-					</th:block>
 				</tbody>
-			</th:block>
 			<!-- 페이징 -->
 			<div class="box-footer clearfix">
 				<ul class="pagination pagination-sm no-margin pull-right">
@@ -273,11 +267,10 @@ th {
 					console.log(product_no);
 					
 					//아이디 추가 필요
-					$.post("/product/postreply", { 
+					$.post("/product/postReply", { 
 						parent_no: parent_no,
 						product_no: product_no,
 						qna_reply_content: qna_reply_content
-						
 					}, (res) => {
 						  if(!res.ok) console.log(res.err)
 						  console.log(res)

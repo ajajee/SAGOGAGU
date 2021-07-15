@@ -24,6 +24,8 @@
 		select * from product
 		where product_no = ${product_no}
 	</select>
-	
+	<select id="getAvailableProductNo" resultType="com.wannabe.be.product.vo.ProductVO">
+		select * from product
+	</select>
 
 </mapper>

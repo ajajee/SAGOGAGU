@@ -11,17 +11,17 @@
 	</select>
 
 	<insert id="insert">
-		insert into product_img (uuid, uploadpath, filename,
-		filetype, product_no)
-		values (#{uuid}, #{uploadpath}, #{filename},
-		#{filetype}, #{product_no} )
+		insert into product_img (uploadpath, filename, filetype,
+		product_no)
+		values (#{uploadpath}, #{filename}, #{filetype},
+		#{product_no} )
 	</insert>
 
 	<insert id="addNewGoodsImage">
-		insert into product_img (uuid, uploadpath, filename,
-		filetype, product_no)
-		values (#{uuid}, #{uploadpath}, #{filename},
-		#{filetype}, #{product_no} )
+		insert into product_img (uploadpath, filename, filetype
+		product_no)
+		values (#{uploadpath}, #{filename},  #{filetype},
+		#{product_no} )
 	</insert>
 	
 	<delete id="delete">
@@ -51,7 +51,7 @@
 
 	<select id="getlist"
 		resultType="com.wannabe.be.product.vo.ProductAttachVO">
-		select * from product_img where filetype = 'main_image'
+		select * from product_img where filetype = 'm'
 	</select>
 
 	<select id="getProductImages"
@@ -63,10 +63,11 @@
 		update
 		product_img
 		set
-		uuid=#{uuid},
+		<!-- uuid=#{uuid},
 		uploadpath=#{uploadpath},
-		filetype=#{filetype},
-		filename=#{filename}
+		filetype=#{filetype}, -->
+		(filetype,
+		filename)
 		where
 		product_no=#{product_no} and product_img_no=#{product_img_no}
 	</update>

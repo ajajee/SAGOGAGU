@@ -20,4 +20,8 @@ public interface ProductService {
 
 	int addNewGoodsImage(ProductAttachVO imageFileList);
 
+	List<ProductVO> getAvailableProductNo();
+
+
+
 }

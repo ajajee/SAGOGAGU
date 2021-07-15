@@ -2,55 +2,73 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Getting Started: Serving Web Content</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<script type="text/javascript">
-		var cnt = 0;
-		function fn_addFile() {
-			if (cnt == 0 || !$('input[name="main_image"]').length) {
-				
-				$("#d_file").append("<div class='imagebox image0'><div><h1>메인이미지</h1><button type='button' onclick='deleteimage(0)'>x</button><br></div><img id='preview' width=200 height=200/><br><input  type='file' name='main_image' id='f_main_image' onchange='readURL(this)'/></div>");
-			} else {
-				$("#d_file").append("<div class='imagebox image"+cnt+"'><div><h1>상세이미지</h1><button type='button' onclick='deleteimage("+cnt+")'>x</button><br></div><img id='preview' width=200 height=200/><br><input  type='file' name='detail_image"+cnt+"' onchange='readURL(this)'/></div>");
-			}
-			cnt++;
-		}
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+	var cnt = 0;
+	function fn_addFile() {
+		if (cnt == 0 || !$('input[name="main_image"]').length) {
 
-		function fn_add_new_goods(obj) {
-			fileName = $('#f_main_image').val();
-			if (fileName != null && fileName != undefined) {
-				obj.submit();
-			} else {
-				alert("메인 이미지는 반드시 첨부해야 합니다.");
-				return;
-			}
+			$("#d_file")
+					.append(
+							"<div class='imagebox image0'><div><h1>메인이미지</h1><button type='button' onclick='deleteimage(0)'>x</button><br></div><img id='preview' width=200 height=200/><br><input  type='file' name='m' id='f_main_image' onchange='readURL(this)'/></div>");
+		} else {
+			$("#d_file")
+					.append(
+							"<div class='imagebox image"+cnt+"'><div><h1>상세이미지</h1><button type='button' onclick='deleteimage("
+									+ cnt
+									+ ")'>x</button><br></div><img id='preview' width=200 height=200/><br><input  type='file' name='detail_image"
+									+ cnt
+									+ "' onchange='readURL(this)'/></div>");
 		}
+		cnt++;
+	}
 
-		function readURL(input) {
-			if (input.files && input.files[0]) {
-				
-				var reader = new FileReader();
-				reader.onload = function (e) {
-					$(input).siblings('img').attr('src', e.target.result);
-				}
-				reader.readAsDataURL(input.files[0]);
+	function fn_add_new_goods(obj) {
+		fileName = $('#f_main_image').val();
+		if (fileName != null && fileName != undefined) {
+			obj.submit();
+		} else {
+			alert("메인 이미지는 반드시 첨부해야 합니다.");
+			return;
+		}
+	}
+
+	function readURL(input) {
+		if (input.files && input.files[0]) {
+
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$(input).siblings('img').attr('src', e.target.result);
 			}
+			reader.readAsDataURL(input.files[0]);
 		}
-		
-		function  deleteimage(vnt){
-			$(".image"+vnt).remove();
-			cnt--;
-		}
-	</script>
+	}
+
+	function deleteimage(vnt) {
+		$(".image" + vnt).remove();
+		cnt--;
+	}
+</script>
 </head>
 
 <body>
-	<form role="form" action="/product/insertproduct" method="POST" enctype="multipart/form-data">
+	<form role="form" action="/product/insertproduct" method="POST"
+		enctype="multipart/form-data" >
 		<table>
+			<tr name="product_no_label">상품 번호
+			</tr>
+			<td><select>
+					<option th:each="product : ${productList}" th:value="${product.product_no}" th:utext="${product.product_no + '-' + product.product_title}" name="product_no"></option>	
+					 		
+			</select></td>
 			<tr>
 				<td>분류</td>
-				<td><input type="text" maxlength="40" name="product_category_code"></td>
+				<td><!-- <input type="text" maxlength="40"
+					name="product_category_code"> -->
+					<select>
+					<option th:each="product : ${productList}" th:value="${product.product_category_code}" th:utext="${product.product_category_code}" name ="product_category_code"></option></select></td>
 			</tr>
 			<tr>
 				<td>상품명</td>
@@ -62,16 +80,18 @@
 			</tr>
 			<tr>
 				<td>배송 설명</td>
-				<td><input type="text" maxlength="40" name="product_delivery_message"></td>
+				<td><input type="text" maxlength="40"
+					name="product_delivery_message"></td>
 			</tr>
 			<tr>
 				<td>배송비</td>
-				<td><input type="number" maxlength="40" name="product_delivery_price"></td>
+				<td><input type="number" maxlength="40"
+					name="product_delivery_price"></td>
 			</tr>
 			<tr>
 				<td>할인율</td>
-				<td><input type="number" aria-valuemin="0" aria-valuemax="100" maxlength="40"
-						name="product_sale_percent"></td>
+				<td><input type="number" aria-valuemin="0" aria-valuemax="100"
+					maxlength="40" name="product_sale_percent"></td>
 			</tr>
 			<tr>
 				<td>판매사</td>
@@ -83,11 +103,18 @@
 			</tr>
 			<tr>
 				<td>상품 타입</td>
-				<td><input type="text" maxlength="40" name="product_type"></td>
+				<td><input type="text" maxlength="40" name="product_type"> 
+			<!-- 	<select>
+				<option th:each="product : ${productList}" th:if=${product.product_type} th:value=${product.product_type}" th:text="${product.product_type}" name="product_type"></option>
+				</select> -->
+				</td>
 			</tr>
 			<tr>
 				<td>상품 코드</td>
-				<td><input type="text" maxlength="40" name="product_code"></td>
+				<td><select>
+					<option th:each="product : ${productList}" th:value="${product.product_code}" th:utext="${product.product_code}" name="product_code"></option>	
+				</select>
+				<!-- <input type="text" maxlength="40" name="product_code"> --></td>
 			</tr>
 			<tr>
 				<td>상세내용</td>
@@ -109,7 +136,8 @@
 			<tr>
 				<td align="right">이미지파일 첨부</td>
 
-				<td align="left"> <input type="button" value="파일 추가" onClick="fn_addFile()" /></td>
+				<td align="left"><input type="button" value="파일 추가"
+					onClick="fn_addFile()" /></td>
 				<td>
 					<div id="d_file"></div>
 				</td>

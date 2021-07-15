@@ -23,6 +23,7 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductAttachMapper productAttachMapper;
 
+
 	@Override
 	public void insertproduct(ProductVO productVO) {
 		productMapper.insertNewProduct(productVO);
@@ -82,9 +83,13 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int addNewGoodsImage(ProductAttachVO imageFileList) {
 		int img_no = productAttachMapper.selectKey();
-		System.out.println(img_no);
 		productAttachMapper.addNewGoodsImage(imageFileList);
 		return img_no;
+	}
+
+	@Override
+	public List<ProductVO> getAvailableProductNo() {
+		return  productMapper.getAvailableProductNo();
 	}
 
 }

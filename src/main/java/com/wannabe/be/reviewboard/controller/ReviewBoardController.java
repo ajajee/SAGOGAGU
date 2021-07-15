@@ -63,7 +63,7 @@ public class ReviewBoardController {
 			@RequestParam(value = "product_no") int product_no, @RequestParam(value = "rating") int rating,
 			HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 
-		String uploadpath = "C:\\reviewImages\\upload\\" + product_no + "\\"; // �굹以묒뿉 寃쎈줈 �닔�젙
+		String uploadpath = "C:\\reviewImages\\upload\\" + product_no + "\\"; // 
 		ReviewVO reviewVO = new ReviewVO();
 		reviewVO.setMember_id(member_id);
 		reviewVO.setProduct_no(product_no);
@@ -155,7 +155,6 @@ public class ReviewBoardController {
 	public void thumbnails(@RequestParam("filepath") String filepath, @RequestParam("filename") String filename, HttpServletResponse response)
 			throws IOException {
 		OutputStream out = response.getOutputStream();
-		//String filepath = reviewBoardService.getUploadPath(filename);
 		File thumnail = new File(filepath + filename);
 	
 		if (thumnail.exists()) {
@@ -171,19 +170,11 @@ public class ReviewBoardController {
 	@GetMapping(value = "/reviewImage", produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> getImage(@RequestParam("filepath") String filepath,@RequestParam(value = "filename") String filename,
 			@RequestParam(value = "product_no") int product_no) throws IOException {
-		//String filepath = reviewBoardService.getUploadPath(filename); 
 		File img = new File(filepath + filename);
 		return ResponseEntity.ok()
 				.contentType(MediaType.valueOf(FileTypeMap.getDefaultFileTypeMap().getContentType(img)))
 				.body(Files.readAllBytes(img.toPath()));
 	}
-	
-
-	/*
-	 *  public ModelAndView uploadReview(List<MultipartFile> files, String
-	 * member_id, String review_content, int product_no, int rating) { // TODO
-	 * Auto-generated method stub return null; }
-	 */
 	
 	
 	@GetMapping(value = "/product/updateLikes")

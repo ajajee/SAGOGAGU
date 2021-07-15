@@ -16,9 +16,6 @@ import com.wannabe.be.utills.PaginationVO;
 
 @Mapper
 public interface QnaBoardMapper {
-	
-	
-	
 
 	@Select("SELECT * FROM QNA WHERE PRODUCT_NO = #{product_no} ORDER BY REPLYDATE DESC")	
 	public List<QnaVO> listQna(@Param("product_no") int product_no);
@@ -35,8 +32,8 @@ public interface QnaBoardMapper {
 	@Select("SELECT * FROM QNA_REPLY WHERE PRODUCT_NO= #{product_no}")
 	public List<QnaReplyVO> listQnaReply(int product_no);
 	
-	@Insert("INSERT INTO QNA_REPLY (PARENT_NO, PRODUCT_NO, QNA_REPLY_CONTENT) VALUES (#{parent_no}, #{product_no}, #{qna_reply_content})")
-	public void postReply(QnaReplyVO qnaReplyVO);
+	@Insert("INSERT INTO QNA_REPLY (PARENT_NO, PRODUCT_NO, QNA_REPLY_CONTENT) VALUES (#{qnaReplyVO.parent_no}, #{qnaReplyVO.product_no}, #{qnaReplyVO.qna_reply_content})")
+	public void postReply(@Param("qnaReplyVO") QnaReplyVO qnaReplyVO);
 	
 	@Select("SELECT * FROM QNA_REPLY WHERE PARENT_NO = #{PARENT_NO} ORDER BY QNA_REPLY_NO LIMIT 1")
 	public List<QnaReplyVO> fetchReply(int parent_no);
