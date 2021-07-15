@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wannabe.be.mapper.ReviewBoardMapper;
+import com.wannabe.be.reviewboard.dao.ReviewBoardMapper;
 import com.wannabe.be.reviewboard.vo.ReviewImageFileVO;
 import com.wannabe.be.reviewboard.vo.ReviewVO;
 import com.wannabe.be.utills.Criteria;

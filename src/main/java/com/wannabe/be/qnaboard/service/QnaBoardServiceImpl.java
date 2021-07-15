@@ -8,8 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.wannabe.be.mapper.QnaBoardMapper;
+
 import com.wannabe.be.member.vo.MemberVO;
+import com.wannabe.be.qnaboard.dao.QnaBoardMapper;
 import com.wannabe.be.qnaboard.vo.QnaReplyVO;
 import com.wannabe.be.qnaboard.vo.QnaVO;
 import com.wannabe.be.utills.Criteria;

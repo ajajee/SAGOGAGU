@@ -1,4 +1,4 @@
-package com.wannabe.be.mapper;
+package com.wannabe.be.reviewboard.dao;
 
 import java.util.List;
 

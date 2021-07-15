@@ -40,8 +40,8 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<ProductVO> getlist() {
+		
 		List<ProductVO> list_productVO = productMapper.getlist();
-
 		List<ProductAttachVO> list_productAttachVO = productAttachMapper.getlist();
 
 		for (ProductVO productVO : list_productVO) {

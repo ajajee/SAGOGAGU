@@ -51,7 +51,7 @@
 
 	<select id="getlist"
 		resultType="com.wannabe.be.product.vo.ProductAttachVO">
-		select * from product_img where filetype = 'main_image'
+		select * from product_img where main_img = 1
 	</select>
 
 	<select id="getProductImages"

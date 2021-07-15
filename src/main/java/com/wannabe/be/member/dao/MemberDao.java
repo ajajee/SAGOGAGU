@@ -9,7 +9,6 @@ import com.wannabe.be.member.vo.MemberVO;
 
 @Repository
 @Mapper
-
 public interface MemberDao {
 	
 	public void insertNewMember(MemberVO memberVO);
