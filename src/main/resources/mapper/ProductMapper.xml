@@ -2,29 +2,46 @@
   <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wannabe.be.product.dao.ProductMapper">
-
+  
+  
+	<mapper namespace="com.wannabe.be.product.dao.ProductMapper">
 	<insert id="insertNewProduct"
 		parameterType="com.wannabe.be.product.vo.ProductVO">
-		
-		<selectKey resultType="int" keyProperty="product_no" order="BEFORE">
-			SELECT count(product_no)+1 FROM product
+		<selectKey resultType="int" keyProperty="product_no" order="AFTER">
+			Select last_insert_id()
 		</selectKey> 
 	  <![CDATA[
-	  		INSERT INTO product(product_category_code, product_title, product_content, product_writer, product_price,product_delivery_message,product_delivery_price,product_sale_percent,product_company, product_quantity,product_type,product_code )
-	  		VALUES(#{product_category_code},#{product_title},#{product_content},#{product_writer},#{product_price},#{product_delivery_message},#{product_delivery_price},#{product_sale_percent},#{product_company},#{product_quantity},#{product_quantity},#{product_code})
+	  		Insert into product(product_category_code, product_category_ref, product_title, product_content, product_price, product_delivery_price, product_sale_percent, product_quantity)
+	  		VALUES(#{product_category_code}, #{product_category_ref},  #{product_title}, #{product_content}, #{product_price}, #{product_delivery_price}, #{product_sale_percent}, #{product_quantity})
 	   ]]>
 	</insert>
 	
+	<select id="getLatestProducts" resultType="com.wannabe.be.product.vo.ProductVO">
+		Select * from product order by regdate desc limit 0, 8
+	</select>
 	
+	<select id="getProductListByRating" resultType="com.wannabe.be.product.vo.ProductVO">
+ 		Select *, ifnull((select round(avg(rating), 1) from review where review.product_no = product.product_no group by product_no), 0) 
+		as avg_rating from product order by avg_rating desc, regdate desc limit 0, 8
+	</select>
+	
+	<select id="getProductListWithPageInfo" parameterType="com.wannabe.be.product.vo.ProductVO" resultType="com.wannabe.be.product.vo.ProductVO">
+			Select *, ifnull((select round(avg(rating), 1) from review where review.product_no = product.product_no group by product_no), 0) 
+			as avg_rating from product order by avg_rating desc, regdate desc limit #{startRowNum}, #{rowCount}
+	</select>
 	<select id="getlist"   resultType="com.wannabe.be.product.vo.ProductVO">
 		select * from product
 	</select>
 	
-	<select id="getProduct"   resultType="com.wannabe.be.product.vo.ProductVO">
+	<select id="getProductDetailsByProduct_no" resultType="com.wannabe.be.product.vo.ProductVO">
 		select * from product
-		where product_no = ${product_no}
+		where product_no = #{product_no}
 	</select>
-	
+	<select id="getAvailableProductNo" resultType="com.wannabe.be.product.vo.ProductVO">
+		select * from product
+	</select>
+	<select id="getAvailableCategories" resultType="com.wannabe.be.product.vo.ProductCategoryVO">
+		select * from  product_category
+	</select>
 
 </mapper>

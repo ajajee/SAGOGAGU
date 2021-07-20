@@ -4,291 +4,210 @@
 	layout:decorator="/common/layout">
 
 <th:block layout:fragment="html_head">
-	<title>wannabe 방문을 환영합니다.</title>
+	<title>wannabe</title>
+</th:block>
+<th:block layout:fragment="css">
+	<link th:href="@{/css/index.css}" rel="stylesheet" />
 </th:block>
 
-<th:block layout:fragment="content_body">
-<!-- Slider begin -->
+<div id="wrap" layout:fragment="content_body">
+	<!-- Slider begin -->
 	<div class="container slider">
-		 <!-- Full-width images with number text -->
-  <div class="mySlides">
-    <div class="numbertext">1 / 6</div>
-      <img th:src="@{/images/img_woods_wide1.jpg}" style="width:100%">
-  </div>
+		<!-- Full-width images with number text -->
+		<div class="mySlides">
+			<div class="numbertext">1 / 6</div>
+			<img th:src="@{/images/img_woods_wide1.jpg}" style="width: 100%">
+		</div>
 
-  <div class="mySlides">
-    <div class="numbertext">2 / 6</div>
-      <img th:src="@{/images/img_5terre_wide.jpg}" style="width:100%">
-  </div>
+		<div class="mySlides">
+			<div class="numbertext">2 / 6</div>
+			<img th:src="@{/images/img_5terre_wide.jpg}" style="width: 100%">
+		</div>
 
-  <div class="mySlides">
-    <div class="numbertext">3 / 6</div>
-      <img src="/images/img_mountains_wide.jpg" style="width:100%">
-  </div>
+		<div class="mySlides">
+			<div class="numbertext">3 / 6</div>
+			<img src="/images/img_mountains_wide.jpg" style="width: 100%">
+		</div>
 
-  <div class="mySlides">
-    <div class="numbertext">4 / 6</div>
-      <img src="/images/img_lights_wide.jpg" style="width:100%">
-  </div>
+		<div class="mySlides">
+			<div class="numbertext">4 / 6</div>
+			<img src="/images/img_lights_wide.jpg" style="width: 100%">
+		</div>
 
-  <div class="mySlides">
-    <div class="numbertext">5 / 6</div>
-      <img src="/images/img_nature_wide.jpg" style="width:100%">
-  </div>
+		<div class="mySlides">
+			<div class="numbertext">5 / 6</div>
+			<img src="/images/img_nature_wide.jpg" style="width: 100%">
+		</div>
 
-  <div class="mySlides">
-    <div class="numbertext">6 / 6</div>
-      <img src="/images/img_snow_wide.jpg" style="width:100%">
-  </div>
+		<div class="mySlides">
+			<div class="numbertext">6 / 6</div>
+			<img src="/images/img_snow_wide.jpg" style="width: 100%">
+		</div>
 
-  <!-- Next and previous buttons -->
-  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+		<!-- Next and previous buttons -->
+		<a class="prev" onclick="plusSlides(-1)">&#10094;</a> <a class="next"
+			onclick="plusSlides(1)">&#10095;</a>
 
-  <!-- Image text -->
-  <div class="caption-container">
-    <p id="caption"></p>
-  </div>
-
-  <!-- Thumbnail images -->
-  <div class="row slider">
-    <div class="column">
-      <img class="demo cursor" src="/images/img_woods.jpg" style="width:100%" onclick="currentSlide(1)" alt="The Woods">
-    </div>
-    <div class="column">
-      <img class="demo cursor" src="/images/img_5terre.jpg" style="width:100%" onclick="currentSlide(2)" alt="Cinque Terre">
-    </div>
-    <div class="column">
-      <img class="demo cursor" src="/images/img_mountains.jpg" style="width:100%" onclick="currentSlide(3)" alt="Mountains and fjords">
-    </div>
-    <div class="column">
-      <img class="demo cursor" src="/images/img_lights.jpg" style="width:100%" onclick="currentSlide(4)" alt="Northern Lights">
-    </div>
-    <div class="column">
-      <img class="demo cursor" src="/images/img_nature.jpg" style="width:100%" onclick="currentSlide(5)" alt="Nature and sunrise">
-    </div>
-    <div class="column">
-      <img class="demo cursor" src="/images/img_snow.jpg" style="width:100%" onclick="currentSlide(6)" alt="Snowy Mountains">
-    </div>
-  </div>
+		<!-- Image text -->
+		<div class="caption-container">
+			<p id="caption"></p>
 		</div>
 		<!-- Slider End -->
-	<!-- Section-->
-	<section class="py-5">
-		<div class="container px-4 px-lg-5 mt-5" >
-			<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-				<div class="col mb-5" th:each="product:${productList}">
-					<div class="card h-100" th:each="attachList:${product.attachList}">
-						<!-- Product image-->
-						<img  class="card-img-top" th:src="@{/download/}+${attachList.uploadpath}+'/'+${attachList.uuid}+'/'+${attachList.filename}" />
-						<!-- Product details-->
-						<div class="card-body p-4">
-							<div class="text-center">
-								<!-- Product name-->
-								<h5 class="fw-bolder"  th:text="${product.product_title}"></h5>
-								<!-- Product price-->
-								$40.00 - $80.00
-							</div>
-						</div>
-						<!-- Product actions-->
-						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-							<div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/product/get?product_no=}+${product.product_no}">View options</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col mb-5">
-					<div class="card h-100">
-						<!-- Sale badge-->
-						<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale
-						</div>
-						<!-- Product image-->
-						<img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-						<!-- Product details-->
-						<div class="card-body p-4">
-							<div class="text-center">
-								<!-- Product name-->
-								<h5 class="fw-bolder">Special Item</h5>
-								<!-- Product reviews-->
-								<div class="d-flex justify-content-center small text-warning mb-2">
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-								</div>
-								<!-- Product price-->
-								<span class="text-muted text-decoration-line-through">$20.00</span>
-								$18.00
-							</div>
-						</div>
-						<!-- Product actions-->
-						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-							<div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col mb-5">
-					<div class="card h-100">
-						<!-- Sale badge-->
-						<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale
-						</div>
-						<!-- Product image-->
-						<img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-						<!-- Product details-->
-						<div class="card-body p-4">
-							<div class="text-center">
-								<!-- Product name-->
-								<h5 class="fw-bolder">Sale Item</h5>
-								<!-- Product price-->
-								<span class="text-muted text-decoration-line-through">$50.00</span>
-								$25.00
-							</div>
-						</div>
-						<!-- Product actions-->
-						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-							<div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col mb-5">
-					<div class="card h-100">
-						<!-- Product image-->
-						<img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-						<!-- Product details-->
-						<div class="card-body p-4">
-							<div class="text-center">
-								<!-- Product name-->
-								<h5 class="fw-bolder">Popular Item</h5>
-								<!-- Product reviews-->
-								<div class="d-flex justify-content-center small text-warning mb-2">
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-								</div>
-								<!-- Product price-->
-								$40.00
-							</div>
-						</div>
-						<!-- Product actions-->
-						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-							<div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col mb-5">
-					<div class="card h-100">
-						<!-- Sale badge-->
-						<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale
-						</div>
-						<!-- Product image-->
-						<img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-						<!-- Product details-->
-						<div class="card-body p-4">
-							<div class="text-center">
-								<!-- Product name-->
-								<h5 class="fw-bolder">Sale Item</h5>
-								<!-- Product price-->
-								<span class="text-muted text-decoration-line-through">$50.00</span>
-								$25.00
-							</div>
-						</div>
-						<!-- Product actions-->
-						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-							<div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col mb-5">
-					<div class="card h-100">
-						<!-- Product image-->
-						<img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-						<!-- Product details-->
-						<div class="card-body p-4">
-							<div class="text-center">
-								<!-- Product name-->
-								<h5 class="fw-bolder">Fancy Product</h5>
-								<!-- Product price-->
-								$120.00 - $280.00
-							</div>
-						</div>
-						<!-- Product actions-->
-						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-							<div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col mb-5">
-					<div class="card h-100">
-						<!-- Sale badge-->
-						<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale
-						</div>
-						<!-- Product image-->
-						<img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-						<!-- Product details-->
-						<div class="card-body p-4">
-							<div class="text-center">
-								<!-- Product name-->
-								<h5 class="fw-bolder">Special Item</h5>
-								<!-- Product reviews-->
-								<div class="d-flex justify-content-center small text-warning mb-2">
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-								</div>
-								<!-- Product price-->
-								<span class="text-muted text-decoration-line-through">$20.00</span>
-								$18.00
-							</div>
-						</div>
-						<!-- Product actions-->
-						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-							<div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col mb-5">
-					<div class="card h-100">
-						<!-- Product image-->
-						<img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-						<!-- Product details-->
-						<div class="card-body p-4">
-							<div class="text-center">
-								<!-- Product name-->
-								<h5 class="fw-bolder">Popular Item</h5>
-								<!-- Product reviews-->
-								<div class="d-flex justify-content-center small text-warning mb-2">
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-									<div class="bi-star-fill"></div>
-								</div>
-								<!-- Product price-->
-								$40.00
-							</div>
-						</div>
-						<!-- Product actions-->
-						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-							<div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
+		<!-- Section-->
+		<section class="py-2">
+
+
+			<!-- 신상품  -->
+			<div class="container-fluid">
+				<div class="row">
+					<h4 class="text-left">신상품</h4>
+					<div class="text-right ml-0">더보기</div>
+					<div class="card card-group border-0 px-2" style="width: 20rem;"
+						th:each="product, rowStatus :${latestProductList}">
+						<div>
+							<picture class="image_container bg-image"
+								th:each="image: ${ProductImageList}"
+								th:if="${#strings.equals(image.filetype, 'main_image')}">
+							<a
+								th:href="@{/product/productDetails(product_no=${product.product_no})}">
+								<img th:if="${image.product_no == product.product_no}"
+								th:src="@{/productThumbs(filepath=${image.uploadpath}, filename=${image.filename})}"
+								alt="product_thumbnail"
+								class="card-img-top img-fluid rounded mx-auto d-block">
+							</a> </picture>
+							<div class="card-body pt-2 pl-0">
+								<p
+									class="card-text card-subtitle text-muted small font-weight-light text-left"
+									style="font-size: 0.7rem;" th:text="${product.product_title}"></p>
+								<p class="text-left">
+									<strong><span
+										th:utext="${product.product_sale_percent + '% '}"
+										style="color: #06bbcf"></span><span class="card-text mr-2"
+										th:text="${product.formattedPrice}"></span></strong>
+								</p>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
-	
-</th:block>
+			<!-- 신상품 -->
 
+
+			<!-- 베스트 -->
+
+			<div class="container-fluid">
+				<div class="row">
+					<h4 class="text-left">베스트</h4>
+					<div class="card card-group border-0 px-2" style="width: 20rem;"
+						th:each="bestProduct, rowStatus :${bestProductList}">
+						<div>
+							<picture class="image_container bg-image"
+								th:each="bestImage: ${bestImageList}"
+								th:if="${#strings.equals(bestImage.filetype, 'main_image')}">
+							<a
+								th:href="@{/product/productDetails(product_no=${bestProduct.product_no})}">
+								<img th:if="${bestImage.product_no == bestProduct.product_no}"
+								th:src="@{/productThumbs(filepath=${bestImage.uploadpath}, filename=${bestImage.filename})}"
+								alt="product_thumbnail"
+								class="card-img-top img-fluid rounded mx-auto d-block">
+							</a> </picture>
+							<div class="card-body pt-2 pl-0">
+								<p
+									class="card-text card-subtitle text-muted small font-weight-light text-left"
+									style="font-size: 0.7rem;"
+									th:text="${bestProduct.product_title}"></p>
+								<p class="text-left">
+									<strong><span
+										th:utext="${bestProduct.product_sale_percent + '% '}"
+										style="color: #06bbcf"></span><span class="card-text mr-2"
+										th:text="${bestProduct.formattedPrice}"></span></strong>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 베스트 끝  -->
+
+			<div class="container-fluid card-list" id="card-list">
+				<div class="row">
+					<div class="newCard card-group border-0 px-2" style="width: 20rem;">
+						<div>
+							<picture class="image_container bg-image"
+								th:each="newImage: ${newImageList}"
+								th:if="${#strings.equals(newImage.filetype, 'main_image') && newImageList != null}">
+							<a
+								th:href="@{/product/productDetails(product_no=${newProduct.product_no})}">
+								<img th:if="${newImage.product_no == newProduct.product_no}"
+								th:src="@{/productThumbs(filepath=${newImage.uploadpath}, filename=${newImage.filename})}"
+								alt="product_thumbnail"
+								class="card-img-top img-fluid rounded mx-auto d-block">
+							</a> </picture>
+							<div class="card-body pt-2 pl-0">
+								<p
+									class="newCardTitle text card-subtitle text-muted small font-weight-light text-left"
+									style="font-size: 0.7rem;"></p>
+								<p class="text-left">
+									<strong><span
+										th:utext="${newProduct.product_sale_percent + '% '}"
+										style="color: #06bbcf"></span><span class="card-text mr-2"
+										th:text="${newProduct.formattedPrice}"></span></strong>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 무한 스크롤 -->
+
+			<!--끝  -->
+			<div class="loader">
+				<img
+					src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/f3d5a969321565.5b7d0cbe73337.gif">
+			</div>
+		</section>
+	</div>
+</div>
+<th:block layout:fragment="pageCustomScript">
+	<script>
+		var currentPage = 1;
+		var totalPageCount = 1;
+		var isLoading = false;
+
+		$(document).ready(function() {
+			getList(currentPage);
+		});
+
+		$(window).on("scroll", function() {
+			var scrollTop = $(window).scrollTop();
+			var windowHeight = $(window).height();
+			var documentHeight = $(document).height();
+			var isBottom = scrollTop + windowHeight + 10 >= documentHeight;
+
+			if (isBottom) {
+				if (currentPage == totalPageCount || isLoading) {
+					return;
+				}
+
+				isLoading = true;
+				$(".loader").css("display", "block");
+				currentPage++;
+				getList(currentPage);
+			}
+		});
+
+		function getList(currentPage) {
+			
+			$.getJSON("/product/getBestProducts"+ pageNum=" + currentPage,
+					$(data).each(function() {
+						$(".newCardTitle").text(this.newProductList.product_title);
+					});
+
+				}
+
+		/* $("#card-list").append(data);
+		$(".loader").css("display", "none");
+		isLoading = false; */
+	</script>
+</th:block>
 </html>

@@ -5,23 +5,25 @@
 <mapper
 	namespace="com.wannabe.be.product.dao.ProductAttachMapper">
 	
-	
+<!-- 	
 	<select id="selectKey" resultType="int">
 		SELECT count(product_img_no)+1 FROM product_img
-	</select>
-
+	</select> -->	
 	<insert id="insert">
-		insert into product_img (uuid, uploadpath, filename,
-		filetype, product_no)
-		values (#{uuid}, #{uploadpath}, #{filename},
-		#{filetype}, #{product_no} )
+		insert into product_img (uploadpath, filename, filetype,
+		product_no)
+		values (#{uploadpath}, #{filename},
+		 #{filetype}, #{product_no})
 	</insert>
-
+	
+	<select id="getProductImageByProductNo" resultType="com.wannabe.be.product.vo.ProductAttachVO">
+		Select * from product_img where product_no = #{product_no}
+	</select>
 	<insert id="addNewGoodsImage">
-		insert into product_img (uuid, uploadpath, filename,
-		filetype, product_no)
-		values (#{uuid}, #{uploadpath}, #{filename},
-		#{filetype}, #{product_no} )
+		insert into product_img (uploadpath, filename, 
+		product_no)
+		values (#{uploadpath}, #{filename},  
+		#{product_no} )
 	</insert>
 	
 	<delete id="delete">
@@ -51,7 +53,7 @@
 
 	<select id="getlist"
 		resultType="com.wannabe.be.product.vo.ProductAttachVO">
-		select * from product_img where main_img = 1
+		select * from product_img where filetype = "main_img"
 	</select>
 
 	<select id="getProductImages"
@@ -63,10 +65,11 @@
 		update
 		product_img
 		set
-		uuid=#{uuid},
+		<!-- uuid=#{uuid},
 		uploadpath=#{uploadpath},
-		filetype=#{filetype},
-		filename=#{filename}
+		filetype=#{filetype}, -->
+		(
+		filename)
 		where
 		product_no=#{product_no} and product_img_no=#{product_img_no}
 	</update>

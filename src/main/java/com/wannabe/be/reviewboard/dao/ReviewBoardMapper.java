@@ -1,5 +1,6 @@
 package com.wannabe.be.reviewboard.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
@@ -9,6 +10,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
+import com.wannabe.be.product.vo.ProductAttachVO;
 import com.wannabe.be.reviewboard.vo.ReviewImageFileVO;
 import com.wannabe.be.reviewboard.vo.ReviewVO;
 import com.wannabe.be.utills.Criteria;
@@ -20,7 +22,7 @@ public interface ReviewBoardMapper {
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty = "reviewVO.review_no", before=false, resultType=int.class)
 	public int uploadReview(@Param("reviewVO") ReviewVO reviewVO);
 
-	@Insert("INSERT INTO REVIEW_IMG (UPLOADPATH, FILENAME, FILETYPE, FILEORIGINALNAME, UUID, PRODUCT_NO, REVIEW_NO) VALUES (#{uploadpath}, #{filename}, #{filetype}, #{fileOriginalName}, #{uuid}, #{product_no}, #{review_no})")
+	@Insert("INSERT INTO REVIEW_IMG (UPLOADPATH, FILENAME, PRODUCT_NO, REVIEW_NO) VALUES (#{uploadpath}, #{filename}, #{product_no}, #{review_no})")
 	public void uploeadReviewImage(ReviewImageFileVO fileVO);
 	
 	@Select("SELECT * FROM REVIEW WHERE PRODUCT_NO = #{product_no} ORDER BY REGDATE DESC LIMIT #{cri.pageStart}, #{cri.perPageNum}")
@@ -30,8 +32,7 @@ public interface ReviewBoardMapper {
 	public List<ReviewImageFileVO> listReviewFile(int product_no);
 	
 	@Select("SELECT UPLOADPATH FROM REVIEW_IMG WHERE FILENAME = #{filename}")
-	public String getUploadPath(String filename);
-	
+	public String getUploadPath(String filename);	
 
 	@Update("UPDATE REVIEW SET LIKES = ifnull(likes, 0) + 1 WHERE REVIEW_NO= #{review_no}")
 	public int updateLikes(int review_no);
@@ -53,5 +54,11 @@ public interface ReviewBoardMapper {
 	
 	@Select("SELECT * FROM REVIEW_IMG WHERE REVIEW_NO = #{review_no}")
 	public List<ReviewImageFileVO> getImageList(int review_no);
+
+	@Select("SELECT * FROM REVIEW_IMG WHERE PRODUCT_NO = #{product_no}")
+	public List<ReviewImageFileVO> getImageListByProduct_no(int product_no);
+
+	@Select("SELECT * FROM REVIEW ORDER BY LIKES DESC")
+	public List<ReviewVO> getReviewsByLikesCount();
 
 }

@@ -12,6 +12,8 @@ import com.wannabe.be.product.vo.ProductAttachVO;
 public interface ProductAttachMapper {
 
 	public void insert(ProductAttachVO vo);
+	
+	public List<ProductAttachVO> getProductImageByProductNo(int product_no);
 
 	public void delete(String uuid);
 

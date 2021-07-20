@@ -1,8 +1,6 @@
 package com.wannabe.be.utills;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @NoArgsConstructor

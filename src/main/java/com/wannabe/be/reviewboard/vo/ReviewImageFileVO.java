@@ -2,8 +2,6 @@ package com.wannabe.be.reviewboard.vo;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +14,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class ReviewImageFileVO {
+	private int review_img_id;
 	private String uuid;
 	private String filename; 
-	private String filetype;
 	private int review_no;
 	private List<ReviewImageFileVO> files;
-	private String fileOriginalName;
 	private String uploadpath;
 	private int product_no;
+	private boolean main_img;
 
 	
 }

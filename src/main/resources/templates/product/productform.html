@@ -2,124 +2,264 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Getting Started: Serving Web Content</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<script type="text/javascript">
-		var cnt = 0;
-		function fn_addFile() {
-			if (cnt == 0 || !$('input[name="main_image"]').length) {
-				
-				$("#d_file").append("<div class='imagebox image0'><div><h1>메인이미지</h1><button type='button' onclick='deleteimage(0)'>x</button><br></div><img id='preview' width=200 height=200/><br><input  type='file' name='main_image' id='f_main_image' onchange='readURL(this)'/></div>");
-			} else {
-				$("#d_file").append("<div class='imagebox image"+cnt+"'><div><h1>상세이미지</h1><button type='button' onclick='deleteimage("+cnt+")'>x</button><br></div><img id='preview' width=200 height=200/><br><input  type='file' name='detail_image"+cnt+"' onchange='readURL(this)'/></div>");
-			}
-			cnt++;
-		}
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+	var cnt = 0;
+	function fn_addFile() {
+		if (cnt == 0) {
 
-		function fn_add_new_goods(obj) {
-			fileName = $('#f_main_image').val();
-			if (fileName != null && fileName != undefined) {
-				obj.submit();
-			} else {
-				alert("메인 이미지는 반드시 첨부해야 합니다.");
-				return;
-			}
-		}
+			$("#d_file")
+					.append(
+							"<div class='imagebox image0'><div><h5>메인이미지</h5><button type='button' onclick='deleteimage(0)'>x</button><br></div><img id='preview' width=200 height=200/><br><input  type='file' id='main_image' name='main_image' onchange='readURL(this)'/></div>");
 
-		function readURL(input) {
-			if (input.files && input.files[0]) {
-				
-				var reader = new FileReader();
-				reader.onload = function (e) {
-					$(input).siblings('img').attr('src', e.target.result);
-				}
-				reader.readAsDataURL(input.files[0]);
+		} else {
+			$("#d_file")
+					.append(
+							"<div class='imagebox image"+cnt+"'><div><h5>상세이미지</h5><button type='button' onclick='deleteimage("
+									+ cnt
+									+ ")'>x</button><br></div><img id='preview' width=200 height=200/><br><input  type='file' name='detail_image"
+									+ cnt
+									+ "' onchange='readURL(this)'/></div>");
+		}
+		cnt++;
+	}
+
+	function fn_add_new_goods(obj) {
+		fileName = $('#main_image').val();
+		if (fileName != null && fileName != undefined) {
+			obj.submit();
+		} else {
+			alert("메인 이미지는 반드시 첨부해야 합니다.");
+			return;
+		}
+	}
+
+	function readURL(input) {
+		if (input.files && input.files[0]) {
+
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$(input).siblings('img').attr('src', e.target.result);
 			}
+			reader.readAsDataURL(input.files[0]);
 		}
-		
-		function  deleteimage(vnt){
-			$(".image"+vnt).remove();
-			cnt--;
-		}
-	</script>
+	}
+
+	function deleteimage(vnt) {
+		$(".image" + vnt).remove();
+		cnt--;
+	}
+</script>
 </head>
 
 <body>
-	<form role="form" action="/product/insertproduct" method="POST" enctype="multipart/form-data">
-		<table>
-			<tr>
-				<td>분류</td>
-				<td><input type="text" maxlength="40" name="product_category_code"></td>
-			</tr>
-			<tr>
-				<td>상품명</td>
-				<td><input type="text" maxlength="40" name="product_title"></td>
-			</tr>
-			<tr>
-				<td>가격</td>
-				<td><input type="number" maxlength="40" name="product_price"></td>
-			</tr>
-			<tr>
-				<td>배송 설명</td>
-				<td><input type="text" maxlength="40" name="product_delivery_message"></td>
-			</tr>
-			<tr>
-				<td>배송비</td>
-				<td><input type="number" maxlength="40" name="product_delivery_price"></td>
-			</tr>
-			<tr>
-				<td>할인율</td>
-				<td><input type="number" aria-valuemin="0" aria-valuemax="100" maxlength="40"
-						name="product_sale_percent"></td>
-			</tr>
-			<tr>
-				<td>판매사</td>
-				<td><input type="text" maxlength="40" name="product_company"></td>
-			</tr>
-			<tr>
-				<td>수량</td>
-				<td><input type="number" maxlength="40" name="product_quantity"></td>
-			</tr>
-			<tr>
-				<td>상품 타입</td>
-				<td><input type="text" maxlength="40" name="product_type"></td>
-			</tr>
-			<tr>
-				<td>상품 코드</td>
-				<td><input type="text" maxlength="40" name="product_code"></td>
-			</tr>
-			<tr>
-				<td>상세내용</td>
-				<td><textarea name="product_content"></textarea></td>
-			</tr>
-			<!--<tr>
+
+	<form role="form" action="/product/insertproduct" method="POST"
+		enctype="multipart/form-data">
+		<div class="form-group col-md-4">
+			<label for="catecoderef">대분류</label> <select
+				name="product_category_ref" class="form-control">
+				<th:block th:each="category : ${categoryList}">
+					<option th:each=" catecode : ${category}"
+						th:if="${catecode.catecoderef == null}"
+						th:value="${catecode.catecode}" th:text="${catecode.catename}"></option>
+			</select>
+			</th:block>
+		</div>
+		<div class="form-group col-md-4">
+			<label for="catecode">소분류</label> <select
+				name="product_category_code" class="form-control">
+				<th:block th:each="category : ${categoryList}">
+					<option th:each=" catecodes : ${category}"
+						th:if="${catecodes.catecoderef != null}"
+						th:value="${catecodes.catecode}" th:text="${catecodes.catename}"></option>
+			</select>
+			</th:block>
+		</div>
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label for="product_title">제품 이름</label> <input type="text"
+					class="form-control" name="product_title">
+			</div>
+			<div class="form-group col-md-4">
+				<label for="product_no">제품 가격</label><input type="number"
+					name="product_price">
+			</div>
+			<div class="form-group col-md-4">
+				<label for="product_no">배송비</label><input type="number"
+					name="product_delivery_price">
+			</div>
+			<div class="form-group col-md-4">
+				<label for="product_no">할인률</label><input type="number"
+					name="product_sale_percent">
+			</div>
+			<div class="form-group col-md-4">
+				<label for="product_no">수량</label><input type="number"
+					name="product_quantity">
+			</div>
+			<div class="form-group col-md-6">
+				<label for="product_title">제품 소개</label> <input type="text"
+					class="form-control" name="product_content">
+			</div>
+			<table>
+				<div class="panel-body">
+					<!-- <div class="form-group uploadDiv">
+						<input type="file" name='uploadFile' multiple>
+					</div> -->
+					<div class='uploadResult'>
+						<ul>
+						</ul>
+					</div>
+				</div>
+				</tr>
+				<tr>
+					<td align="center">이미지파일 첨부</td>
+
+					<td align="center"><input type="button" value="파일 추가"
+						onClick="fn_addFile()" /></td>
+					<td>
+						<div id="d_file"></div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"><button type="submit" style="float: right;">등록</button></td>
+				</tr>
+			</table>
+	</form>
+	<!-- <div class="form-group col-md-4"  th:each="product : ${productList}">
+			<label for="product_no">제품 번호</label> <select name="prduct_no"
+				class="form-control">
+				<option th:value="${product.product_no}" th:text=${product.product_no}"></option></select>
+		</div> -->
+	<!-- 		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label for="inputCity">City</label> <input type="text"
+					class="form-control" id="inputCity">
+			</div>
+			<div class="form-group col-md-4">
+				<label for="inputState">State</label> <select id="inputState"
+					class="form-control">
+					<option selected>Choose...</option>
+					<option>...</option>
+				</select>
+			</div>
+			<div class="form-group col-md-2">
+				<label for="inputZip">Zip</label> <input type="text"
+					class="form-control" id="inputZip">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="gridCheck">
+				<label class="form-check-label" for="gridCheck"> Check me
+					out </label>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary">Sign in</button> -->
+
+
+	<!-- 	<form role="form" action="/product/insertproduct" method="POST"
+			enctype="multipart/form-data">
+			<table>
+				<tr name="product_no_label">상품 번호
+				</tr>
+				<td><select>
+						<option th:each="product : ${productList}"
+							th:value="${product.product_no}"
+							th:utext="${product.product_no + '-' + product.product_title}"
+							name="product_no"></option>
+
+				</select></td>
+				<tr>
+					<td>분류</td>
+					<td>
+						<input type="text" maxlength="40"
+					name="product_category_code"> <select>
+							<option th:each="product : ${productList}"
+								th:value="${product.product_category_code}"
+								th:utext="${product.product_category_code}"
+								name="product_category_code"></option>
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<td>상품명</td>
+					<td><input type="text" maxlength="40" name="product_title"></td>
+				</tr>
+				<tr>
+					<td>가격</td>
+					<td><input type="number" maxlength="40" name="product_price"></td>
+				</tr>
+				<tr>
+					<td>배송 설명</td>
+					<td><input type="text" maxlength="40"
+						name="product_delivery_message"></td>
+				</tr>
+				<tr>
+					<td>배송비</td>
+					<td><input type="number" maxlength="40"
+						name="product_delivery_price"></td>
+				</tr>
+				<tr>
+					<td>할인율</td>
+					<td><input type="number" aria-valuemin="0" aria-valuemax="100"
+						maxlength="40" name="product_sale_percent"></td>
+				</tr>
+				<tr>
+					<td>판매사</td>
+					<td><input type="text" maxlength="40" name="product_company"></td>
+				</tr>
+				<tr>
+					<td>수량</td>
+					<td><input type="number" maxlength="40"
+						name="product_quantity"></td>
+				</tr>
+				<tr>
+					<td>상품 타입</td>
+					<td><input type="text" maxlength="40" name="product_type">
+							<select>
+				<option th:each="product : ${productList}" th:if=${product.product_type} th:value=${product.product_type}" th:text="${product.product_type}" name="product_type"></option>
+				</select></td>
+				</tr>
+				<tr>
+					<td>상품 코드</td>
+					<td><select>
+							<option th:each="product : ${productList}"
+								th:value="${product.product_code}"
+								th:utext="${product.product_code}" name="product_code"></option>
+					</select> <input type="text" maxlength="40" name="product_code"></td>
+				</tr>
+				<tr>
+					<td>상세내용</td>
+					<td><textarea name="product_content"></textarea></td>
+				</tr>
+				<tr>
 				<div class="panel-body">
 					<div class="form-group uploadDiv">
 						<input type="file" name='uploadFile' multiple>
 					</div>
-
 					<div class='uploadResult'>
 						<ul>
-
 						</ul>
 					</div>
 				</div>
-			</tr>-->
-			<tr>
-				<td align="right">이미지파일 첨부</td>
+			</tr>
+				<tr>
+					<td align="right">이미지파일 첨부</td>
 
-				<td align="left"> <input type="button" value="파일 추가" onClick="fn_addFile()" /></td>
-				<td>
-					<div id="d_file"></div>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2"><button type="submit" style="float: right;">등록</button></td>
-			</tr>
-		</table>
-	</form>
+					<td align="left"><input type="button" value="파일 추가"
+						onClick="fn_addFile()" /></td>
+					<td>
+						<div id="d_file"></div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"><button type="submit" style="float: right;">등록</button></td>
+				</tr>
+			</table>
+		</form> -->
 
 </body>
-
 </html>

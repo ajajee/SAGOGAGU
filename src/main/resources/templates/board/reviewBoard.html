@@ -116,8 +116,6 @@
 }
 </style>
 <body>
-
-
 	<div class="p-3 mb-5 bg-light rounded navbar">
 		<span class="ml-5 ustify-content-start" th:text="'상품평 수 ' + ${pageInfo.totalCount} + '개 '"></span> <p class="justify-content-end mr-5"><a
 			th:href="@{/product/reviewBoard(product_no=${product_no}, sortType='ByLikes')}"><span
@@ -128,14 +126,8 @@
 			th:href="@{/product/reviewBoard(product_no=${product_no}, sortType='ByRatingAsc')}"><span>평점
 				낮은 순</span></a></p>
 	</div>
-	<!-- <div class="image_gallery" th:each="${galleryImage: imageList}">
-	<div class="gallery" th:each="${galleryImage : #numbers.sequence(1, 9)}">
-	<img th:src="@{/thumbnails(filename=${${galleryImage.filename})}"
-							class="figure-img img-fluid rounded" alt="review_image">
 	</div>
-	</div> -->
 	<section th:block th:each="review, stats : ${reviewList}">
-
 		<div class="reviews container-fluid">
 			<div class="row h-20">
 				<div class="col-md-1 profile_image">
@@ -180,18 +172,6 @@
 			<div class="review_content row" style="height: 20%">
 				<div class="col-md-8 offset-md-1 review_content_details"
 					th:text="${review.review_content}"></div>
-				<!-- <div class="col-md-3 align-top review_image"
-					th:if="${review.review_no == image.review_no}"
-					th:each="image: ${imageList}">
-					<figure class="figure">
-						<a th:href="@{/reviewImage(filename= ${image.filename}, product_no= ${image.product_no})}">
-							<img th:src="@{/thumbnails(filename=${image.filename})}"
-							class="figure-img img-fluid rounded" alt="review_image">
-						</a>
-						<figcaption class="figure-caption text-right">A
-							1.</figcaption>
-					</figure>
-				</div> -->
 			</div>
 			<div class="reivew_likes row">
 				<div class="col-md-2 offset-md-1">

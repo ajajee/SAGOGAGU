@@ -259,7 +259,7 @@
 						<span class="error_next_box" id="emailMsg" style="display:none" aria-live="assertive"></span>
 					</div>
 
-					<!-- <input type="submit" title="가입하기" alt="가입하기" value="가입하기" class="btn_global" id="log.login"> -->
+					<input type="submit" title="가입하기" alt="가입하기" value="가입하기" class="btn_global" id="log.login">
 					<input type="hidden" id="checkForm" value=0>
 					<input type="button" onclick="fn_checkForm();" title="가입하기" alt="가입하기" value="가입하기" class="btn_global"
 						id="log.login">
@@ -445,12 +445,12 @@
 			return;
 		}
 
-		function fn_checkForm() {
+	/* 	function fn_checkForm() {
 			if ($('#idCheck').val()=='0') {
 				alert("아이디를 확인해주세요");
 				$('#id').focus();
 				return;
-			}
+			} */
 
 			check = $('#pswd1Check').val();
 			if (check == 0) {

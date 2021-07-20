@@ -1,6 +1,8 @@
 package com.wannabe.be.product.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.wannabe.be.product.dao.ProductAttachMapper;
 import com.wannabe.be.product.dao.ProductMapper;
 import com.wannabe.be.product.vo.ProductAttachVO;
+import com.wannabe.be.product.vo.ProductCategoryVO;
 import com.wannabe.be.product.vo.ProductVO;
+import com.wannabe.be.shopcart.vo.ShopcartVO;
 
 @Service("productService")
 @Transactional(propagation = Propagation.REQUIRED)
@@ -26,18 +30,62 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void insertproduct(ProductVO productVO) {
 		productMapper.insertNewProduct(productVO);
+		int product_no = productVO.getProduct_no();
 
 		if (productVO.getAttachList() == null || productVO.getAttachList().size() <= 0) {
 			return;
+		}else {
+			List<ProductAttachVO> attachList = productVO.getAttachList();
+			for(ProductAttachVO attach : attachList) {
+				attach.setProduct_no(product_no);
+				productAttachMapper.insert(attach);
+			}
 		}
-
-		productVO.getAttachList().forEach(attach -> {
-			System.out.println("hi");
-			attach.setProduct_no(productVO.getProduct_no());
-			productAttachMapper.insert(attach);
-		});
 	}
 
+	@Override
+	public ProductVO getProductDetailsByProduct_no(int product_no) {
+		return productMapper.getProductDetailsByProduct_no(product_no);
+	}
+
+	
+	@Override
+	public List<ProductVO> getAvailableProductNo() {
+		return  productMapper.getAvailableProductNo();
+	}
+
+	@Override
+	public List<ProductCategoryVO> getAvailableCategories() {
+		return productMapper.getAvailableCategories();
+	}
+
+	@Override
+	public List<ProductVO> getLatestProducts() {
+		return productMapper.getLatestProducts();
+	}
+
+	@Override
+	public List<ProductAttachVO> getProductImageByProductNo(int product_no) {	
+		return productAttachMapper.getProductImageByProductNo(product_no); 
+	}
+	
+
+	@Override
+	public List<ProductVO> getProductListByRating() {
+		return productMapper.getProductListByRating();
+	}
+
+	
+	@Override
+	public List<ProductVO> getProductListWithPageInfo(ProductVO product) {
+		return productMapper.getProductListWithPageInfo(product);
+	}
+
+
+
+
+/*----------------------------------------------------------------------------------------*/
+	
 	@Override
 	public List<ProductVO> getlist() {
 		
@@ -87,4 +135,12 @@ public class ProductServiceImpl implements ProductService {
 		return img_no;
 	}
 
+	@Override
+	public void addItemToCart(ShopcartVO shopcartVO) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	
 }

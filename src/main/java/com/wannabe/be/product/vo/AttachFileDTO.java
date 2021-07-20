@@ -10,5 +10,5 @@ public class AttachFileDTO {
 	private String filename;
 	private String uploadpath;
 	private String uuid;
-	private String filetype;
+	private boolean main_img;
 }

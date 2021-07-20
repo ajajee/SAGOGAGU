@@ -1,11 +1,13 @@
 package com.wannabe.be.reviewboard.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.wannabe.be.product.vo.ProductAttachVO;
 import com.wannabe.be.reviewboard.dao.ReviewBoardMapper;
 import com.wannabe.be.reviewboard.vo.ReviewImageFileVO;
 import com.wannabe.be.reviewboard.vo.ReviewVO;
@@ -98,6 +100,19 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 	@Override
 	public List<ReviewImageFileVO> getImageList(int review_no) {
 		return reviewBoardMapper.getImageList(review_no);
+	}
+
+
+	@Override
+	public List<ReviewVO> getReviewsByLikesCount() {
+		return reviewBoardMapper.getReviewsByLikesCount();
+	}
+
+
+
+	@Override
+	public List <ReviewImageFileVO> getImageListByProduct_no(int product_no) {
+		return reviewBoardMapper.getImageListByProduct_no(product_no);
 	}
 
 

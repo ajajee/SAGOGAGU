@@ -12,7 +12,6 @@ import org.apache.ibatis.annotations.Update;
 import com.wannabe.be.qnaboard.vo.QnaReplyVO;
 import com.wannabe.be.qnaboard.vo.QnaVO;
 import com.wannabe.be.utills.Criteria;
-import com.wannabe.be.utills.PaginationVO;
 
 @Mapper
 public interface QnaBoardMapper {

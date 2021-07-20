@@ -12,6 +12,7 @@ import lombok.Data;
 public class ProductVO {
 	int product_no;
 	String product_category_code;
+	String product_category_ref;
 	String product_title;
 	String product_content;
 	String product_writer;
@@ -19,6 +20,10 @@ public class ProductVO {
 	int product_delivery_price;
 	int product_sale_percent;
 	int product_quantity;
+	int startRowNum;
+	int endRowNum;
+	int rowCount;
+	String formattedPrice;
 	Date regdate;
 
 	private List<ProductAttachVO> attachList;

@@ -3,7 +3,6 @@ package com.wannabe.be.shopcart.vo;
 import java.util.Date;
 
 import org.springframework.stereotype.Component;
-import com.wannabe.be.member.vo.MemberVO;
 
 import lombok.Data;
 

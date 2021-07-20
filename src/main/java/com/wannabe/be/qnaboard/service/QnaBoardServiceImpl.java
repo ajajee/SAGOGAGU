@@ -1,20 +1,16 @@
 package com.wannabe.be.qnaboard.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wannabe.be.member.vo.MemberVO;
 import com.wannabe.be.qnaboard.dao.QnaBoardMapper;
 import com.wannabe.be.qnaboard.vo.QnaReplyVO;
 import com.wannabe.be.qnaboard.vo.QnaVO;
 import com.wannabe.be.utills.Criteria;
-import com.wannabe.be.utills.PaginationVO;
 
 @Component
 @Service("QnaBoardService")
@@ -29,11 +25,6 @@ public class QnaBoardServiceImpl implements QnaBoardService {
 		qnaList = qnaBoardMapper.listQna(product_no);
 		return qnaList;
 	}
-	/*
-	 * public <QnaVO> getallQnaByProductNo(int product_no){
-	 * 
-	 * return qnaBoardMapper.getQnaByProductNo(product_no); }
-	 */
 
 	@Override
 	public void writeQna(QnaVO qnaVO) {
