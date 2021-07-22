@@ -26,5 +26,20 @@
 		where product_no = ${product_no}
 	</select>
 	
-
+	<select id="getSearchList" parameterType="com.wannabe.be.product.vo.ProductVO" resultType="com.wannabe.be.product.vo.ProductVO" >
+		
+	  SELECT * FROM product 
+	  <where>
+	    <if test="product_no != null">
+	         product_no = #{product_no}
+	    </if>
+	    <if test='product_title != null and product_title != ""'>
+	        OR product_title like CONCAT('%',#{product_title},'%')
+	    </if>
+	    <if test='product_content != null and product_content != ""'>
+	        OR product_content like CONCAT('%',#{product_content},'%')
+	    </if>
+	  </where>
+	</select>
+	
 </mapper>

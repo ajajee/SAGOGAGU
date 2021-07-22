@@ -18,6 +18,8 @@ public interface ProductMapper {
 
 	public ProductVO getProduct(int product_no);
 
+	public List<ProductVO> getSearchList(ProductVO pd);
+
 
 
 	

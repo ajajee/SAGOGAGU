@@ -16,27 +16,30 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.wannabe.be.common.CommonUtil;
 import com.wannabe.be.member.vo.MemberVO;
 import com.wannabe.be.product.service.ProductService;
 import com.wannabe.be.product.vo.ProductAttachVO;
 import com.wannabe.be.product.vo.ProductVO;
 
+import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnailator;
 
 @Controller
-public class ProductControllerImpl implements ProductController {
+@Slf4j
+public class ProductControllerImpl extends CommonUtil implements ProductController {
 
 	@Autowired
 	private ProductService productService;
@@ -77,18 +80,74 @@ public class ProductControllerImpl implements ProductController {
 	
 	
 	@PostMapping("/product/insertproduct")
-	public String insertproduct(ProductVO _productVO, MultipartHttpServletRequest multipartRequest,
+	public String insertproduct(MultipartHttpServletRequest multipartRequest,
 			HttpServletResponse response) throws Exception {
-		// 세션에서 회원 아이디 가져와서 상품 객체에 담기
-		HttpSession session = multipartRequest.getSession();
-		memberVO = (MemberVO) session.getAttribute("memberInfo");
-		_productVO.setProduct_writer(memberVO.getMember_id());
+		
+		multipartRequest.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=UTF-8");
+		String imageFileName=null;
+		
+		
+		Map newGoodsMap = new HashMap();
+		Enumeration enu=multipartRequest.getParameterNames();
+		while(enu.hasMoreElements()){
+			String name=(String)enu.nextElement();
+			String value=multipartRequest.getParameter(name);
+			newGoodsMap.put(name,value);
+		}
+		System.out.println("newGoodsMap>>>>>> " + newGoodsMap);
 
-		// 멀티파트리퀘스트에서 이미지파일 추출
-		_productVO.setAttachList(upload(multipartRequest));
+		//upload 메소드가 하는 일: 업로드된 image들 각각의 이름과 타입을 추출하여 ImageFileVO 객체를 생성하고 
+		//이미지들을 임시 디렉터리에 저장하고 객체들을 담은 리스트를 반환 
+		List<ProductAttachVO> imageFileList =upload(multipartRequest);
+//		if(imageFileList!= null && imageFileList.size()!=0) {
+//			for(ProductAttachVO productAttachVO : imageFileList) {
+//				productAttachVO.setProduct_no(product_no);
+//			}
+//			newGoodsMap.put("imageFileList", imageFileList);
+//		}
+		System.out.println("imageFileList>>>>>> " + imageFileList);
+		
+//		String message = null;
+//		ResponseEntity resEntity = null;
+//		HttpHeaders responseHeaders = new HttpHeaders();
+//		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+//		try {
+//			int goods_id = adminGoodsService.addNewGoods(newGoodsMap);
+//			if(imageFileList!=null && imageFileList.size()!=0) {
+//				for(ImageFileVO  imageFileVO:imageFileList) {
+//					imageFileName = imageFileVO.getFileName();
+//					File srcFile = new File(CURR_IMAGE_REPO_PATH+"\\"+"temp"+"\\"+imageFileName);
+//					File destDir = new File(CURR_IMAGE_REPO_PATH+"\\"+goods_id);
+//					FileUtils.moveFileToDirectory(srcFile, destDir,true);
+//				}
+//			}
+//			message= "<script>";
+//			message += " alert('등록 성공');";
+//			message +=" location.href='"+ multipartRequest.getContextPath()+"/main/main.do';";
+//			message +=("</script>");
+//		}catch(Exception e) {
+//			if(imageFileList!=null && imageFileList.size()!=0) {
+//				for(ImageFileVO  imageFileVO:imageFileList) {
+//					imageFileName = imageFileVO.getFileName();
+//					File srcFile = new File(CURR_IMAGE_REPO_PATH+"\\"+"temp"+"\\"+imageFileName);
+//					srcFile.delete();
+//				}
+//			}
+//			
+//			message= "<script>";
+//			message += " alert('등록 실패. 관리자에게 문의, 내가 관리자야, 나한테 문의?');";
+//			message +=" location.href='"+multipartRequest.getContextPath()+"/admin/goods/addNewGoodsForm.do';";
+//			message +=("</script>");
+//			e.printStackTrace();
+//			resEntity =new ResponseEntity(message, responseHeaders, HttpStatus.OK);
+//			return resEntity;
+//		}
+//		resEntity =new ResponseEntity(message, responseHeaders, HttpStatus.OK);
+//		return resEntity;
+//	}
+		
 
-		System.out.println(_productVO.getAttachList());
-		productService.insertproduct(_productVO);
 
 		return "redirect:/";
 	}
@@ -157,144 +216,14 @@ public class ProductControllerImpl implements ProductController {
 		productService.removeGoodsImage(img_no);
 	}
 	
-	@PostMapping("/product/addNewGoodsImage")
-	@ResponseBody
-	public int addNewGoodsImage(@RequestParam("goods_id") int _goods_id,
-			MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
-			throws Exception {
-		
-		System.out.println("addNewGoodsImage");
-		multipartRequest.setCharacterEncoding("utf-8");
-		response.setContentType("text/html; charset=utf-8");
-		
-//		String imageFileName=null;
-//		Map goodsMap = new HashMap();
-//		Enumeration enu=multipartRequest.getParameterNames();
-//		while(enu.hasMoreElements()){
-//			String name=(String)enu.nextElement();
-//			String value=multipartRequest.getParameter(name);
-//			goodsMap.put(name,value);
-//		}
-		
-//		HttpSession session = multipartRequest.getSession();
-//		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
-//		String reg_id = memberVO.getMember_id();
-		
-		List<ProductAttachVO> imageFileList=null;
-		int img_no=0;
-		try {
-			imageFileList =upload(multipartRequest);
-			if(imageFileList!= null && imageFileList.size()!=0) {
-				for(ProductAttachVO imageFileVO : imageFileList) {
-					imageFileVO.setProduct_no(_goods_id);
-					 img_no = productService.addNewGoodsImage(imageFileVO);
-				}
-				
-//				for(ImageFileVO  imageFileVO:imageFileList) {
-//					imageFileName = imageFileVO.getFileName();
-//					File srcFile = new File(CURR_IMAGE_REPO_PATH+"\\"+"temp"+"\\"+imageFileName);
-//					File destDir = new File(CURR_IMAGE_REPO_PATH+"\\"+goods_id);
-//					FileUtils.moveFileToDirectory(srcFile, destDir,true);
-//				}
-			}
-		}catch(Exception e) {
-//			if(imageFileList!=null && imageFileList.size()!=0) {
-//				for(ProductAttachVO  imageFileVO:imageFileList) {
-//					imageFileName = imageFileVO.getFileName();
-//					File srcFile = new File(CURR_IMAGE_REPO_PATH+"\\"+"temp"+"\\"+imageFileName);
-//					srcFile.delete();
-//				}
-//			}
-			e.printStackTrace();
-		}
-		return img_no;
+	@PostMapping("/product/search")
+	public @ResponseBody List<ProductVO> searchProduct(@RequestBody ProductVO pd, Model model){
+		log.info("prod >>> cont >>> " + pd);
+		List<ProductVO> pdList = productService.getSearchList(pd);
+		log.info("prod >>> cont >>> " + pdList);		
+		return pdList;
 	}
 	
 
-	// 이미지 저장 및 uuid, 파일이름, 타입 설정
-	public List<ProductAttachVO> upload(MultipartHttpServletRequest multipartRequest) {
-
-		String imageFileName = null;
-		Iterator<String> fileNames = multipartRequest.getFileNames();
-
-		List<ProductAttachVO> list = new ArrayList<>();
-		String uploadFolder = "C:\\upload";
-
-		String uploadFolderPath = getFolder();
-		// make folder --------
-		File uploadPath = new File(uploadFolder, uploadFolderPath);
-		if (!uploadPath.exists()) {
-			uploadPath.mkdirs();
-			System.out.println("HI");
-		}
-		// make yyyy/MM/dd folder
-
-		while (fileNames.hasNext()) {
-			ProductAttachVO productAttachVO = new ProductAttachVO();
-			String fileName = fileNames.next(); // input file name 뽑기
-			productAttachVO.setFiletype(fileName); // 메인 이미지, 상세 이미지 타입 구분
-
-			MultipartFile mFile = multipartRequest.getFile(fileName); // input file name으로 파일 뽑기
-			String uploadFileName = mFile.getOriginalFilename(); // 파일에서 이미지 이름 뽑기
-			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1); //
-			productAttachVO.setFilename(uploadFileName);
-			UUID uuid = UUID.randomUUID();
-			uploadFileName = uuid.toString() + "_" + uploadFileName;
-
-			try {
-				File saveFile = new File(uploadPath, uploadFileName);
-				productAttachVO.setUuid(uuid.toString());
-				productAttachVO.setUploadpath(uploadFolderPath);
-
-				if (checkImageType(saveFile)) {
-					System.out.println(uploadPath);
-					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
-					System.out.println(uploadFileName);
-					Thumbnailator.createThumbnail(mFile.getInputStream(), thumbnail, 100, 100);
-					mFile.transferTo(saveFile);
-
-					System.out.println("111");
-					thumbnail.close();
-					System.out.println("222");
-				}
-
-				// add to List
-				list.add(productAttachVO);
-				System.out.println(list);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		}
-		return list;
-	}
-
-	// 이미지 저장경로 폴더 만들기
-	private String getFolder() {
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-		Date date = new Date();
-
-		String str = sdf.format(date);
-
-		return str.replace("-", File.separator);
-	}
-
-	// 이미지 파일 확인
-	private boolean checkImageType(File file) {
-
-		try {
-			String contentType = Files.probeContentType(file.toPath());
-
-			return contentType.startsWith("image");
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return false;
-	}
+	
 }

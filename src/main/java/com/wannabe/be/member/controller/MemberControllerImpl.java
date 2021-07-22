@@ -21,7 +21,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.wannabe.be.member.service.MemberService;
 import com.wannabe.be.member.vo.MemberVO;
 
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 public class MemberControllerImpl implements MemberController {
 
 	@Autowired
@@ -37,38 +41,62 @@ public class MemberControllerImpl implements MemberController {
 	public String memberform(@RequestParam(value = "name", required = false, defaultValue = "파라미터 입력") String name,
 			Model model) {
 		model.addAttribute("name", name);
-		return "memberform";
+		return "member/memberform";
 	}
 
 	@GetMapping("/member/myinformation")
 	public String myinformation(Model model) {
 
-		return "myinformation";
+		return "member/myinformation";
 	}
 
 	@GetMapping("/member/loginform")
 	public String loginform(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return "loginform";
+		String access_token = request.getParameter("naver_id_login");
+		/* System.out.println(access_token); */
+		return "member/loginform";
 	}
 
 	@PostMapping("/member/login")
-	public ModelAndView login(@RequestParam Map<String, String> loginMap, HttpServletRequest request,
+	public String login(@RequestParam Map<String, String> loginMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();
 
 		memberVO = memberService.login(loginMap);
-		System.out.println(memberVO.getMember_pw());
 
 		if (memberVO != null && passwordEncoder.matches(loginMap.get("member_pw"), memberVO.getMember_pw())) {
+			System.out.println(memberVO.getMember_pw());
 			session.setAttribute("isLogOn", true);
 			session.setAttribute("memberInfo", memberVO);
-			mav.setViewName("redirect:/main");
+			String dest = (String) session.getAttribute("dest");
+			String redirect = (dest == null) ? "/" : dest;
+			log.info("redirect dest >>> " + redirect);
+			session.removeAttribute("dest");
+			return "redirect:" + redirect;
 		} else {
-			mav.setViewName("/member/loginform");
+			return "/member/loginform";
 		}
-		return mav;
+	}
+
+	@PostMapping("/member/socialLogin")
+	public ModelAndView socialLogin(@RequestParam String socialID, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+//		ModelAndView mav = new ModelAndView();
+//		HttpSession session = request.getSession();
+//
+//		memberVO = memberService.socialLogin(socialID);
+//		System.out.println(memberVO.getMember_pw());
+//
+//		if (memberVO != null && passwordEncoder.matches(loginMap.get("member_pw"), memberVO.getMember_pw())) {
+//			session.setAttribute("isLogOn", true);
+//			session.setAttribute("memberInfo", memberVO);
+//			mav.setViewName("redirect:/main");
+//		} else {
+//			mav.setViewName("/member/loginform");
+//		}
+		return null;
 	}
 
 	@GetMapping("/member/logout")
@@ -77,6 +105,7 @@ public class MemberControllerImpl implements MemberController {
 		HttpSession session = request.getSession();
 		session.removeAttribute("isLogOn");
 		session.removeAttribute("memberInfo");
+		session.invalidate();
 		mav.setViewName("redirect:/");
 		return mav;
 	}
@@ -101,30 +130,30 @@ public class MemberControllerImpl implements MemberController {
 		memberVO = (MemberVO) session.getAttribute("memberInfo");
 		String member_id = memberVO.getMember_id();
 		MemberVO member = memberService.selectOnemember(member_id);
-		
+
 		model.addAttribute("member", member);
 		model.addAttribute("member_id", member_id);
 
-		return "modifymemberform";
+		return "member/modifymemberform";
 
 	}
 
 	@PostMapping("/member/modifymember")
-	public String modifymember(@ModelAttribute("memberVO") MemberVO memberVO, RedirectAttributes redirect,HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public String modifymember(@ModelAttribute("memberVO") MemberVO memberVO, RedirectAttributes redirect,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
-		
+
 		int result = memberService.modifymember(memberVO);
 		System.out.println("modify_result >>>> " + result);
 		memberVO = memberService.selectOnemember(memberVO.getMember_id());
 		session.setAttribute("memberInfo", memberVO);
 		redirect.addAttribute("member_id", memberVO.getMember_id());
-		return "myinformation";
+		return "member/myinformation";
 
 	}
 
 	@RequestMapping("/member/deletemember")
-	public String deletemember(RedirectAttributes redirect,HttpServletRequest request, HttpServletResponse response)
+	public String deletemember(RedirectAttributes redirect, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
 		memberVO = (MemberVO) session.getAttribute("memberInfo");

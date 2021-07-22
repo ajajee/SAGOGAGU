@@ -8,12 +8,10 @@ import lombok.Data;
 @Component
 public class ProductAttachVO {
 
-  private String uuid;
-  private String uploadpath;
-  private String filename;
-  private String filetype;
-  
-  private int product_img_no;
-  private int product_no;
-  
+	private String uploadpath;
+	private String filename;
+	private boolean main_img;
+	private int product_img_no;
+	private int product_no;
+
 }

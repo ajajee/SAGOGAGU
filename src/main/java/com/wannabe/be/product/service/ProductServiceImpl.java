@@ -87,4 +87,11 @@ public class ProductServiceImpl implements ProductService {
 		return img_no;
 	}
 
+	@Override
+	public List<ProductVO> getSearchList(ProductVO pd) {
+		return productMapper.getSearchList(pd);
+	}
+
+	
+
 }

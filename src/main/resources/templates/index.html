@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="/common/layout">
+	 layout:decorate="~{layouts/layout}">
 
-<th:block layout:fragment="html_head">
+<th:block layout:fragment="title">
 	<title>wannabe 방문을 환영합니다.</title>
 </th:block>
 
@@ -290,5 +290,10 @@
 	</section>
 	
 </th:block>
+
+<th:block layout:fragment="pageCustomScript">
+	<script src="/js/slider.js" type="text/javascript"></script>
+</th:block>
+
 
 </html>
