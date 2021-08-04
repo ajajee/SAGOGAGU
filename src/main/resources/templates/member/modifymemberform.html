@@ -1,24 +1,56 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="/common/layout">
+
+<th:block layout:fragment="pageCustomCSS">
+<link th:href="@{/css/list.css}" rel="stylesheet" />
+</th:block>
+    <!-- <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">Eblo</title> -->
+    <!-- 공통 css, js, meta tag -->
 <body>
-<h3>고객 정보 수정</h3>
-<form action="/member/modifymember" method="post">
-<div>
-<ul>
-<li><label for="">아이디</label> <input th:value="${member.member_id}" id="member_id" name="member_id" readonly /></li>
-<li><label for="">새비밀번호</label> <input th:value="${member.member_pw}" type=password id="member_pw" name="member_pw" /></li>
-<li><label for="">새비밀번호 확인</label> <input th:value="${member.member_pw}" type=password id="member_pw1" name="member_pw1" /></li>
-<li><label for="">이름</label> <input th:value="${member.member_name}" id="member_name" name="member_name" /></li>
-<li><label for="">핸드폰</label> <input th:value="${member.member_phone}" id="member_phone" name="member_phone" /></li>
-<li><label for="">이메일</label> <input th:value="${member.member_email}" id="member_email" name="member_email" /></li>
-<button type="submit"> 수정하기 </button>
-<button th:href="@{/member/myinformation}">이전가기</button> 
-</ul>
-</div>
-</form>
+    <!-- page content body 구성 -->
+    <div layout:fragment="content_body">
+	<div class="body_container">
+		 <div class="bd_list">
+         <p><a th:href="@{/member/myinformation}" style="width:200px; height:70px; font-size: 28px; "> 마이페이지</a></p>
+           <ul>
+                <li><a th:href="@{/member/modifymemberform}"> 내 정보 수정</a></li>
+                <li><a th:href="|/member/myaddressform?member_id=${session.memberInfo.member_id}|"> 내 주소 관리</a></li>
+                <li><a th:href="@{/member/deletememberform}"> 탈퇴하기</a></li>
+           </ul>
+         </div>
+         <div class="bd_title">
+            <h3> | 내 정보 수정 </h3>
+        </div>
+        <div class="bd_body">
+		<form action="/member/modifymember" method="post">
+		<table class="bd_table">
+		<tr>
+			<td class="table_t">아이디</td>
+			<td><input th:value="${member.member_id}" name="member_id" class="int" readonly ></td>
+		</tr>
+		<tr>
+			<td class="table_t">이름</td>
+			<td> <input th:value="${member.member_name}" name="member_name" class="int"></td>
+		</tr>
+		<tr>
+			<td class="table_t">핸드폰</td>
+			<td> <input th:value="${member.member_phone}" name="member_phone" class="int"></td>
+		</tr>
+		<tr>
+			<td class="table_t">이메일</td>
+			<td> <input th:value="${member.member_email}" name="member_email" class="int"></td>
+		</tr>
+		<tr style="border:0px solid white;">
+			<td colspan="2" style="border:0px solid white;" >
+			<button class="Cbtn" type="submit">수정하기 </button></td>
+		</tr>
+		</table>
+		</form>
+	
+	  </div>
+	  </div> 
+	  </div>     
 </body>
 </html>

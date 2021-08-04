@@ -9,13 +9,14 @@ import lombok.Data;
 @Data
 public class MemberVO {
 	
-	String member_id;
-	String member_pw;
-	String member_name;
-	String member_phone;
-	String member_email;
-	String member_authority;
-	Date regdate;
-	Date updatedate;
-	String secession;;
+	private String member_id;
+	private String member_pw;
+	private String member_name;
+	private String member_phone;
+	private String member_email;
+	private String member_authority;
+	private Date regdate;
+	private Date updatedate;
+	private String secession;
+	
 }

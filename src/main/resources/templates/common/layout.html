@@ -2,19 +2,21 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <!-- <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">Eblo</title> -->
-    <!-- 공통 css, js, meta tag -->
+    <!-- 怨듯넻 css, js, meta tag -->
     <th:block th:replace="/common/head"></th:block>
-    <!-- ���� css -->
+    <!-- 개별 css -->
     <th:block layout:fragment="css"></th:block>
 </head>
 <body>
 	<header th:replace="/common/header :: header"></header>
         
-    <!-- page content body 구성 -->
+    <!-- page content body 援ъ꽦 -->
     <div layout:fragment="content_body"></div>
-    <!-- 공통 footer -->
+   
+    <!-- 怨듯넻 footer -->
+    
     <footer th:replace="/common/footer :: footer"></footer>
-    <!-- 공통 javascript -->
+    <!-- 怨듯넻 javascript -->
     <th:block th:replace="/common/scripts"></th:block>
     <!-- page content javascript -->
     <th:block layout:fragment="pageCustomScript"></th:block>

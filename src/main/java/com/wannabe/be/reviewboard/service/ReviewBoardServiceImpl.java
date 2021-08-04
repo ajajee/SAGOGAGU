@@ -117,6 +117,13 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 
 
 
+	@Override
+	public int getReviewCount(int product_no) {
+		return reviewBoardMapper.getReviewCount(product_no);
+	}
+
+
+
 
 
 }

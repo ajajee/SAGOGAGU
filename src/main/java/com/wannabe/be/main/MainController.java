@@ -38,18 +38,15 @@ public class MainController {
 		List<ProductAttachVO> ProductImageList = new ArrayList<>();
 		List<ProductAttachVO> bestImageList = new ArrayList<>();
 		List<ProductAttachVO> tempList = new ArrayList<>();
-		NumberFormat numberFormat = NumberFormat.getInstance();
+
 
 		for (int i = 0; i <latestProductList.size(); i++) {
 			ProductVO product = latestProductList.get(i);
 			int product_no = product.getProduct_no();
+			product.setReviewCount(reviewBoardService.getReviewCount(product_no));
+			product.setAvg_rating(productService.getAvgRatingByProduct_no(product_no));
 			tempList.addAll(productService.getProductImageByProductNo(product_no));	
-			double price = product.getProduct_price();
-			DecimalFormat decimalFormat = new DecimalFormat("#.##");
-			decimalFormat.setGroupingUsed(true);
-	        decimalFormat.setGroupingSize(3);
-	        decimalFormat.format(price);
-	        product.setFormattedPrice(decimalFormat.format(price));
+
 		}
 		
 		/* null값있는 리스트 항목 제거  */ 
@@ -62,7 +59,10 @@ public class MainController {
 		}
 		
 		for(int k = 0; k < bestProductList.size(); k++) {
-			int product_no = bestProductList.get(k).getProduct_no();
+			ProductVO product = bestProductList.get(k);
+			int product_no = product.getProduct_no();
+			product.setReviewCount(reviewBoardService.getReviewCount(product_no));
+			product.setAvg_rating(productService.getAvgRatingByProduct_no(product_no));
 			bestImageList.addAll(productService.getProductImageByProductNo(product_no));
 		}
 		

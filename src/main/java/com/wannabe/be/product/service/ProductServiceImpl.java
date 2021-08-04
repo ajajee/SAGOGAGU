@@ -15,6 +15,7 @@ import com.wannabe.be.product.dao.ProductMapper;
 import com.wannabe.be.product.vo.ProductAttachVO;
 import com.wannabe.be.product.vo.ProductCategoryVO;
 import com.wannabe.be.product.vo.ProductVO;
+import com.wannabe.be.product.vo.PurchaseHistoryVO;
 import com.wannabe.be.shopcart.vo.ShopcartVO;
 
 @Service("productService")
@@ -34,9 +35,9 @@ public class ProductServiceImpl implements ProductService {
 
 		if (productVO.getAttachList() == null || productVO.getAttachList().size() <= 0) {
 			return;
-		}else {
+		} else {
 			List<ProductAttachVO> attachList = productVO.getAttachList();
-			for(ProductAttachVO attach : attachList) {
+			for (ProductAttachVO attach : attachList) {
 				attach.setProduct_no(product_no);
 				productAttachMapper.insert(attach);
 			}
@@ -48,10 +49,9 @@ public class ProductServiceImpl implements ProductService {
 		return productMapper.getProductDetailsByProduct_no(product_no);
 	}
 
-	
 	@Override
 	public List<ProductVO> getAvailableProductNo() {
-		return  productMapper.getAvailableProductNo();
+		return productMapper.getAvailableProductNo();
 	}
 
 	@Override
@@ -65,30 +65,43 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<ProductAttachVO> getProductImageByProductNo(int product_no) {	
-		return productAttachMapper.getProductImageByProductNo(product_no); 
+	public List<ProductAttachVO> getProductImageByProductNo(int product_no) {
+		return productAttachMapper.getProductImageByProductNo(product_no);
 	}
-	
 
 	@Override
 	public List<ProductVO> getProductListByRating() {
 		return productMapper.getProductListByRating();
 	}
 
-	
 	@Override
 	public List<ProductVO> getProductListWithPageInfo(ProductVO product) {
 		return productMapper.getProductListWithPageInfo(product);
 	}
 
+	@Override
+	public int getAvgRatingByProduct_no(int product_no) {
+		return productMapper.getAvgRatingByProduct_no(product_no);
+	}
 
 
-
-/*----------------------------------------------------------------------------------------*/
+	@Override
+	public void updatePurchaseHistory(PurchaseHistoryVO history) {
+		productMapper.updatePurchaseHistory(history);
+		
+	}
 	
 	@Override
+	public List<PurchaseHistoryVO> getHistory(String member_id) {
+		return productMapper.getHistory(member_id);
+	}
+
+
+	/*----------------------------------------------------------------------------------------*/
+
+	@Override
 	public List<ProductVO> getlist() {
-		
+
 		List<ProductVO> list_productVO = productMapper.getlist();
 		List<ProductAttachVO> list_productAttachVO = productAttachMapper.getlist();
 
@@ -124,7 +137,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void removeGoodsImage(int product_no) {
 		productAttachMapper.deleteGoodsImage(product_no);
-		
+
 	}
 
 	@Override
@@ -143,4 +156,8 @@ public class ProductServiceImpl implements ProductService {
 
 
 	
+
+
+
+
 }

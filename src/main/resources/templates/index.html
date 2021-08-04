@@ -12,7 +12,7 @@
 
 <div id="wrap" layout:fragment="content_body">
 	<!-- Slider begin -->
-	<div class="container slider">
+	<div class="container slider w-100">
 		<!-- Full-width images with number text -->
 		<div class="mySlides">
 			<div class="numbertext">1 / 6</div>
@@ -54,27 +54,29 @@
 		</div>
 		<!-- Slider End -->
 		<!-- Section-->
-		<section class="py-2">
-
-
-			<!-- 신상품  -->
+		<section>
+			<!--신제품-->
 			<div class="container-fluid">
-				<div class="row">
+				<div class="row flex-wrap">
 					<h4 class="text-left">신상품</h4>
-					<div class="text-right ml-0">더보기</div>
-					<div class="card card-group border-0 px-2" style="width: 20rem;"
+					<div class="col-sm-5 p-0" style="width: 16.5rem; "
 						th:each="product, rowStatus :${latestProductList}">
 						<div>
-							<picture class="image_container bg-image"
-								th:each="image: ${ProductImageList}"
-								th:if="${#strings.equals(image.filetype, 'main_image')}">
-							<a
-								th:href="@{/product/productDetails(product_no=${product.product_no})}">
-								<img th:if="${image.product_no == product.product_no}"
-								th:src="@{/productThumbs(filepath=${image.uploadpath}, filename=${image.filename})}"
-								alt="product_thumbnail"
-								class="card-img-top img-fluid rounded mx-auto d-block">
-							</a> </picture>
+							<div class="img-wrapper">
+								<picture class="image_container bg-image"
+									th:each="image: ${ProductImageList}"
+									th:if="${#strings.equals(image.filetype,'main_image')}">
+								<a
+									th:href="@{/product/productDetails(product_no=${product.product_no})}">
+									<img th:if="${image.product_no == product.product_no}"
+									th:src="@{/productThumbs(filepath=${image.uploadpath}, filename=${image.filename})}"
+									alt="product_thumbnail"
+									class="card-img-top img-fluid rounded main_img">
+								</a> </picture>
+								<div class="bookmark-icon">
+									<i class="far fa-bookmark"></i>
+								</div>
+							</div>
 							<div class="card-body pt-2 pl-0">
 								<p
 									class="card-text card-subtitle text-muted small font-weight-light text-left"
@@ -83,24 +85,37 @@
 									<strong><span
 										th:utext="${product.product_sale_percent + '% '}"
 										style="color: #06bbcf"></span><span class="card-text mr-2"
-										th:text="${product.formattedPrice}"></span></strong>
+										th:text="${product.formattedPrice}"></span></strong> <br> <span
+										th:if="${product.reviewCount > 0}"
+										class="fa fa-star fa-pull-left checked"></span> <span
+										th:if="${product.reviewCount <= 0}"
+										class="fa fa-star fa-pull-left"></span> <strong><span
+										th:text="${product.avg_rating + '.0'}"
+										style="font-size: 0.7rem; vertical-align: top"></span></strong> <span
+										th:text="${'리뷰' + product.reviewCount}" class="text-muted"
+										style="font-size: 0.7rem; vertical-align: top"></span> <br>
+									<span th:if="${product.product_sale_percent >=50}" th:text="특가"
+										class="badge badge-success"></span> <span
+										th:if="${product.product_delivery_price == 0}" th:text="무료배송"
+										class="badge badge-pill badge-info"></span>
+										
 								</p>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- 신상품 -->
+			<!--신상품 끝 -->
 
 
-			<!-- 베스트 -->
-
+			<!--베스트 -->
 			<div class="container-fluid">
 				<div class="row">
 					<h4 class="text-left">베스트</h4>
-					<div class="card card-group border-0 px-2" style="width: 20rem;"
+					<div class="col-sm-5 p-0" style="width: 16.5rem;"
 						th:each="bestProduct, rowStatus :${bestProductList}">
 						<div>
+							<div class="img-wrapper">
 							<picture class="image_container bg-image"
 								th:each="bestImage: ${bestImageList}"
 								th:if="${#strings.equals(bestImage.filetype, 'main_image')}">
@@ -109,9 +124,10 @@
 								<img th:if="${bestImage.product_no == bestProduct.product_no}"
 								th:src="@{/productThumbs(filepath=${bestImage.uploadpath}, filename=${bestImage.filename})}"
 								alt="product_thumbnail"
-								class="card-img-top img-fluid rounded mx-auto d-block">
+								class="card-img-top img-fluid rounded mx-auto d-block main_img">
 							</a> </picture>
-							<div class="card-body pt-2 pl-0">
+							</div>
+							<div class="pt-2 pl-0">
 								<p
 									class="card-text card-subtitle text-muted small font-weight-light text-left"
 									style="font-size: 0.7rem;"
@@ -120,7 +136,15 @@
 									<strong><span
 										th:utext="${bestProduct.product_sale_percent + '% '}"
 										style="color: #06bbcf"></span><span class="card-text mr-2"
-										th:text="${bestProduct.formattedPrice}"></span></strong>
+										th:text="${bestProduct.formattedPrice}"></span></strong> <br> <span
+										th:if="${bestProduct.reviewCount > 0}"
+										class="fa fa-star fa-pull-left checked"></span> <span
+										th:if="${bestProduct.reviewCount <= 0}"
+										class="fa fa-star fa-pull-left"></span> <strong><span
+										th:text="${bestProduct.avg_rating + '.0'}"
+										style="font-size: 0.7rem; vertical-align: top"></span></strong> <span
+										th:text="${'리뷰' + bestProduct.reviewCount}" class="text-muted"
+										style="font-size: 0.7rem; vertical-align: top"></span>
 								</p>
 							</div>
 						</div>
@@ -129,85 +153,25 @@
 			</div>
 			<!-- 베스트 끝  -->
 
-			<div class="container-fluid card-list" id="card-list">
+			<div class="container-fluid" id="card-list">
 				<div class="row">
 					<div class="newCard card-group border-0 px-2" style="width: 20rem;">
-						<div>
-							<picture class="image_container bg-image"
-								th:each="newImage: ${newImageList}"
-								th:if="${#strings.equals(newImage.filetype, 'main_image') && newImageList != null}">
-							<a
-								th:href="@{/product/productDetails(product_no=${newProduct.product_no})}">
-								<img th:if="${newImage.product_no == newProduct.product_no}"
-								th:src="@{/productThumbs(filepath=${newImage.uploadpath}, filename=${newImage.filename})}"
-								alt="product_thumbnail"
-								class="card-img-top img-fluid rounded mx-auto d-block">
-							</a> </picture>
-							<div class="card-body pt-2 pl-0">
-								<p
-									class="newCardTitle text card-subtitle text-muted small font-weight-light text-left"
-									style="font-size: 0.7rem;"></p>
-								<p class="text-left">
-									<strong><span
-										th:utext="${newProduct.product_sale_percent + '% '}"
-										style="color: #06bbcf"></span><span class="card-text mr-2"
-										th:text="${newProduct.formattedPrice}"></span></strong>
-								</p>
-							</div>
-						</div>
+						<div class="newCardTitle"></div>
 					</div>
-				</div>
-			</div>
-			<!-- 무한 스크롤 -->
+					<!-- 臾댄븳 �뒪�겕濡� -->
 
-			<!--끝  -->
-			<div class="loader">
-				<img
-					src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/f3d5a969321565.5b7d0cbe73337.gif">
-			</div>
+					<!--로더  -->
+					<div class="loader">
+						<img
+							src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/f3d5a969321565.5b7d0cbe73337.gif">
+					</div>
+					<!-- 로더 끝 -->
 		</section>
 	</div>
 </div>
 <th:block layout:fragment="pageCustomScript">
 	<script>
-		var currentPage = 1;
-		var totalPageCount = 1;
-		var isLoading = false;
-
-		$(document).ready(function() {
-			getList(currentPage);
-		});
-
-		$(window).on("scroll", function() {
-			var scrollTop = $(window).scrollTop();
-			var windowHeight = $(window).height();
-			var documentHeight = $(document).height();
-			var isBottom = scrollTop + windowHeight + 10 >= documentHeight;
-
-			if (isBottom) {
-				if (currentPage == totalPageCount || isLoading) {
-					return;
-				}
-
-				isLoading = true;
-				$(".loader").css("display", "block");
-				currentPage++;
-				getList(currentPage);
-			}
-		});
-
-		function getList(currentPage) {
-			
-			$.getJSON("/product/getBestProducts"+ pageNum=" + currentPage,
-					$(data).each(function() {
-						$(".newCardTitle").text(this.newProductList.product_title);
-					});
-
-				}
-
-		/* $("#card-list").append(data);
-		$(".loader").css("display", "none");
-		isLoading = false; */
+		
 	</script>
 </th:block>
 </html>

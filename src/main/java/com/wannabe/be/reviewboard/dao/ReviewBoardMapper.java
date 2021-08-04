@@ -60,5 +60,8 @@ public interface ReviewBoardMapper {
 
 	@Select("SELECT * FROM REVIEW ORDER BY LIKES DESC")
 	public List<ReviewVO> getReviewsByLikesCount();
+	
+	@Select("select ifnull(Count(*), 0) from Review where product_no = #{product_no}")
+	public int getReviewCount(int product_no);
 
 }

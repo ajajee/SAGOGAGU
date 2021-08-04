@@ -24,5 +24,7 @@ public interface ReviewBoardService {
 	List<ReviewImageFileVO> getImageList(int review_no);
 	List<ReviewVO> getReviewsByLikesCount();
 	List<ReviewImageFileVO> getImageListByProduct_no(int product_no);
+	int getReviewCount(int product_no);
+	
 
 }

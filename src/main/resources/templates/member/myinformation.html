@@ -1,22 +1,56 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="/common/layout">
 
-<head>
-	<title>Getting Started: Serving Web Content</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-</head>
-
+<th:block layout:fragment="pageCustomCSS">
+<link th:href="@{/css/list.css}" rel="stylesheet" />
+</th:block>
+    <!-- <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">Eblo</title> -->
+    <!-- 공통 css, js, meta tag -->
 <body>
-	<h3>마이페이지</h3>
-
-	<div>
-		<li><a th:href="@{/member/modifymemberform}">회원정보 수정</a></li>
-		<li><a th:href="|/member/myaddressform?member_id=${session.memberInfo.member_id}|">주소지 관리</a></li>
-		<li><a th:href="@{/member/myaddressform}">회원주소 조회</a></li>
-		<li><a th:href="@{/member/deletemember}">회원 탈퇴하기</a></li>
-		</ul>
+    <!-- page content body 구성 -->
+    <div layout:fragment="content_body">
+	<div class="body_container">
+		 <div class="bd_list">
+         <p><a th:href="@{/member/myinformation}" style="width:200px; height:70px; font-size: 28px; "> 마이페이지</a></p>
+           <ul>
+                <li><a th:href="@{/member/modifymemberform}"> 내 정보 수정</a></li>
+                <li><a th:href="@{/member/viewHistory}">주문 히스토리</a></li>
+                <li><a th:href="|/member/myaddressform?member_id=${session.memberInfo.member_id}|"> 내 주소 관리</a></li>
+                <li><a th:href="@{/member/deletememberform}"> 탈퇴하기</a></li>
+           </ul>
+         </div>
+         <div class="bd_title">
+            <h3> | 마이페이지 </h3>
+        </div>
+         <div class="bd_body">
+	         
+			 <table class="bd_table">
+				<tr>
+				<td class="table_t" >아이디</td>
+				<td th:text="${session.memberInfo.member_id}" id="member_id" name="member_id"></td>
+				</tr>
+				<tr>
+				<td class="table_t">비밀번호</td>
+				<!-- (member_id=${session.memberInfo.member_id}) -->
+				<td><a th:href="@{/member/modifyPwForm}" style="text-decoration:none;">비밀번호 변경</a></td></tr>
+				<tr>
+				<td class="table_t">이름</td>
+				<td th:text="${session.memberInfo.member_name}" id="member_name" name="member_name"></td>
+				</tr> 
+				<tr>
+				<td class="table_t" >핸드폰</td>
+				<td th:text="${session.memberInfo.member_phone}" id="member_phone" name="member_phone"></td>
+				</tr>
+				<tr>
+				<td class="table_t">이메일</td> 
+				<td th:text="${session.memberInfo.member_email}" id="member_email" name="member_email" ></td>
+				</tr>
+	        </table>
+	        </div>
 	</div>
-</body>
+	</div>
 
+</body>
 </html>

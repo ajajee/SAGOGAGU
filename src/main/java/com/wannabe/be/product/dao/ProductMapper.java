@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.wannabe.be.product.vo.ProductAttachVO;
 import com.wannabe.be.product.vo.ProductCategoryVO;
 import com.wannabe.be.product.vo.ProductVO;
+import com.wannabe.be.product.vo.PurchaseHistoryVO;
+import com.wannabe.be.shopcart.vo.ShopcartVO;
 
 @Repository
 @Mapper
@@ -31,5 +33,13 @@ public interface ProductMapper {
 	public List<ProductVO> getProductListByRating();
 
 	public List<ProductVO> getProductListWithPageInfo(ProductVO product);
+
+	public int getAvgRatingByProduct_no(int product_no);
+
+	public void updatePurchaseHistory(PurchaseHistoryVO history);
+
+	public List<PurchaseHistoryVO> getHistory(String member_id);
+
+
 
 }

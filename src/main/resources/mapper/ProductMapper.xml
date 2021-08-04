@@ -17,18 +17,34 @@
 	</insert>
 	
 	<select id="getLatestProducts" resultType="com.wannabe.be.product.vo.ProductVO">
-		Select * from product order by regdate desc limit 0, 8
+		Select *, FORMAT(product_price, 0) as formattedPrice from product order by regdate desc limit 0, 10
 	</select>
 	
 	<select id="getProductListByRating" resultType="com.wannabe.be.product.vo.ProductVO">
- 		Select *, ifnull((select round(avg(rating), 1) from review where review.product_no = product.product_no group by product_no), 0) 
+ 		Select *, FORMAT(product_price, 0) as formattedPrice, ifnull((select round(avg(rating), 1) from review where review.product_no = product.product_no group by product_no), 0) 
 		as avg_rating from product order by avg_rating desc, regdate desc limit 0, 8
 	</select>
 	
 	<select id="getProductListWithPageInfo" parameterType="com.wannabe.be.product.vo.ProductVO" resultType="com.wannabe.be.product.vo.ProductVO">
-			Select *, ifnull((select round(avg(rating), 1) from review where review.product_no = product.product_no group by product_no), 0) 
+			Select *,  FORMAT(product_price, 0) as formattedPrice, ifnull((select round(avg(rating), 1) from review where review.product_no = product.product_no group by product_no), 0) 
 			as avg_rating from product order by avg_rating desc, regdate desc limit #{startRowNum}, #{rowCount}
 	</select>
+	
+	<select id="getAvgRatingByProduct_no" parameterType="int" resultType="int">
+		Select ifnull((select round(avg(rating), 1) from review where review.product_no = product.product_no group by product_no), 0) 
+		as avg_rating from product where product_no = #{product_no}
+	</select>
+	
+	<insert id="updatePurchaseHistory" parameterType="com.wannabe.be.product.vo.PurchaseHistoryVO">
+		   insert into purchase_history (product_delivery_price, product_sale_percent, address_id, member_id, product_no, product_quantity, product_price) values(#{product_delivery_price}, #{product_sale_percent}, #{address_id}, #{member_id},  #{product_no}, #{product_quantity}, #{product_price})
+	</insert>
+	
+	<select id="getHistory" parameterType="String" resultType="com.wannabe.be.product.vo.PurchaseHistoryVO">
+			select * from purchase_history where member_id = #{member_id} order by regdate desc 
+	</select>
+	
+	
+	
 	<select id="getlist"   resultType="com.wannabe.be.product.vo.ProductVO">
 		select * from product
 	</select>

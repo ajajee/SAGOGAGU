@@ -8,10 +8,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -25,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,12 +41,29 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.fasterxml.jackson.databind.util.JSONWrappedObject;
+import com.mysql.cj.xdevapi.JsonArray;
+import com.mysql.cj.xdevapi.JsonValue;
+import com.wannabe.be.address.service.AddressService;
+import com.wannabe.be.address.vo.AddressVO;
+import com.wannabe.be.member.service.MemberService;
 import com.wannabe.be.member.vo.MemberVO;
 import com.wannabe.be.product.service.ProductService;
 import com.wannabe.be.product.vo.ProductAttachVO;
 import com.wannabe.be.product.vo.ProductCategoryVO;
 import com.wannabe.be.product.vo.ProductVO;
+import com.wannabe.be.product.vo.PurchaseHistoryVO;
+import com.wannabe.be.reviewboard.service.ReviewBoardService;
+import com.wannabe.be.reviewboard.vo.ReviewImageFileVO;
+import com.wannabe.be.reviewboard.vo.ReviewVO;
+import com.wannabe.be.shopcart.service.ShopcartService;
 import com.wannabe.be.shopcart.vo.ShopcartVO;
+import com.wannabe.be.utills.Criteria;
+import com.wannabe.be.utills.PaginationVO;
 
 import net.coobird.thumbnailator.Thumbnailator;
 import net.coobird.thumbnailator.Thumbnails;
@@ -53,12 +74,25 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
-
+	
+	@Autowired
+	private ReviewBoardService reviewBoardService;
+	
+	@Autowired
+	private ShopcartService shopcartService; 
+	
+	@Autowired
+	private MemberService memberService; 
+	
+	@Autowired
+	private AddressService adressService; 
+	
 	@Autowired
 	private ProductVO productVO;
 
 	@Autowired
 	private MemberVO memberVO;
+	
 
 	/* 제품 추가 양식 */
 	@GetMapping("/product/productform")
@@ -109,6 +143,7 @@ public class ProductController {
 		Iterator<String> fileNames = multipartRequest.getFileNames();
 
 		List<ProductAttachVO> list = new ArrayList<>();
+		
 		String uploadpath = "C:\\productImages\\upload\\";
 		File uploadPath = new File(uploadpath);
 		if (!uploadPath.exists()) {
@@ -140,14 +175,45 @@ public class ProductController {
 
 	/* 상품 상세 페이지 */
 	@GetMapping("/product/productDetails")
-	public String getProductDetails(@RequestParam("product_no") int product_no, HttpServletRequest request,
-			HttpServletResponse response, Model model) {
+	public String getProductDetails(@RequestParam("product_no") int product_no, @RequestParam(value = "sortType", required = false) String sortType, HttpServletRequest request,
+			HttpServletResponse response, Model model, Criteria cri) {
 
 		HttpSession session = request.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
 		ProductVO product = productService.getProductDetailsByProduct_no(product_no);
 		List<ProductAttachVO> imageList = productService.getProductImageByProductNo(product_no);
 		String member_id = memberVO.getMember_id();
+		PaginationVO paginationVO = new PaginationVO();
+		cri.setPerPageNum(10);
+		paginationVO.setCri(cri);
+
+		List<ReviewVO> reviewList = null;
+		paginationVO.setTotalCount(reviewBoardService.countAllReview(product_no));
+		if ("".equals(sortType) || sortType == null) {
+			reviewList = reviewBoardService.listReview(product_no, cri);
+		} else if (sortType.equals("ByLikes")) {
+			reviewList = reviewBoardService.getListbyLikes(product_no, cri);
+			System.out.println(reviewList.get(1));
+		} else if (sortType.equals("ByRatingAsc")) {
+			reviewList = reviewBoardService.getListbyRatingAsc(product_no, cri);
+		} else if (sortType.equals("ByRatingDesc")) {
+			reviewList = reviewBoardService.getListbyRatingDesc(product_no, cri);
+		}
+
+		String temp = "";
+		for (int i = 0; i < reviewList.size(); i++) {
+			temp = reviewList.get(i).getMember_id();
+			String displayName = temp.substring(0, 3);
+			for (int j = 0; j < temp.length() - 3; j++) {
+				displayName += "*";
+				reviewList.get(i).setDisplayName(displayName);
+			}
+		}
+		List<ReviewImageFileVO> reviewImageList = reviewBoardService.listReviewFile(product_no);
+		model.addAttribute("reviewList", reviewList);
+		model.addAttribute("reviewImageList", reviewImageList);
+		model.addAttribute("pageInfo", paginationVO);
+		model.addAttribute("product_no", product_no);
 		model.addAttribute("product", product);
 		model.addAttribute("imageList", imageList);
 		model.addAttribute("member_id", member_id);
@@ -168,9 +234,9 @@ public class ProductController {
 		}
 
 		if ("".equals(displayType) || displayType == null) {
-			Thumbnails.of(thumbnail).size(290, 260).crop(Positions.CENTER).toOutputStream(out);
+			Thumbnails.of(thumbnail).size(250, 220).crop(Positions.CENTER).toOutputStream(out);
 		} else if (displayType.equals("main_detail")) {
-			Thumbnails.of(thumbnail).size(490, 490).keepAspectRatio(true).toOutputStream(out);
+			Thumbnails.of(thumbnail).size(420, 420).keepAspectRatio(true).toOutputStream(out);
 		} else {
 			Thumbnails.of(thumbnail).size(150, 150).crop(Positions.CENTER).toOutputStream(out);
 		}
@@ -180,22 +246,12 @@ public class ProductController {
 		out.close();
 	}
 
-	/* 카트에 아이템 추가 */
-	@GetMapping(value = "/product/addItemToCart")
-	public void addItemToCart(@RequestParam("product_no") int product_no, @RequestParam("member_id") String member_id,
-			@RequestParam("cart_product_quantity") int cart_product_quantity, HttpServletRequest request,
-			HttpServletResponse response) {
-		ShopcartVO shopcartVO = new ShopcartVO();
-		shopcartVO.setMember_id(member_id);
-		shopcartVO.setProduct_no(product_no);
-		shopcartVO.setCart_product_quantity(cart_product_quantity);
-		productService.addItemToCart(shopcartVO);
-	}
+
 
 	/* 무한 스크롤 - Ajax 처리 */
 	@ResponseBody
 	@GetMapping(value = "/product/getBestProducts")
-	public Object getBestProductList(@RequestParam("pageNum") String pageNum, Model model, HttpServletRequest request,
+	public Map getBestProductList(@RequestParam("pageNum") String pageNum, Model model, HttpServletRequest request, HttpServletResponse response,
 			HttpSession session) {
 
 		final int PAGE_ROW_COUNT = 2;
@@ -209,27 +265,89 @@ public class ProductController {
 		product.setEndRowNum(endRowNum);
 		product.setRowCount(rowCount);
 
-		List<ProductVO> newProductList = productService.getProductListWithPageInfo(product);
-		List<ProductAttachVO> newImageList = new ArrayList<>();
+		List<ProductVO> productList = productService.getProductListWithPageInfo(product);
+		List<ProductAttachVO> ImageList = new ArrayList<>();
 
-		for (int i = 0; i < newProductList.size(); i++) {
-			int product_no = newProductList.get(i).getProduct_no();
-			newImageList.addAll(productService.getProductImageByProductNo(product_no));
+		for (int i = 0; i < productList.size(); i++) {
+			int product_no = productList.get(i).getProduct_no();
+			ImageList.addAll(productService.getProductImageByProductNo(product_no));
 		}
+	
 
-		int totalRow = newProductList.size() / 4;
-
+		int totalRow = productList.size() / 4;
 		int totalPageCount = (int) Math.ceil(totalRow / (double) PAGE_ROW_COUNT);
-
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("newProductList", newProductList);
-		map.put("totalPageCount", totalPageCount);
-		map.put("pageNum", pageNum);
-		map.put("totalRow", totalRow);
 		
-		System.out.println(map);
-		return map;
+		
+		  HashMap<String, Object> map = new HashMap<>();
+		  
+		  map.put("newProductList", productList); 
+		  map.put("newImageList", ImageList);
+		  map.put("totalPageCount", totalPageCount); 
+		  map.put("pageNum", pageNum);
+		  map.put("totalRow", totalRow);	  
+		  
+		  return map;
+		 
 	}
+	
+	/*주문 정보 화면 */
+	@RequestMapping(value="/product/paymentForm")
+	public String paymentForm(@RequestParam("product_no")int product_no, @RequestParam("cart_product_quantity")String cart_product_quantity, @RequestParam("member_id") String member_id, @RequestParam("totalPrice")String totalPrice, Model model, HttpSession session) throws Exception {
+		
+		
+		ShopcartVO shopcart= new ShopcartVO();
+		shopcart.setCart_product_quantity(Integer.parseInt(cart_product_quantity));
+		shopcart.setMember_id(member_id);
+		shopcart.setProduct_no(product_no);
+		shopcart.setTotalPrice(Integer.parseInt(totalPrice));
+		memberVO = memberService.getMemberInfo(member_id);
+		ProductVO product = productService.getProductDetailsByProduct_no(product_no);
+	
+		List<AddressVO> addressList = adressService.list(member_id);
+		
+		model.addAttribute("shopcart", shopcart);
+		model.addAttribute("addressList", addressList);
+		model.addAttribute("memberVO", memberVO);
+		model.addAttribute("product", product);
+		
+		session.setAttribute("shopcart", shopcart);
+		session.setAttribute("memberVO", memberVO);
+		session.setAttribute("product_no", product_no);
+		session.setAttribute("addressList", addressList);
+		
+		return "/product/paymentForm";
+		
+	}
+	
+	/* 결제 화면 */ 
+	@RequestMapping(value="/product/payment")
+	public ModelAndView processPayment(@RequestParam(value = "member_id", required = false)String member_id, 
+			HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+		
+		
+		memberVO = (MemberVO) session.getAttribute("memberVO");
+		int product_no = (int) session.getAttribute("product_no");
+		ShopcartVO shopcart = (ShopcartVO) session.getAttribute("shopcart");
+		List<AddressVO> list = (List<AddressVO>) session.getAttribute("addressList");
+		ProductVO product = productService.getProductDetailsByProduct_no(product_no);
+		PurchaseHistoryVO history = new PurchaseHistoryVO();
+		history.setMember_id(memberVO.getMember_id());	
+		history.setProduct_delivery_price(product.getProduct_delivery_price());
+		history.setProduct_quantity(shopcart.getCart_product_quantity());
+		history.setProduct_price(product.getProduct_price());
+		history.setProduct_sale_percent(product.getProduct_sale_percent());
+		history.setProduct_price(product.getProduct_price());
+		history.setProduct_no(product_no);
+		history.setAddress_id(list.get(0).getAddress_id());
+		
+		productService.updatePurchaseHistory(history);
+	
+		
+		return new ModelAndView("forward:/main");
+
+	}
+	
+
 
 	@GetMapping("/product/list")
 	public String list(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {

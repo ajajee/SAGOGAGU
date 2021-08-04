@@ -1,144 +1,147 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-	
-	<!-- Navigation-->
-	<header th:fragment="header">
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<div class="container px-4 px-lg-5">
-				<a class="navbar-brand" href="/">WANNABE</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-					data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-					aria-expanded="false" aria-label="Toggle navigation"><span
-						class="navbar-toggler-icon"></span></button>
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-					<li th:if="${session.isLogOn == null}"  class="nav-item"><a class="nav-link" href="/member/loginform"><i class="bi bi-person-circle"></i>로그인</a></li>
-					<li th:if="${session.isLogOn != null}" class="nav-item"><a class="nav-link" href="/member/logout"><i class="bi bi-person-circle"></i>로그아웃</a></li>
-					<li th:if="${session.isLogOn == null}"  class="nav-item"><a class="nav-link" href="/member/memberform">회원가입<a></li>
-					<li th:if="${session.isLogOn != null}"  class="nav-item"><a class="nav-link" href="/member/myinformation">마이페이지<a></li>
-						<li class="nav-item"><a class="nav-link" href="/product/productform">상품 등록</a></li>
-						<li class="nav-item"><a class="nav-link" href="product/list">상품 리스트</a></li>
-						<li class="nav-item"><a class="nav-link" href="/product/qnaform">문의 등록</a><li>
-						<li class="nav-item"><a class="nav-link" href="/product/qnaBoard?product_no=113">문의 게시판</a></li>
-						<li class="nav-item"><a class="nav-link" href="/product/reviewForm">리뷰 등록</a></li>
-						
-					</ul>
-					<form class="d-flex">
-						<button class="btn btn-outline-dark" type="submit">
-							<i class="bi-cart-fill me-1"></i>
-							Cart
-							<span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-						</button>
-					</form>
-				</div>
-			</div>
-		</nav>
-		<div style="text-align: center; ">
-			<a class="navbar-brand" style="color: black; font-weight: bold; " href="/">WANNABE</a>
-		</div>
-		<nav class="navbar" style="border-top: 1px solid black; border-bottom: 1px solid gray; padding: 0;">
-			<div class="container px-4 px-lg-5" style="text-align: center;">
-				<ul style="text-align: center; display: flex; padding: 0; margin: 0; width: 1200px; height: 45px;">
-					<li class="nav-item dropdown"
-						style="list-style: none; border-right: 1px solid #e5e5e5;  border-left: 1px solid #e5e5e5; width: 240px;">
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+   
+   <!-- Navigation-->
+   <header th:fragment="header">
+      <nav class="navbar navbar-expand-lg navbar-light w-100">
+         <div class="container px-4">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+               data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+               aria-expanded="false" aria-label="Toggle navigation"><span
+                  class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse w-50" id="navbarSupportedContent">
+               <ul class="navbar-nav me-auto mb-lg-0">
+               <li><a href="/main"><img src="/assets/logo.png" style="width:80px"></a></li>
+               <li th:if="${session.isLogOn == null}"  class="nav-item"><a class="nav-link" href="/member/loginform"><i class="bi bi-person-circle"></i>로그인</a></li>
+               <li th:if="${session.isLogOn != null}" class="nav-item"><a class="nav-link" href="/member/logout"><i class="bi bi-person-circle"></i>로그아웃</a></li>
+               <li th:if="${session.isLogOn == null}"  class="nav-item"><a class="nav-link" href="/member/memberform">회원가입</a></li>
+               <li th:if="${session.isLogOn != null}"  class="nav-item"><a class="nav-link" href="/member/myinformation">마이페이지</a></li>
+               <li class="nav-item"><a class="nav-link" href="#">이벤트</a></li>
+            
+               </ul>
+               
+               <div class="navbar" th:if="${session.isLogOn != null && session.isadmin != null}"><a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" 
+                  role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black; font-weight: bold;  padding-top : 12px; padding-bottom: 0;">관리자</a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown"
+                     style="width: 180px;text-align: center; ">
+                      <li class="align-top">관리자 페이지</li>
+                      <a href="/product/productform"><li class="align-top">제품 입력</li></a>
+                  </ul>
+               </div>
+               
+               <form class="d-flex">
+                  <button class="btn btn-outline-dark" type="submit" th:if="${session.isLogOn != null}" >
+                      <i class="bi-cart-fill me-1"></i>
+                     <a href="/product/mycart">My Cart</a>
+                     <span class="badge bg-dark text-white ms-1 rounded-pill"></span>
+                  </button>
+               </form>
+            </div>
+         </div>
+      </nav>
+      <nav class="navbar w-100" style="border-top: 1px solid #f7f6f2; border-bottom: 1px solid #f7f6f2; padding: 0;">
+         <div class="container px-4 px-lg-5" style="text-align: center;">
+            <ul style="text-align: center; display: flex; padding: 0; margin: 0; width: 1200px; height: 45px;">
+               <li class="nav-item dropdown"
+                  style="list-style: none; width: 240px;">
 
-						<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-							data-bs-toggle="dropdown" aria-expanded="false"
-							style="color: black; font-weight: bold;  padding-top : 12px; padding-bottom: 0;">침대</a>
+                  <a class="nav-link dropdown-toggle ml-0" id="navbarDropdown" href="#" role="button"
+                     data-bs-toggle="dropdown" aria-expanded="false"
+                     style="color: black; font-weight: bold;  padding-top : 12px; padding-bottom: 0;">침대</a>
 
-						<ul class="dropdown-menu" aria-labelledby="navbarDropdown"
-							style="width: 240px;text-align: center; ">
-							<li><a class="dropdown-item" href="#!">All Products</a></li>
-							<li>
-								<hr class="dropdown-divider" />
-							</li>
-							<li><a class="dropdown-item" href="#!">온열침대</a></li>
-							<li><a class="dropdown-item" href="#!">철제침대</a></li>
-							<li><a class="dropdown-item" href="#!">원목침대</a></li>
-							<li><a class="dropdown-item" href="#!">싱글침대</a></li>
-							<li><a class="dropdown-item" href="#!">슈퍼싱글/더블침대</a></li>
-						</ul>
-					</li>
-					<li class="nav-item dropdown"
-						style="list-style: none;  border-right: 1px solid #e5e5e5; width: 240px;">
-						<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-							data-bs-toggle="dropdown" aria-expanded="false"
-							style="color: black; font-weight: bold; padding-top : 12px; padding-bottom: 0;">의자</a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown"
+                     style="width: 240px;text-align: center; ">
+                     <li><a class="dropdown-item" href="#!">All Products</a></li>
+                     <li>
+                        <hr class="dropdown-divider" />
+                     </li>
+                     <li><a class="dropdown-item" href="#!">온열침대</a></li>
+                     <li><a class="dropdown-item" href="#!">철제침대</a></li>
+                     <li><a class="dropdown-item" href="#!">원목침대</a></li>
+                     <li><a class="dropdown-item" href="#!">싱글침대</a></li>
+                     <li><a class="dropdown-item" href="#!">슈퍼싱글/더블침대</a></li>
+                  </ul>
+               </li>
+               <li class="nav-item dropdown"
+                  style="list-style: none;  width: 240px;">
+                  <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                     data-bs-toggle="dropdown" aria-expanded="false"
+                     style="color: black; font-weight: bold; padding-top : 12px; padding-bottom: 0;">의자</a>
 
-						<ul class="dropdown-menu" aria-labelledby="navbarDropdown"
-							style="width: 240px;text-align: center;">
-							<li><a class="dropdown-item" href="#!">All Products</a></li>
-							<li>
-								<hr class="dropdown-divider" />
-							</li>
-							<li><a class="dropdown-item" href="#!">철제의자</a></li>
-							<li><a class="dropdown-item" href="#!">원목의자</a></li>
-							<li><a class="dropdown-item" href="#!">접이식의자</a></li>
-							<li><a class="dropdown-item" href="#!">야외용의자</a></li>
-							<li><a class="dropdown-item" href="#!">안락/흔들의자</a></li>
-						</ul>
-					</li>
-					<li class="nav-item dropdown"
-						style="list-style: none;  border-right: 1px solid #e5e5e5;width: 240px;">
-						<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-							data-bs-toggle="dropdown" aria-expanded="false"
-							style="color: black; font-weight: bold; padding-top : 12px; padding-bottom: 0;">소파</a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown"
+                     style="width: 240px;text-align: center;">
+                     <li><a class="dropdown-item" href="#!">All Products</a></li>
+                     <li>
+                        <hr class="dropdown-divider" />
+                     </li>
+                     <li><a class="dropdown-item" href="#!">철제의자</a></li>
+                     <li><a class="dropdown-item" href="#!">원목의자</a></li>
+                     <li><a class="dropdown-item" href="#!">접이식의자</a></li>
+                     <li><a class="dropdown-item" href="#!">야외용의자</a></li>
+                     <li><a class="dropdown-item" href="#!">안락/흔들의자</a></li>
+                  </ul>
+               </li>
+               <li class="nav-item dropdown"
+                  style="list-style: none ;width: 240px;">
+                  <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                     data-bs-toggle="dropdown" aria-expanded="false"
+                     style="color: black; font-weight: bold; padding-top : 12px; padding-bottom: 0;">소파</a>
 
-						<ul class="dropdown-menu" aria-labelledby="navbarDropdown"
-							style="width: 240px;text-align: center;">
-							<li><a class="dropdown-item" href="#!">All Products</a></li>
-							<li>
-								<hr class="dropdown-divider" />
-							</li>
-							<li><a class="dropdown-item" href="#!">패브릭소파</a></li>
-							<li><a class="dropdown-item" href="#!">가죽소파</a></li>
-							<li><a class="dropdown-item" href="#!">원목소파</a></li>
-							<li><a class="dropdown-item" href="#!">1인/2인용 소파</a></li>
-							<li><a class="dropdown-item" href="#!">3인/4인용 소파</a></li>
-						</ul>
-					</li>
-					<li class="nav-item dropdown"
-						style="list-style: none;  border-right: 1px solid #e5e5e5;width: 240px;">
-						<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-							data-bs-toggle="dropdown" aria-expanded="false"
-							style="color: black; font-weight: bold; padding-top : 12px; padding-bottom: 0;">수납장</a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown"
+                     style="width: 240px;text-align: center;">
+                     <li><a class="dropdown-item" href="#!">All Products</a></li>
+                     <li>
+                        <hr class="dropdown-divider" />
+                     </li>
+                     <li><a class="dropdown-item" href="#!">패브릭소파</a></li>
+                     <li><a class="dropdown-item" href="#!">가죽소파</a></li>
+                     <li><a class="dropdown-item" href="#!">원목소파</a></li>
+                     <li><a class="dropdown-item" href="#!">1인/2인용 소파</a></li>
+                     <li><a class="dropdown-item" href="#!">3인/4인용 소파</a></li>
+                  </ul>
+               </li>
+               <li class="nav-item dropdown"
+                  style="list-style: none;  width: 240px;">
+                  <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                     data-bs-toggle="dropdown" aria-expanded="false"
+                     style="color: black; font-weight: bold; padding-top : 12px; padding-bottom: 0;">수납장</a>
 
-						<ul class="dropdown-menu" aria-labelledby="navbarDropdown"
-							style="width: 240px;text-align: center;">
-							<li><a class="dropdown-item" href="#!">All Products</a></li>
-							<li>
-								<hr class="dropdown-divider" />
-							</li>
-							<li><a class="dropdown-item" href="#!">철제수납장</a></li>
-							<li><a class="dropdown-item" href="#!">원목수납장</a></li>
-							<li><a class="dropdown-item" href="#!">모듈수납장</a></li>
-							<li><a class="dropdown-item" href="#!">옷장/수납장</a></li>
-							<li><a class="dropdown-item" href="#!">수납장</a></li>
-						</ul>
-					</li>
-					<li class="nav-item dropdown"
-						style="list-style: none;  border-right: 1px solid #e5e5e5;width: 240px;">
-						<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-							data-bs-toggle="dropdown" aria-expanded="false"
-							style="color: black; font-weight: bold; padding-top : 12px; padding-bottom: 0;">테이블</a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown"
+                     style="width: 240px;text-align: center;">
+                     <li><a class="dropdown-item" href="#!">All Products</a></li>
+                     <li>
+                        <hr class="dropdown-divider" />
+                     </li>
+                     <li><a class="dropdown-item" href="#!">철제수납장</a></li>
+                     <li><a class="dropdown-item" href="#!">원목수납장</a></li>
+                     <li><a class="dropdown-item" href="#!">모듈수납장</a></li>
+                     <li><a class="dropdown-item" href="#!">옷장/수납장</a></li>
+                     <li><a class="dropdown-item" href="#!">수납장</a></li>
+                  </ul>
+               </li>
+               <li class="nav-item dropdown"
+                  style="list-style: none;  border-right: 1px solid #e5e5e5;width: 240px;">
+                  <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                     data-bs-toggle="dropdown" aria-expanded="false"
+                     style="color: black; font-weight: bold; padding-top : 12px; padding-bottom: 0;">테이블</a>
 
-						<ul class="dropdown-menu" aria-labelledby="navbarDropdown"
-							style="width: 240px;text-align: center;">
-							<li><a class="dropdown-item" href="#!">All Products</a></li>
-							<li>
-								<hr class="dropdown-divider" />
-							</li>
-							<li><a class="dropdown-item" href="#!">철제테이블</a></li>
-							<li><a class="dropdown-item" href="#!">원목테이블</a></li>
-							<li><a class="dropdown-item" href="#!">식탁</a></li>
-							<li><a class="dropdown-item" href="#!">책상/데스크</a></li>
-							<li><a class="dropdown-item" href="#!">다용도/수납테이블</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-		</nav>
-		
-	</header>
-	
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown"
+                     style="width: 240px;text-align: center;">
+                     <li><a class="dropdown-item" href="#!">All Products</a></li>
+                     <li>
+                        <hr class="dropdown-divider" />
+                     </li>
+                     <li><a class="dropdown-item" href="#!">철제테이블</a></li>
+                     <li><a class="dropdown-item" href="#!">원목테이블</a></li>
+                     <li><a class="dropdown-item" href="#!">식탁</a></li>
+                     <li><a class="dropdown-item" href="#!">책상/데스크</a></li>
+                     <li><a class="dropdown-item" href="#!">다용도/수납테이블</a></li>
+                  </ul>
+               </li>
+            </ul>
+         </div>
+      </nav>
+      
+   </header>
+   
 </html>

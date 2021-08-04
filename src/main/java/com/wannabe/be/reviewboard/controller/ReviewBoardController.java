@@ -10,6 +10,7 @@ import java.util.UUID;
 import javax.activation.FileTypeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,7 +46,9 @@ public class ReviewBoardController {
 
 	/* 리뷰 작성 폼 */
 	@GetMapping("/product/reviewForm")
-	public String reviewForm() {
+	public String reviewForm(@RequestParam(value ="product_no")int product_no, HttpSession session) {
+		session.setAttribute("product_no", product_no);
+	
 		return "/board/reviewForm";
 	}
 
@@ -145,7 +149,7 @@ public class ReviewBoardController {
 		File thumnail = new File(filepath + filename);
 
 		if (thumnail.exists()) {
-			Thumbnails.of(thumnail).size(95, 100).crop(Positions.CENTER).toOutputStream(out);
+			Thumbnails.of(thumnail).size(95, 95).crop(Positions.CENTER).toOutputStream(out);
 			byte[] buffer = new byte[1024 * 8];
 			out.write(buffer);
 			out.close();

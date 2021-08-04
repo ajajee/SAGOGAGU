@@ -7,6 +7,11 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
 	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
 	crossorigin="anonymous">
+	
+<style>
+
+
+</style>	
 </head>
 <body>
 	<form action="/product/uploadQna" method="post">
@@ -20,19 +25,19 @@
 				<td bgcolor=white>
 					<table class="table2">
 						<tr>
-							<td>작성자</td>
-							<input th:value="${session.memberInfo.member_id}" name="member_id" readonly>
-							<td>제품 번호</td>
-							<td><input type=number name=product_no size=20></td>
+							
+							<span>작성자 : </span><input th:value="${session.memberInfo.member_id}" name="member_id" readonly>
+							<td></td>
+							<td><span>제품번호:</span><input th:value=${session.product_no} name="product_no" readonly></td>
 						</tr>
 						<tr>
-							<td>제목</td>
-							<td><input type=text name=title size=60></td>
+							<td></td>
+							<td><span>제목</span><input type=text name=title size=70></td>
 						</tr>
 
 						<tr>
 							<td>내용</td>
-							<td><textarea name=qna_content cols=100 rows=15></textarea></td>
+							<td><textarea name=qna_content cols=120 rows=15></textarea></td>
 						</tr>
 
 

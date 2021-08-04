@@ -41,6 +41,7 @@ public class QnaBoardController {
 		paginationVO.setTotalCount(qnaBoardService.countAllQna(product_no));
 		List<QnaVO> qnaList = qnaBoardService.listQnaWithPaging(product_no, cri);
 		List<QnaReplyVO> replyList = qnaBoardService.listQnaReply(product_no);
+		
 		String temp = "";
 		for(int i = 0; i < qnaList.size(); i++) {
 			 temp = qnaList.get(i).getMember_id();
@@ -51,7 +52,7 @@ public class QnaBoardController {
 			}
 				
 		}		
-		ModelAndView mv = new ModelAndView("/product/productDetailsForm");
+		ModelAndView mv = new ModelAndView("/board/qnaBoard");
 		mv.addObject("product_no", product_no);
 		mv.addObject("pageInfo", paginationVO);
 		mv.addObject("qnaList", qnaList);
@@ -109,8 +110,10 @@ public class QnaBoardController {
 
 	/* 문의 게시글 양식  */ 
 	@RequestMapping(value = "/product/qnaform", method = { RequestMethod.GET })
-	public String viewQnaBoard() {
-		return "qnaform";
+	public String viewQnaBoard(@RequestParam(value = "product_no") int product_no, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		session.setAttribute("product_no", product_no);
+		return "/board/qnaform";
 	}
 	
 	/* 문의 게시판 글 게시  */ 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.wannabe.be.product.vo.ProductAttachVO;
 import com.wannabe.be.product.vo.ProductVO;
+import com.wannabe.be.product.vo.PurchaseHistoryVO;
 import com.wannabe.be.shopcart.vo.ShopcartVO;
 
 public interface ProductService {
@@ -37,6 +38,14 @@ public interface ProductService {
 	List<ProductVO> getProductListByRating();
 
 	List<ProductVO> getProductListWithPageInfo(ProductVO product);
+
+	int getAvgRatingByProduct_no(int product_no);
+
+	void updatePurchaseHistory(PurchaseHistoryVO history);
+
+	List<PurchaseHistoryVO> getHistory(String member_id);
+
+	
 
 
 

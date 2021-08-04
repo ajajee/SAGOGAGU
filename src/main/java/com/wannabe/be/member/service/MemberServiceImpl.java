@@ -29,7 +29,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int modifymember(MemberVO memberVO) {
-		System.out.println("memberVO >>>" + memberVO);
+		System.out.println("service >>>> memberVO >>" + memberVO);
 		return memberDao.modifymember(memberVO);
 	}
 
@@ -54,6 +54,16 @@ public class MemberServiceImpl implements MemberService {
 			result=0; // 가입 가능한 아이디
 		}
 		return result;
+	}
+
+	@Override
+	public int modifyPw(MemberVO memberVO) {
+		return memberDao.modifyPw(memberVO);
+	}
+
+	@Override
+	public MemberVO getMemberInfo(String member_id) {
+		return memberDao.getMemberInfo(member_id);
 	}
 
 

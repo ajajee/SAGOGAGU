@@ -115,6 +115,7 @@
 	padding-bottom: 1.25rem;
 }
 </style>
+
 <body>
 	<div class="p-3 mb-5 bg-light rounded navbar">
 		<span class="ml-5 ustify-content-start" th:text="'상품평 수 ' + ${pageInfo.totalCount} + '개 '"></span> <p class="justify-content-end mr-5"><a
@@ -126,7 +127,7 @@
 			th:href="@{/product/reviewBoard(product_no=${product_no}, sortType='ByRatingAsc')}"><span>평점
 				낮은 순</span></a></p>
 	</div>
-	</div>
+	
 	<section th:block th:each="review, stats : ${reviewList}">
 		<div class="reviews container-fluid">
 			<div class="row h-20">
@@ -211,6 +212,7 @@
 			</th:block>
 			</th:block>
 	</section>
+	</div>
 	<script th:inline="javascript">
 	
 	 $(document).ready(function(){

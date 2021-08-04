@@ -25,6 +25,8 @@ public class ProductVO {
 	int rowCount;
 	String formattedPrice;
 	Date regdate;
+	int avg_rating; 
+	int reviewCount;
 
 	private List<ProductAttachVO> attachList;
 }

@@ -19,4 +19,8 @@ public interface MemberService {
 
 	int addMemberCheck(String memberID);
 
+	int modifyPw(MemberVO memberVO);
+
+	MemberVO getMemberInfo(String member_id);
+
 }

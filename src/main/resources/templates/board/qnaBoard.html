@@ -6,6 +6,8 @@
 <th:block layout:fragment="html_head">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>臾몄쓽 寃뚯떆�뙋</title>
+	
+	
 </th:block>
 
 <div id="wrap" layout:fragment="content_body">
@@ -16,12 +18,12 @@
 				<tr>
 					<th class="hidden">湲�踰덊샇</th>
 					<th class="hidden">�젣�뭹踰덊샇</th>
-					<th>湲�踰덊샇</th>
-					<th colspan="19">�젣紐�</th>
-					<th colspan="1">�씠由�</th>
-					<th>寃뚯떆�씪</th>
-					<th>議고쉶�닔</th>
-					<th>�떟蹂� �긽�깭</th>
+					<th>글번호</th>
+					<th colspan="19">글제목</th>
+					<th colspan="1">작성자</th>
+					<th>게시일</th>
+					<th>조회수</th>
+					<th>답변여부</th>
 				</tr>
 			</thead>
 			<tbody th:each="qna, stats : ${qnaList}">
@@ -36,16 +38,16 @@
 						th:attr="data-origin_date=${qna.ReplyDate}"></td>
 					<td th:text="${qna.view_count}" class="view_count"></td>
 					<td th:if="${qna.isAnswered <= 0}"><span
-						class="badge badge-pill badge-light" style="margin: 0 auto;">�떟蹂���湲�</span></td>
+						class="badge badge-pill badge-secondary" style="margin: 0 auto;">답변대기</span></td>
 					<td th:unless="${qna.isAnswered <= 0}"><span
-						class="badge badge-pill badge-success" style="margin: 0 auto;">�떟蹂��셿猷�</span></td>
+						class="badge badge-pill badge-success" style="margin: 0 auto;">답변완료</span></td>
 					<td th:text="${qna.product_no}" class="hidden"></td>
 					<td th:text="${qna.qna_no}" class="hidden"></td>
 				</tr>
 				<tr class="qnaContent collapsed">
 					<td
 						th:utext="'&lt;span&gt;'+ ${qna.qna_content + '&lt;/span&gt;&#x3C;div class=&#x22;qna_btn_wrapper&#x22; stype=&#x22;width: inherit;&#x22;&#x3E;
-&#x3C;span class=&#x22;badge badge-pill badge-light qna_modify_btn&#x22;&#x3E;&#xC218;&#xC815;&#x3C;/span&#x3E;&#x26;nbsp;&#x3C;span class=&#x22;badge badge-pill badge-light qna_delete_btn&#x22;&#x3E;&#xC0AD;&#xC81C;&#x3C;/span&#x3E;&#x26;nbsp;&#x3C;span class=&#x22;badge badge-pill badge-light qna_reply_btn&#x22;&#x3E;&#xB313;&#xAE00; &#xB2EC;&#xAE30;&#x3C;/span&#x3E;&#x26;nbsp;
+&#x3C;span class=&#x22;badge badge-pill badge-secondary qna_modify_btn&#x22;&#x3E;&#xC218;&#xC815;&#x3C;/span&#x3E;&#x26;nbsp;&#x3C;span class=&#x22;badge badge-pill badge-secondary qna_delete_btn&#x22;&#x3E;&#xC0AD;&#xC81C;&#x3C;/span&#x3E;&#x26;nbsp;&#x3C;span class=&#x22;badge badge-pill badge-secondary qna_reply_btn&#x22;&#x3E;&#xB313;&#xAE00; &#xB2EC;&#xAE30;&#x3C;/span&#x3E;&#x26;nbsp;
 							'}"
 						colspan="25" style="padding: 8vh 8vh 3vh 9vh; text-align: left;">
 				</tr>
@@ -62,7 +64,7 @@
 						<td th:text="${reply.qna_reply_writer}"></td>
 						<td th:text="${reply.qna_reply_date}"></td>
 						<td th:text="${reply.view_count}"></td>
-						<td><span class="badge badge-pill badge-light">�떟蹂�</span></td>
+						<td><span class="badge badge-pill badge-secondary">답변</span></td>
 					</tr>
 					<tr class="replyContent collapsed">
 						<td th:text="${reply.qna_reply_content}" colspan="25"
@@ -101,7 +103,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h8 class="modal-title">�뙎湲� �옉�꽦</h8>
+					<h8 class="modal-title">댓글 작성</h8>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
@@ -114,8 +116,8 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<span class="badge badge-pill badge-light qna_reply_submit">�벑濡�</span>
-					<span class="badge badge-pill badge-light qna_reply_close">痍⑥냼</span>
+					<span class="badge badge-pill badge-secondary qna_reply_submit">글 작성</span>
+					<span class="badge badge-pill badge-secondary qna_reply_close">취소</span>
 				</div>
 			</div>
 		</div>
@@ -127,7 +129,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h8 class="modal-title">湲� �닔�젙</h8>
+					<h8 class="modal-title">글 수정</h8>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
@@ -140,8 +142,8 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<span class="badge badge-pill badge-light qna_modify_submit">�솗�씤</span>
-					<span class="badge badge-pill badge-light qna_modify_close">痍⑥냼</span>
+					<span class="badge badge-pill badge-secondary qna_modify_submit">완료</span>
+					<span class="badge badge-pill badge-secondary qna_modify_close">취소</span>
 				</div>
 			</div>
 		</div>
@@ -188,7 +190,7 @@
 						  if(!res.ok) console.log(res.err)
 						  console.log(res)
 							$(".qna_reply").hide();
-							alert("�뙎湲� �벑濡� �셿猷�");
+							alert("댓글 작성이 완료되었습니다");
 							fetchReplies();
 							$('tr[data-qna_no=' + parent_no + ']').children('.view_count').next().find("span").removeClass("badge-light").addClass("badge-success").html("�떟蹂��셿猷�");
 							updateQnaStatus();
@@ -201,7 +203,7 @@
 						}, (res) => {
 							  if(!res.ok) console.log(res.err)
 							  console.log(res)				
-								alert("湲� �궘�젣 �셿猷�");
+								alert("삭제가 완료되었습니다.");
 							  window.location.reload();					  	
 							})				
 						});
@@ -241,7 +243,7 @@
 				    }, (res) => {
 				          if(!res.ok) console.log(res.err)
 				          console.log(res)
-				           alert("湲� �닔�젙 �셿猷�");
+				           alert("수정이 완료되었습니다");
 				          window.location.reload();	
 				        })		        
 					});

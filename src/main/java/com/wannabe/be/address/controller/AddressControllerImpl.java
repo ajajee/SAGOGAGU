@@ -4,13 +4,17 @@ package com.wannabe.be.address.controller;
 import java.util.List;
 import java.util.Map;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.wannabe.be.address.service.AddressService;
@@ -27,7 +31,7 @@ public class AddressControllerImpl {
 	public String addressform(@RequestParam("member_id") String member_id, Model model ) throws Exception {
 		System.out.println("member_id1 >>>" + member_id );
 		model.addAttribute("member_id", member_id);
-		return "addressform";
+		return "address/addressform";
 	}
 	
 	@RequestMapping("/member/myaddressform")
@@ -38,7 +42,7 @@ public class AddressControllerImpl {
 		
 		model.addAttribute("myaddress", list);
 	
-		return "myaddressform";
+		return "address/myaddressform";
 	}
 
 	
@@ -61,7 +65,7 @@ public class AddressControllerImpl {
 		model.addAttribute("address", address);
 		model.addAttribute("member_id", addr_map.get("member_id"));
 		
-		return "modifyaddressform";
+		return "address/modifyaddressform";
 
 	}
 	

@@ -3,6 +3,8 @@ package com.wannabe.be.member.dao;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import com.wannabe.be.member.vo.MemberVO;
@@ -22,6 +24,11 @@ public interface MemberDao {
 	public int deletemember(String member_id);
 
 	public MemberVO addMemberCheck(String memberID);
+
+	public int modifyPw(MemberVO memberVO);
+	
+	@Select("SELECT * FROM MEMBER WHERE MEMBER_ID = #{member_id}")
+	public MemberVO getMemberInfo(@Param("member_id") String member_id);
 
 
 }
