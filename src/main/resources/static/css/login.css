@@ -1,0 +1,140 @@
+@charset "UTF-8";
+
+        body {
+			position: relative;
+			height: 100%;
+			background: #f5f6f7;
+		}
+
+		fieldset {
+			border: 0;
+			margin: 0;
+			padding: 0;
+			-webkit-text-size-adjust: none;
+		}
+		
+		.content{
+
+		height:430px;
+		
+		}
+
+		.blind {
+			position: absolute;
+			clip: rect(0 0 0 0);
+			width: 1px;
+			height: 1px;
+			margin: -1px;
+			overflow: hidden;
+		}
+
+		.h_logo {
+			text-decoration: none;
+			color: rgb(19,46,47);
+			text-align: center;
+			margin: 10px auto;
+		}
+
+		.btn_global {
+			margin-bottom: 12px;
+			height: 54px;
+			line-height: 52px;
+			font-size: 18px;
+			font-weight: 600;
+		}
+
+
+
+		.btn_global,
+		.btn_login input,
+		.btn_qronce_cancel {
+			display: block;
+			width: 100%;
+			height: 60px;
+			line-height: 55px;
+			margin: 12px 0 0px;
+			border-radius: 0;
+			border: solid 1px rgba(0, 0, 0, .1);
+			box-shadow: 0 2px 6px 0 rgb(61 80 81 / 8%);
+			background-color: rgb(19,46,47);
+			color: #fff;
+			font-size: 16px;
+			font-weight: 700;
+			letter-spacing: -.5px;
+			cursor: pointer;
+			text-align: center;
+			-webkit-appearance: none;
+		}
+
+		.int {
+			font-size: 14px;
+			line-height: 20px;
+			position: relative;
+			z-index: 9;
+			width: 100%;
+			height: 36px;
+			padding: 8px 0 6px;
+			color: #000;
+			border: none;
+			background: #fff;
+			-webkit-appearance: none;
+		}
+
+		.input_row {
+			position: relative;
+			height: 50px;
+			margin-bottom: 8px;
+			padding: 7px 35px 10px 27px;
+			border: solid 1px #dadada;
+			background: #fff;
+		}
+
+		.input_row.focus {
+			border: solid 1px #03c75a;
+			box-shadow: 0 2px 6px 0 rgb(61 80 81 / 8%);
+		}
+
+		#header h1 {
+			text-align: center;
+		}
+
+		#header {
+			position: relative;
+			box-sizing: border-box;
+			padding: 50px 0 33px;
+		}
+
+		#container,
+		#header {
+			width: 300px;
+			margin: 0 auto;
+		}
+
+		@media (max-width: 768px) {
+
+			#container,
+			#header {
+				width: auto;
+				margin: 0 15px;
+			}
+
+			.input_row {
+				margin-bottom: 6px;
+				padding: 8px 35px 9px 11px;
+				padding-top: 8px;
+				padding-right: 35px;
+				padding-bottom: 9px;
+				padding-left: 11px;
+			}
+
+			#header {
+				position: relative;
+				padding: 71px 0 35px;
+			}
+
+			#container,
+			#header {
+				width: auto;
+				margin: 0 15px;
+			}
+		}
