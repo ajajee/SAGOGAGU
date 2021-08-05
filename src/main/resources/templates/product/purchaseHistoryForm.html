@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="/common/layout">
+<th:block layout:fragment="html_head">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>주문 내역</title>
+</th:block>
+<!-- 
+<th:block layout:fragment="pageCustomCSS">
+	<link th:href="@{/css/styles.css}" rel="stylesheet" />
+</th:block> -->
+<div layout:fragment="content_body">
+	<body>
+		<section>
+			<form method="GET" action="/product/reviewForm">
+				<div class="container pt-6" th:each="history: ${historyList}">
+					<div class="row">
+						<div class="col-sm-1">
+							<picture th:each="image : ${productImageList}"
+								th:if="${history.product_no == image.product_no}"> 
+								<p th:each="detail, stats : ${image}" th:if="${#strings.equals(image.filetype, 'main_image') && stats.index == 0}">
+								<img
+								class="rounded"	
+								th:src="@{/thumbnails(filepath=${image.uploadpath}, filename=${image.filename})}"></p></picture>
+						</div>
+						<div class="col-sm-2 align-left text-left">
+							<span style="font-size:0.8rem">워너비(WANNABE)</span><br> 
+							<strong><span
+								style="font-size: 0.8rem" th:text="${history.product_title}"></span></strong><br>
+							<span style="font-size:0.7rem" th:utext="${history.product_quantity + '개' }"></span>
+						</div>
+
+						<div class="col-sm-3 flex-column ml-2"></div>
+
+						<div class="col-sm-2">
+							<input type="hidden" th:value="${history.product_no}"
+								name="product_no">
+							<button type="button" class="btn btn-sm btn-outline-info "
+								th:onclick="'window.location.href = \'' + @{/product/reviewForm(product_no=${history.product_no})} + '\''"
+								th:text="리뷰쓰기"></button>
+						</div>
+			</form>
+</div>
+</section>
+</body>
+</div>
+
+</div>
+</html>

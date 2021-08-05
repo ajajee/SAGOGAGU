@@ -1,3 +1,4 @@
+
 package com.wannabe.be.product.vo;
 
 import java.sql.Date;
@@ -25,6 +26,5 @@ public class PurchaseHistoryVO {
 	Date refund_complete_datetime;
 	String member_id;
 	String product_title;
-	
 	
 }

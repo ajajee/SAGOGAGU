@@ -1,3 +1,5 @@
+
+
 package com.wannabe.be.product.vo;
 
 import lombok.Data;
@@ -10,3 +12,4 @@ public class ProductCategoryVO {
 	private String catecoderef;
 
 }
+

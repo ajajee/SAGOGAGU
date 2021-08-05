@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="/common/layout">
+<th:block layout:fragment="html_head">
+	<title>결제 정보</title>
+</th:block>
+<th:block layout:fragment="css">
+	<link th:href="@{/css/index.css}" rel="stylesheet" />
+</th:block>
+<div id="wrap" layout:fragment="content_body">
+	<h5>주문/결제</h5>
+	<form method="GET" action="/product/payment" class="mt-5">
+		<div class="card m-auto" style="width: 30rem;">
+			<h6>배송지</h6>
+			<hr>
+			<div class="card-body" style="width: 30rem"
+				th:each=" address : ${addressList}">
+				<strong><span class="text-center">받는 분:</span><span
+					class="text-center" th:text="${memberVO.member_name}"></span></strong><br>
+				<strong><span>받을 주소:</span></strong><span class="card-text"
+					th:text="${address.address_first}"><span
+					th:text="${address.address_middle}"></span><span
+					th:if="${address.address_last}" th:text="${address.address_last}"></span>
+					</p>
+			</div>
+			<hr>
+			<strong><h5 class="card-title">주문 상품</h5></strong> <span
+				th:text="${product.product_title}"></span> <span
+				th:text="${shopcart.cart_product_quantity + '개'}"></span><strong><span>총
+					금액:</span></strong> <span
+				th:text="${shopcart.totalPrice * shopcart.cart_product_quantity + '원' }"></span>
+		</div>
+
+		<button type="submit" style="font-size: 0.8rem"
+			class="btn payBtn btn-light btn-lg pl-5 pr-5 mt-3 ">결제하기</button>
+		<button type="button" style="font-size: 0.8rem"
+			class="btn payBtn btn-light btn-lg pl-5 pr-5 mt-3 ">
+			<a href="/main">취소</a>
+		</button>
+
+	</form>
+
+	</body>
+</div>
+<th:block layout:fragment="pageCustomScript">
+	<script>
+		
+	</script>
+</th:block>
+</html>
