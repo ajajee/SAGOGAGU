@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="html_head">
+	<title>이벤트 등록</title>
+</th:block>
+
+<th:block layout:fragment="content_body">
+<h1 class="jumbotron">Event 등록</h1>
+	<div class="container mt-3">
+
+  <!-- Buttons -->
+<button type="button" data-toggle="modal" data-target="#myModal">이벤트 대상 제품 조회</button>
+ <!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+	  <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">제품 조회</h4>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+
+	<div class="form-group">
+	<label for="product_no">제품 번호:</label> 
+	<input type="text" class="form-control" name="product_no" id="product_no">
+	</div>
+	<div class="form-group">
+    <label for="product_title">제품 이름:</label> 
+    <input type="text" class="form-control" name="product_title" id="product_title">
+    </div>
+    <div class="form-group">
+    <label for="product_content">제품 내용:</label> 
+    <input type="text" class="form-control" name="product_content" id="product_content">
+    </div>
+    <div class="form-group">
+    <button id="search_product" class="btn btn-info" role="button">제품 조회</button>
+	</div>
+
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+	<table class="table table-hover table-striped" id="search_result">
+	<tr>
+		<th>product_cate_code</th>
+		<th>product_no</th>
+		<th>product_title</th>
+		<th>product_content</th>
+		<th>product_price</th>
+		<th>product_quantity</th>
+		<th>regdate</th>
+		<th>이벤트 추가</th>
+	</tr>
+	</table>
+
+ <!-- <form role="form" action="/event/eventRegist" method="POST"
+      enctype="multipart/form-data">
+      <div class="form-group col-md-4">
+         <label for="catecoderef">대분류</label> <select
+            name="product_category_ref" class="form-control">
+            <th:block th:each="category : ${categoryList}">
+               <option th:each=" catecode : ${category}"
+                  th:if="${catecode.catecoderef == null}"
+                  th:value="${catecode.catecode}" th:text="${catecode.catename}"></option>
+         </select>
+         </th:block>
+      </div>
+      <div class="form-group col-md-4">
+         <label for="catecode">소분류</label> <select
+            name="product_category_code" class="form-control">
+            <th:block th:each="category : ${categoryList}">
+               <option th:each=" catecodes : ${category}"
+                  th:if="${catecodes.catecoderef != null}"
+                  th:value="${catecodes.catecode}" th:text="${catecodes.catename}"></option>
+         </select>
+         </th:block>
+      </div>
+      <div class="form-row">
+         <div class="form-group col-md-6">
+            <label for="product_title">제품 이름</label> <input type="text"
+               class="form-control" name="product_title">
+         </div>
+         <div class="form-group col-md-4">
+            <label for="product_no">제품 가격</label><input type="number"
+               name="product_price">
+         </div>
+         <div class="form-group col-md-4">
+            <label for="product_no">배송비</label><input type="number"
+               name="product_delivery_price">
+         </div>
+         <div class="form-group col-md-4">
+            <label for="product_no">할인률</label><input type="number"
+               name="product_sale_percent">
+         </div>
+         <div class="form-group col-md-4">
+            <label for="product_no">수량</label><input type="number"
+               name="product_quantity">
+         </div>
+         <div class="form-group col-md-6">
+            <label for="product_title">제품 소개</label> <input type="text"
+               class="form-control" name="product_content">
+         </div>
+         <table>
+         <tr>
+            <div class="panel-body">
+               <div class="form-group uploadDiv">
+                  <input type="file" name='uploadFile' multiple>
+               </div>
+               <div class='uploadResult'>
+                  <ul>
+                  </ul>
+               </div>
+            </div>
+            </tr>
+            <tr>
+               <td align="center">이미지파일 첨부</td>
+               <td align="center"><input type="button" value="파일 추가"
+                  onClick="fn_addFile()" /></td>
+               <td>
+                  <div id="d_file"></div>
+               </td>
+            </tr>
+            <tr>
+               <td colspan="2"><button type="submit" style="float: right;">등록</button></td>
+            </tr>
+         </table>
+   </form> -->
+
+</th:block>
+
+<th:block layout:fragment="pageCustomScript">
+
+
+	<script type="text/javascript">
+	$('#search_product').click(function(){
+		var url = "/product/search";
+		var data = {product_no:$('#product_no').val()
+				,product_title:$('#product_title').val()
+				,product_content:$('#product_content').val()};
+		console.log("data >>>> " , data);
+		$.ajax({
+			url : url,
+			data : JSON.stringify(data),
+			//data : data,
+			method: 'post',
+			dataType : "json",
+			contentType : 'application/json',
+			success: function(result){
+				console.log("result >>> ", result);
+				printResult(result);
+			}
+		});
+	});
+
+	var target = $('#search_result');
+	var printResult = function(result){
+		//target.empty();
+		target.find("tr:gt(0)").remove();
+
+		$.each(result, function(i, pd){
+			var add_data = '';
+			add_data += '<tr>';
+
+			add_data += '<td>';
+			add_data += pd.product_category_code;
+			add_data += '</td>';
+			add_data += '<td>';
+			add_data += pd.product_no;
+			add_data += '</td>';
+			add_data += '<td>';
+			add_data += pd.product_title;
+			add_data += '</td>';
+			add_data += '<td>';
+			add_data += pd.product_content;
+			add_data += '</td>';
+			add_data += '<td>';
+			add_data += pd.product_price;
+			add_data += '</td>';
+			add_data += '<td>';
+			add_data += pd.product_quantity;
+			add_data += '</td>';
+			add_data += '<td>';
+			add_data += moment(pd.regdate).format('YYYY-MM-DD HH:mm:ss')
+			add_data += '</td>';
+			add_data += '<td>';
+			add_data += '<button>Add Event</button>';
+			add_data += '</td>';
+			add_data += '</tr>';
+			target.append(add_data);
+		});
+	}
+
+	</script>
+</th:block>
+</html> 

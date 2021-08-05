@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="/common/layout">
+
+<th:block layout:fragment="pageCustomCSS">
+<link th:href="@{/css/list.css}" rel="stylesheet" />
+</th:block>
+    <!-- <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">Eblo</title> -->
+    <!-- 공통 css, js, meta tag -->
+<body>
+    <!-- page content body 구성 -->
+    <div layout:fragment="content_body">
+	<div class="body_container">
+		 <div class="bd_list">
+         <p><a th:href="@{/member/myinformation}" style="width:200px; height:70px; font-size: 28px; "> 마이페이지</a></p>
+           <ul>
+                <li><a th:href="@{/member/modifymemberform}"> 내 정보 수정</a></li>
+                <li><a th:href="|/member/myaddressform?member_id=${session.memberInfo.member_id}|"> 내 주소 관리</a></li>
+                <li><a th:href="@{/member/deletememberform}"> 탈퇴하기</a></li>
+           </ul>
+         </div>
+         <div class="bd_title">
+            <h3>| 회원 탈퇴 </h3>
+        </div>
+	    <div class="bd_body">
+		   <h3 style="padding:20px;">회원 탈퇴하시겠습니까?</h3>
+			<a th:href="@{/member/deletemember}" style="padding:15px 60px 0px 0px;">탈퇴하기</a>
+			<a type="button" th:href="@{/}">메인가기</a>
+		</div>
+ 	   </div>
+ 	</div>      
+</body>
+</html>

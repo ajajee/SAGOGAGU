@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="/common/layout">
+<html>
+<th:block layout:fragment="html_head">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Wannabe - 상품상세</title>
+</th:block>
+<th:block layout:fragment="css">
+	<link th:href="@{/css/index.css}" rel="stylesheet" />
+</th:block>
+<div class="w-100" id="wrap" layout:fragment="content_body">
+	<body>
+		<section class="mt-5 product_details">
+			<form method="POST" action="/product/paymentForm" id="productForm">
+				<div class="d-flex w-100">
+					<div>
+						<div class="p-1 col-md-4 ml-6" th:each="image : ${imageList}">
+							<div class="col-md-9 ml-9">
+								<picture class="p-0 m-0 col-md-5"> <img
+									th:if="${#strings.equals(image.filetype, 'main_image')}"
+									th:src="@{/productThumbs(displayType='main_detail', filepath=${image.uploadpath}, filename=${image.filename})}"></picture>
+							</div>
+						</div>
+					</div>
+					<div class=" flex-column col-md-5"
+						th:with="discountRate = ${product.product_sale_percent}, price=${product.product_price}">
+						<div class="p-2 pb-0 text-left " style="font-size: 0.7rem">
+							<strong><span>워너비(WANNABE)</span></strong>
+						</div>
+						<div class="p-2">
+
+							<span class="fa fa-star fa-pull-left"></span> <span
+								class="fa fa-star fa-pull-left"></span> <span
+								class="fa fa-star fa-pull-left"></span> <span
+								class="fa fa-star fa-pull-left"></span> <span
+								class="fa fa-star fa-pull-left"></span>
+
+						</div>
+						<br />
+						<div>
+							<div class="p-2 mt-0 pt-1 text-left" style="font-size: 1.2rem"
+								th:text="${product.product_title}"></div>
+							<div class="p-2 text-left pt-0 pb-0" style="font-size: 1rem">
+								<span class="mr-2" th:text="${discountRate + '%'}"></span><strike
+									style="color: #c7c7c7"><span style="color: #c7c7c7"
+									th:text="${(price * 100) / (100 - discountRate) + '원'}"></span></strike>
+							</div>
+							<div class="p-2 text-left pt-0 mb-0 pb-0">
+								<strong><span style="font-size: 2rem"
+									th:text="${price}"></span></strong><span style="font-size: 1.6rem">원</span>
+							</div>
+							<div class="p-2 text-left pt-0 mt-0" style="color: #06bbcf">
+								<strong><span style="font-size: 1.8rem"
+									th:text="${price - (price * 1 /100)}"></span></strong><span
+									style="font-size: 1.6rem">원</span><span
+									style="font-size: 0.7rem">첫 구매 할인가</span>
+							</div>
+							<div class="rounded text-left mt-3"
+								style="background-color: #f0f0f0; height: 80px;">
+								<span class="ml-3 pt-2" style="font-size: 0.6rem">수량</span><br>
+								<select name="cart_product_quantity" class="ml-3"
+									id="product_quantity" style="font-size: 0.6rem">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+								</select><br>
+								<div class="text-right">
+									<strong class="mr-2"><span class="totalPrice"
+										th:text="${price}"></span><span>원</span></strong>
+								</div>
+							</div>
+							<div class="float">
+								<div class="text-left mt-2">
+									<strong><span style="font-size: 0.7rem">주문금액</span></strong><br>
+									<span class="delivery_price ml-1 mt-0 p-0"
+										style="font-size: 0.65rem"
+										th:text="${'+ 배송비' + '(' + product.product_delivery_price + ')'}"></span>
+								</div>
+								<div class="text-right">
+									<strong><span class="finalPrice"
+										style="font-size: 0.8rem"
+										th:text="${price + product.product_delivery_price}"></span><span>원</span></strong>
+								</div>
+							</div>
+							<div class="mt-4">
+								<input type="hidden" th:value="${product.product_no}"
+									name="product_no"> <input type="hidden"
+									th:value="${session.memberInfo.member_id}" name="member_id">
+								<input type="hidden"
+									th:value="${price + product.product_delivery_price}"
+									name="totalPrice">
+									<button type="button" style="font-size: 0.8rem" class="artBtn btn btn-light btn-lg pl-5 pr-5 mr-2 mt-3" th:onclick="'window.location.href = \'' + @{/product/qnaform(product_no=${product.product_no})} + '\''" th:text="문의하기"></button>
+								<button type="button" style="font-size: 0.8rem"
+									class="cartBtn btn btn-light btn-lg pl-5 pr-5 mr-2 mt-3">장바구니</button>
+								<button type="submit" style="font-size: 0.8rem"
+									class="btn payBtn btn-light btn-lg pl-5 pr-5 mt-3 ">바로구매</button>			
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</section>
+	</body>
+</div>
+</div>
+
+<th:block layout:fragment="pageCustomScript">
+	<script th:inline="javascript">
+	
+	
+var price = [[${product.product_price}]];
+var product_no = [[${product.product_no}]];
+var deliveryPrice = [[${product.product_delivery_price}]];
+var member_id = [[${member_id}]];
+
+
+
+$(document).ready(function(){
+	
+	$("#product_quantity").on("change", function(){		
+		var quantity = $("#product_quantity option:selected").val();	
+		var computedPrice = price * quantity ;
+		var totalComputedPrice = computedPrice + deliveryPrice;
+		$(".totalPrice").text(computedPrice);	
+		$(".finalPrice").text(totalComputedPrice);		
+		$("#totalPrice").val(totalComputedPrice); 
+		
+	})
+	
+	$(".cartBtn").on("click", function(){
+		
+		addItemtoCart(product_no, member_id);
+	
+	})
+	
+});
+
+
+function addItemtoCart(product_no, member_id){
+	var totalPrice = $("#totalPrice").val();
+	var cart_product_quantity = $("#product_quantity option:selected").val();	
+		$.get("/product/addtoCart", {
+	        product_no : product_no, 
+	        totalPrice : totalPrice,
+	        cart_product_quantity : cart_product_quantity,
+	        member_id : member_id
+	    }, (res) => {
+	          if(!res.ok) console.log(res.err)
+	        	alert("카트에 저장되었습니다");		          
+	        })		   			    
+		
+}
+</script>
+</th:block>
+</html>
