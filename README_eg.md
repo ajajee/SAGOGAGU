@@ -1,3 +1,3 @@
 ### SAGOGAGU 
 ##### About
--- This is a personal Spring boot project -- an web app for a online shop. 
+-- This is a personal Spring boot project -- online furniture shop. 
