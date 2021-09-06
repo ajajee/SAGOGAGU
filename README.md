@@ -1,6 +1,10 @@
-### 프로젝트명 (사고가구) [in English](https://github.com/ajajee/SAGOGAGU/blob/09acf15918afb10f8e1edd48aeae0b5abb56dfdd/README_eg.md)
+### 프로젝트명 (사고가구) 
+#
+### 개요
+스프링을 이용한 가구 전문 쇼핑몰 입니다. 
 
-##### 개요
--- 사고가구는 가구 전문 쇼핑몰입니다.
+
+### 주요 기능
+* 로그인
 
 
