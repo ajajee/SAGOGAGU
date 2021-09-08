@@ -7,4 +7,4 @@
 ### 1.주요 기능
 * 1.1 로그인
 
-<img src="https://github.com/ajajee/SAGOGAGU/blob/3de71433d782eeca8d7b78bc448a21197c25331a/ii.gif" style="width: 80%">
+<img src="https://github.com/ajajee/SAGOGAGU/blob/3de71433d782eeca8d7b78bc448a21197c25331a/ii.gif" style="width: 80%; text-align:center">
