@@ -10,4 +10,4 @@
 <img src="https://github.com/ajajee/SAGOGAGU/blob/3de71433d782eeca8d7b78bc448a21197c25331a/ii.gif" style="width: 90%;">
 
 #### 1.2 회원가입
-<img src="src/main/webapp/project_document/signup.gif"  style="width: 90%;>
+<img src="https://github.com/ajajee/SAGOGAGU/blob/c0b661eb16c2b39ed22a0ba57e94c5597d906c8a/src/main/webapp/project_document/signup.gif"  style="width: 90%;">
