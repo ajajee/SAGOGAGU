@@ -4,7 +4,6 @@
 스프링을 이용한 가구 전문 쇼핑몰 입니다. 
 ### 프로젝트 구조 
 #### 1.1 사용 스택
-#
 - Spring Boot(API Server)
 - Spring Security 
 - MYSQL
