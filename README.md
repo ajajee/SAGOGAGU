@@ -7,6 +7,8 @@
 - Spring Security 
 - MYSQL
 - HTML/CSS·Bootstrap·JQuery
+### 2. 기능 명세서 
+<img src="https://github.com/ajajee/SAGOGAGU/blob/ff8a722ad8407122a8473a3bac475f072bf78915/src/main/webapp/project_document/%EA%B8%B0%EB%8A%A5%EB%AA%85%EC%84%B8%EC%84%9C.png">
 
 ### 2.주요 기능
 #### 2.1 회원가입
