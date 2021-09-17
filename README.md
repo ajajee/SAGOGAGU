@@ -22,3 +22,6 @@
 
 #### 2.4 북마크 
 <img src="https://github.com/ajajee/SAGOGAGU/blob/2a82dcfdb801421f8660c6036fe6830b86bb701d/src/main/webapp/project_document/bookmark.gif"  style="width: 90%;">
+
+#### 2.4 장바구니  
+<img src="https://github.com/ajajee/SAGOGAGU/blob/3b0b194ec496485378576f0bd7dea5b964e18671/src/main/webapp/project_document/cart.gif"  style="width: 90%;">
